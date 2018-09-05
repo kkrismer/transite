@@ -1,0 +1,13 @@
+.Ruserdata
+inst/doc
+.Rproj.user
+.RData
+.Rhistory
+.Rbuildignore
+data-raw
+sc
+tests
+vignettes
+transite.Rproj
+src/*.o
+src/*.dll

@@ -20,4 +20,6 @@ Transite, a novel computational method that allows cost-effective, time-effectiv
 
 If you use Transite in your research (R package or website), please cite:
 
-TBD
+**Transite: A computational motif-based analysis platform that identifies RNA-binding proteins modulating changes in gene expression**  
+Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and Michael B. Yaffe  
+bioRxiv 416743; doi: https://doi.org/10.1101/416743

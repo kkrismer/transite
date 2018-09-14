@@ -2,8 +2,8 @@ citHeader("Please cite the following if utilizing Transite: ")
 citEntry(entry="article",
   author =  personList(as.person("Konstantin Krismer"),
                        as.person("Shohreh Varmeh"),
-                       as.person("Anna E. Gattinger"),
                        as.person("Molly A. Bird"),
+                       as.person("Anna Gattinger"),
                        as.person("Yi Wen Kong"),
                        as.person("Thomas Bernwinkler"),
                        as.person("Daniel A. Anderson"),
@@ -11,17 +11,27 @@ citEntry(entry="article",
                        as.person("Brian A. Joughin"),
                        as.person("Ian G. Cannell"),
                        as.person("Michael B. Yaffe")),
-  title = "Computational motif-based analysis identifies RNA-binding proteins driving resistance to chemotherapy",
-  journal = "X",
-  year = 2019,
-  volume = "X",
-  pages = "X--X",
+  title = "Transite: A computational motif-based analysis platform that
+           identifies RNA-binding proteins modulating changes in
+           gene expression",
+  year = 2018,
+	doi = "10.1101/416743",
+	publisher = "Cold Spring Harbor Laboratory",
+	URL = "https://www.biorxiv.org/content/early/2018/09/14/416743",
+	eprint = "https://www.biorxiv.org/content/early/2018/09/14/416743.full.pdf",
+	journal = "bioRxiv"
   textVersion =
-    paste("Konstantin Krismer, Shohreh Varmeh, Anna E. Gattinger, Molly A. Bird, Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and Michael B. Yaffe",
-          "Computational motif-based analysis identifies RNA-binding proteins driving resistance to chemotherapy",
-          "X, 2019, 1x4, 1x846-18x47", sep = "\n")
+    paste("Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger,
+           Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson,
+           Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and
+           Michael B. Yaffe",
+          "Transite: A computational motif-based analysis platform that
+          identifies RNA-binding proteins modulating changes in
+          gene expression",
+          "bioRxiv 416743, 2018, doi: https://doi.org/10.1101/416743",
+          sep = "\n")
 )
 citFooter("This free open-source software implements academic
 research by the authors and co-workers. If you use it,
 please support the project by citing the appropriate
-journal articles.")
+article.")

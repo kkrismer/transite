@@ -1,17 +1,21 @@
 Package: transite
 Title: RNA-binding protein motif analysis
 Version: 0.99.3
-Authors@R: c(person(given = "Konstantin", family = "Krismer", email =
-    "krismer@mit.edu", role = c("aut", "cre", "cph")), person(given = "Anna", family =
-    "Gattinger", email = "agattinger@mit.edu", role = c("aut")), person(given = "Michael", family =
-    "Yaffe", email = "myaffe@mit.edu", role = c("ths", "cph")), person(given = "Ian", family =
-    "Cannell", email = "icannell@mit.edu", role = c("ths")))
+Authors@R: c(person(given = "Konstantin", family = "Krismer",
+                    email = "krismer@mit.edu", role = c("aut", "cre", "cph")),
+             person(given = "Anna", family = "Gattinger",
+                    email = "agattinger@mit.edu", role = c("aut")),
+             person(given = "Michael", family = "Yaffe",
+                    email = "myaffe@mit.edu", role = c("ths", "cph")),
+             person(given = "Ian", family = "Cannell",
+                    email = "icannell@mit.edu", role = c("ths")))
 Maintainer: Konstantin Krismer <krismer@mit.edu>
-Description: transite is a computational method that allows comprehensive analysis of the regulatory
-    role of RNA-binding proteins in various cellular processes by leveraging preexisting gene expression data
+Description: transite is a computational method that allows comprehensive 
+    analysis of the regulatory role of RNA-binding proteins in various cellular 
+    processes by leveraging preexisting gene expression data
     and current knowledge of binding preferences of RNA-binding proteins.
 Depends:
-    R (>= 3.3)
+    R (>= 3.5)
 Imports:
     dplyr,
     ggplot2,

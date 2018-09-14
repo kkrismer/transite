@@ -1,17 +1,19 @@
 #' @title Correction for Homopolymeric Stretches
 #'
 #' @description
-#' Counts all non-overlapping instances of \emph{k}-mers in a given set of sequences.
+#' Counts all non-overlapping instances of \emph{k}-mers in a given set
+#' of sequences.
 #'
 #' @param sequences character vector of DNA or RNA sequences
-#' @param k length of \emph{k}-mer, either \code{6} for hexamers or \code{7} for heptamers
+#' @param k length of \emph{k}-mer, either \code{6} for hexamers or
+#' \code{7} for heptamers
 #' @param kmers column sums of return value of
 #' \code{Biostrings::oligonucleotideFrequency(sequences)}
 #' @param is.rna if \code{sequences} are RNA sequences, this
 #' flag needs to be set
 #'
-#' @return Returns a named numeric vector, where the elements are \emph{k}-mer counts and the
-#' names are \emph{k}-mers.
+#' @return Returns a named numeric vector, where the elements are
+#' \emph{k}-mer counts and the names are \emph{k}-mers.
 #'
 #' @importFrom methods as
 #' @importFrom Biostrings maskMotif
@@ -24,7 +26,8 @@ homopolymerCorrection <- function(sequences, k, kmers, is.rna = FALSE) {
 
   aMask <- paste(rep("A", k), collapse = "")
   maska <- Biostrings::maskMotif(seq, aMask)
-  mwidthsa <- BiocGenerics::width(methods::as(GenomicRanges::gaps(maska), "Views"))
+  mwidthsa <- BiocGenerics::width(methods::as(GenomicRanges::gaps(maska),
+                                              "Views"))
   viewcnta <- length(methods::as(GenomicRanges::gaps(maska), "Views"))
   kmers[aMask] <- kmers[aMask] - (sum(mwidthsa) - viewcnta * (k - 1)) + sum(floor(mwidthsa / k))
 

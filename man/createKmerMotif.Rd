@@ -17,11 +17,11 @@ valid if
 (1) all \emph{k}-mers must have the same length, (2) only hexamers or heptamers
 allowed, (3) allowed characters are A, C, G, U}
 
-\item{type}{type of motif (e.g., \code{"HITS-CLIP"}, \code{"EMSA"}, \code{"SELEX"}, etc.)}
+\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'}, \code{'SELEX'}, etc.)}
 
-\item{species}{species where motif was discovered (e.g., \code{"Homo sapiens"})}
+\item{species}{species where motif was discovered (e.g., \code{'Homo sapiens'})}
 
-\item{src}{source of motif (e.g., \code{"RBPDB v1.3.1"})}
+\item{src}{source of motif (e.g., \code{'RBPDB v1.3.1'})}
 }
 \value{
 object of class Motif
@@ -30,7 +30,7 @@ object of class Motif
 Takes a position weight matrix (PWM) and meta info and returns an object of class \code{Motif}.
 }
 \examples{
-custom.motif <- createKmerMotif("custom.motif", "RBP1",
-                                c("AAAAAA", "CAAAAA"), "HITS-CLIP",
-                                "Homo sapiens", "user")
+custom.motif <- createKmerMotif('custom.motif', 'RBP1',
+                                c('AAAAAA', 'CAAAAA'), 'HITS-CLIP',
+                                'Homo sapiens', 'user')
 }

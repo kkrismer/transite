@@ -23,15 +23,23 @@ where cell (i, j) contains weight of nucleotide j on position i}
 
 \item{iupac}{IUPAC code for motif matrix (see \code{\link{generateIUPACByMatrix}})}
 
-\item{type}{type of motif (e.g., \code{"HITS-CLIP"}, \code{"EMSA"}, \code{"SELEX"}, etc.)}
+\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'}, \code{'SELEX'}, etc.)}
 
-\item{species}{species where motif was discovered (e.g., \code{"Homo sapiens"})}
+\item{species}{species where motif was discovered (e.g., \code{'Homo sapiens'})}
 
-\item{src}{source of motif (e.g., \code{"RBPDB v1.3.1"})}
+\item{src}{source of motif (e.g., \code{'RBPDB v1.3.1'})}
 }
 \value{
 object of class Motif
 }
 \description{
 Creates an object of class \code{Motif}.
+}
+\examples{
+kmers <- c('AAAAAA', 'CAAAAA')
+iupac <- transite::generateIUPACByKmers(kmers, code = transite::initIUPAClookupTable())
+hexamers <- transite::generateKmersFromIUPAC(iupac, 6)
+heptamers <- transite::generateKmersFromIUPAC(iupac, 7)
+Motif('custom.motif', 'RBP1', NULL, hexamers, heptamers, 6,
+      iupac, 'HITS-CLIP', 'Homo sapiens', 'user')
 }

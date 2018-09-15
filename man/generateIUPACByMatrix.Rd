@@ -41,7 +41,7 @@ IUPAC RNA nucleotide code:
 }
 }
 \examples{
-generateIUPACByMatrix(getMotifById("M178_0.6")[[1]]$matrix)
+generateIUPACByMatrix(getMotifById('M178_0.6')[[1]]$matrix)
 }
 \references{
 \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}

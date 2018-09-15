@@ -39,25 +39,30 @@ n.bins <- 40
 
 # random spectrum
 random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1), max.model.degree = 1)
-score <- spectrumClassifier(random.sp$adj.r.squared, random.sp$degree, random.sp$slope,
-  random.sp$consistency.score.n, 0, n.bins)
+score <- spectrumClassifier(
+  random.sp$adj.r.squared, random.sp$degree, random.sp$slope,
+  random.sp$consistency.score.n, 0, n.bins
+)
 sum(score)
 
 # non-random linear spectrum with strong noise component
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.5)
 linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
-score <- spectrumClassifier(linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
-  linear.sp$consistency.score.n, 10, n.bins)
+score <- spectrumClassifier(
+  linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
+  linear.sp$consistency.score.n, 10, n.bins
+)
 sum(score)
-
 \dontrun{
 # non-random linear spectrum with weak noise component
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
-score <- spectrumClassifier(linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
-  linear.sp$consistency.score.n, 10, n.bins)
+score <- spectrumClassifier(
+  linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
+  linear.sp$consistency.score.n, 10, n.bins
+)
 sum(score)
 }
 
@@ -65,17 +70,20 @@ sum(score)
 signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2, max.cs.permutations = 100000)
-score <- spectrumClassifier(quadratic.sp$adj.r.squared, quadratic.sp$degree,
-  quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins)
+score <- spectrumClassifier(
+  quadratic.sp$adj.r.squared, quadratic.sp$degree,
+  quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins
+)
 sum(score)
-
 \dontrun{
 # non-random quadratic spectrum with weak noise component
 signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.1)
 quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2)
-score <- spectrumClassifier(quadratic.sp$adj.r.squared, quadratic.sp$degree,
-  quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins)
+score <- spectrumClassifier(
+  quadratic.sp$adj.r.squared, quadratic.sp$degree,
+  quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins
+)
 sum(score)
 }
 }

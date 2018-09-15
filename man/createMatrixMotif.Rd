@@ -14,11 +14,11 @@ createMatrixMotif(id, rbps, matrix, type, species, src)
 \item{matrix}{data frame with four columns (A, C, G, U) and 6 - 15 rows (positions),
 where cell (i, j) contains weight of nucleotide j on position i}
 
-\item{type}{type of motif (e.g., \code{"HITS-CLIP"}, \code{"EMSA"}, \code{"SELEX"}, etc.)}
+\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'}, \code{'SELEX'}, etc.)}
 
-\item{species}{species where motif was discovered (e.g., \code{"Homo sapiens"})}
+\item{species}{species where motif was discovered (e.g., \code{'Homo sapiens'})}
 
-\item{src}{source of motif (e.g., \code{"RBPDB v1.3.1"})}
+\item{src}{source of motif (e.g., \code{'RBPDB v1.3.1'})}
 }
 \value{
 object of class Motif

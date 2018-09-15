@@ -10,10 +10,10 @@ pCombine(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL)
 \item{p}{vector of p-values}
 
 \item{method}{one of the following: Fisher (1932)
-(\code{"fisher"}), Stouffer (1949),
-Liptak (1958) (\code{"SL"}), Mudholkar and George (1979)
-(\code{"MG"}), and Tippett (1931)
-(\code{"tippett"})}
+(\code{'fisher'}), Stouffer (1949),
+Liptak (1958) (\code{'SL'}), Mudholkar and George (1979)
+(\code{'MG'}), and Tippett (1931)
+(\code{'tippett'})}
 
 \item{w}{weights, only used in combination with Stouffer-Liptak.
 If \code{is.null(w)} then

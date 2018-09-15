@@ -16,7 +16,7 @@ The position probability matrix of the specified motif
 Return the position probability matrix of the specified motif.
 }
 \examples{
-getPPM(getMotifById("M178_0.6")[[1]])
+getPPM(getMotifById('M178_0.6')[[1]])
 }
 \seealso{
 Other motif functions: \code{\link{generateIUPACByKmers}},

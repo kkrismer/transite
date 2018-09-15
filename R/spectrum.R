@@ -12,16 +12,20 @@
 #' @return An array of \code{n.bins} length, containing the binned sequences
 #' @examples
 #' # toy example
-#' toy.background.set <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
+#' toy.background.set <- c(
+#'   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
 #'   "AATTGGTGTCTGGATACTTCCCTGTACAT", "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA")
+#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA"
+#' )
 #' # names are used as keys in the hash table (cached version only)
 #' # ideally sequence identifiers (e.g., RefSeq ids) and
 #' # sequence region labels (e.g., 3UTR for 3'-UTR)
-#' names(toy.background.set) <- c("NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
+#' names(toy.background.set) <- c(
+#'   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
 #'   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
 #'   "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
-#'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR")
+#'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
+#' )
 #'
 #' foreground.sets <- subdivideData(toy.background.set, n.bins = 7)
 #'
@@ -37,10 +41,10 @@
 #' @family SPMA functions
 #' @export
 subdivideData <- function(background.set, n.bins = 40) {
-  if(n.bins < 7 || n.bins > 100) {
+  if (n.bins < 7 || n.bins > 100) {
     stop("value of bin.num is invalid, valid values are integers between 7 and 100")
   }
-  if(n.bins > length(background.set)) {
+  if (n.bins > length(background.set)) {
     stop("more bins than transcripts")
   }
 
@@ -55,12 +59,14 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
                           f.statistic, f.statistic.p.value,
                           consistency.score, consistency.score.p.value, consistency.score.n,
                           plot) {
-  object <- list(adj.r.squared = adj.r.squared, degree = degree, residuals = residuals, slope = slope,
-                 f.statistic = f.statistic, f.statistic.p.value = f.statistic.p.value,
-                 consistency.score = consistency.score,
-                 consistency.score.p.value = consistency.score.p.value,
-                 consistency.score.n = consistency.score.n,
-                 plot = plot)
+  object <- list(
+    adj.r.squared = adj.r.squared, degree = degree, residuals = residuals, slope = slope,
+    f.statistic = f.statistic, f.statistic.p.value = f.statistic.p.value,
+    consistency.score = consistency.score,
+    consistency.score.p.value = consistency.score.p.value,
+    consistency.score.n = consistency.score.n,
+    plot = plot
+  )
   class(object) <- append(class(object), "SpectrumScore")
   return(object)
 }
@@ -235,31 +241,42 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
                           max.model.degree = 3,
                           max.cs.permutations = 10000000,
                           min.cs.permutations = 5000, e = 5) {
-  if(length(x) < 7) {
+  if (length(x) < 7) {
     stop("too few bins")
   }
-  if(max.model.degree > 5 || max.model.degree < 1) {
+  if (max.model.degree > 5 || max.model.degree < 1) {
     stop("supported values for max.model.degree: 1, 2, 3, 4, 5")
   }
   bin <- seq_len(length(x))
 
-  df <- data.frame(bin = bin, value = x, p.value = p.value, RBP = rep("", length(bin)),
-                   stringsAsFactors = FALSE)
+  df <- data.frame(
+    bin = bin, value = x, p.value = p.value, RBP = rep("", length(bin)),
+    stringsAsFactors = FALSE
+  )
 
-  enrichment.plot <- ggplot2::ggplot(df, ggplot2::aes_string(x = as.character("bin"),
-                                                             y = "RBP", fill = "value")) +
+  enrichment.plot <- ggplot2::ggplot(df, ggplot2::aes_string(
+    x = as.character("bin"),
+    y = "RBP", fill = "value"
+  )) +
     ggplot2::geom_tile(colour = "white") +
-    ggplot2::scale_fill_gradient2(low = "#004F91FF", mid = "white", high = "#832424FF",
-                                  midpoint = midpoint) +
+    ggplot2::scale_fill_gradient2(
+      low = "#004F91FF", mid = "white", high = "#832424FF",
+      midpoint = midpoint
+    ) +
     ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
     ggplot2::geom_text(ggplot2::aes(label = ifelse(p.value <= 0.001, "***",
-                                                   ifelse(p.value <= 0.01, "**",
-                                                          ifelse(p.value <= 0.05, "*", "")))),
-                       size = 4) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(size = 8),
-                   axis.title.x = ggplot2::element_blank(),
-                   panel.background = ggplot2::element_blank(),
-                   legend.position = "top") +
+      ifelse(p.value <= 0.01, "**",
+        ifelse(p.value <= 0.05, "*", "")
+      )
+    )),
+    size = 4
+    ) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(size = 8),
+      axis.title.x = ggplot2::element_blank(),
+      panel.background = ggplot2::element_blank(),
+      legend.position = "top"
+    ) +
     ggplot2::labs(fill = x.label, y = x.label)
 
 
@@ -267,18 +284,18 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
   model <- stats::lm(x ~ stats::poly(bin, degree = max.model.degree))
   coeffs <- summary(model)$coefficients
 
-  if(stats::sd(x) <= 1e-10) {
+  if (stats::sd(x) <= 1e-10) {
     degree <- 0
   } else {
-    if(max.model.degree == 5 && coeffs[6,4] <= 0.001) {
+    if (max.model.degree == 5 && coeffs[6, 4] <= 0.001) {
       degree <- 5
-    } else if(max.model.degree >= 4 && coeffs[5,4] <= 0.001) {
+    } else if (max.model.degree >= 4 && coeffs[5, 4] <= 0.001) {
       degree <- 4
-    } else if(max.model.degree >= 3 && coeffs[4,4] <= 0.001) {
+    } else if (max.model.degree >= 3 && coeffs[4, 4] <= 0.001) {
       degree <- 3
-    } else if(max.model.degree >= 2 && coeffs[3,4] <= 0.001) {
+    } else if (max.model.degree >= 2 && coeffs[3, 4] <= 0.001) {
       degree <- 2
-    } else if(coeffs[2,4] <= 0.001) {
+    } else if (coeffs[2, 4] <= 0.001) {
       degree <- 1
     } else {
       degree <- 0
@@ -287,19 +304,21 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 
   df <- data.frame(y = x, bin = bin)
   # calculate residuals of selected model
-  if(degree > 0) {
+  if (degree > 0) {
     selected.model <- stats::lm(x ~ stats::poly(bin, degree = degree))
     scatterplot <- ggplot2::ggplot(df, ggplot2::aes_string(x = "bin", y = "y")) +
-      ggplot2::geom_tile(colour = "transparent", width=0, height=0) +
+      ggplot2::geom_tile(colour = "transparent", width = 0, height = 0) +
       ggplot2::geom_point() +
       ggplot2::geom_smooth(method = "lm", formula = y ~ stats::poly(x, degree = degree)) +
       ggplot2::ylab(x.label) +
       ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
-      ggplot2::theme(axis.text.x = ggplot2::element_text(size = 8),
-                     axis.title.x = ggplot2::element_blank(),
-                     axis.title.y = ggplot2::element_blank(),
-                     panel.background = ggplot2::element_blank(),
-                     strip.background = ggplot2::element_blank())
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_text(size = 8),
+        axis.title.x = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(),
+        strip.background = ggplot2::element_blank()
+      )
   } else {
     selected.model <- stats::lm(x ~ 1)
     scatterplot <- ggplot2::ggplot(df, ggplot2::aes_string(x = "bin", y = "y")) +
@@ -308,11 +327,13 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
       ggplot2::geom_smooth(method = "lm", formula = y ~ 1) +
       ggplot2::ylab(x.label) +
       ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
-      ggplot2::theme(axis.text.x = ggplot2::element_text(size = 8),
-                     axis.title.x = ggplot2::element_blank(),
-                     axis.title.y = ggplot2::element_blank(),
-                     panel.background = ggplot2::element_blank(),
-                     strip.background = ggplot2::element_blank())
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_text(size = 8),
+        axis.title.x = ggplot2::element_blank(),
+        axis.title.y = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(),
+        strip.background = ggplot2::element_blank()
+      )
   }
 
   predicted <- stats::predict(selected.model, data.frame(bin))
@@ -322,12 +343,13 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
   # calculate local consistency score
   local.consistency <- calculateLocalConsistency(x, max.cs.permutations, min.cs.permutations, e)
 
-  if(degree > 0) {
+  if (degree > 0) {
     slope <- meta.info$coefficients[2, 1]
     f.statistic <- meta.info$fstatistic
     f.statistic.p.value <- stats::pf(f.statistic[[1]],
-                                     df1 = f.statistic[[2]],
-                                     df2 = f.statistic[[3]], lower.tail = FALSE)
+      df1 = f.statistic[[2]],
+      df2 = f.statistic[[3]], lower.tail = FALSE
+    )
   } else {
     slope <- 0
     f.statistic <- list(0, NA, NA)
@@ -340,10 +362,12 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 
   gp2$widths <- gp1$widths
 
-  return(SpectrumScore(meta.info$adj.r.squared, degree, residuals, slope,
-                       f.statistic[[1]], f.statistic.p.value,
-                       local.consistency$score, local.consistency$p.value, local.consistency$n,
-                       gridExtra::arrangeGrob(gp1, gp2, ncol = 1, heights = c(1, 1.4))))
+  return(SpectrumScore(
+    meta.info$adj.r.squared, degree, residuals, slope,
+    f.statistic[[1]], f.statistic.p.value,
+    local.consistency$score, local.consistency$p.value, local.consistency$n,
+    gridExtra::arrangeGrob(gp1, gp2, ncol = 1, heights = c(1, 1.4))
+  ))
 }
 
 #' @title Simple spectrum classifier based on empirical thresholds
@@ -371,25 +395,30 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 #'
 #' # random spectrum
 #' random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1), max.model.degree = 1)
-#' score <- spectrumClassifier(random.sp$adj.r.squared, random.sp$degree, random.sp$slope,
-#'   random.sp$consistency.score.n, 0, n.bins)
+#' score <- spectrumClassifier(
+#'   random.sp$adj.r.squared, random.sp$degree, random.sp$slope,
+#'   random.sp$consistency.score.n, 0, n.bins
+#' )
 #' sum(score)
 #'
 #' # non-random linear spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
 #' linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
-#' score <- spectrumClassifier(linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
-#'   linear.sp$consistency.score.n, 10, n.bins)
+#' score <- spectrumClassifier(
+#'   linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
+#'   linear.sp$consistency.score.n, 10, n.bins
+#' )
 #' sum(score)
-#'
 #' \dontrun{
 #' # non-random linear spectrum with weak noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 #' linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
-#' score <- spectrumClassifier(linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
-#'   linear.sp$consistency.score.n, 10, n.bins)
+#' score <- spectrumClassifier(
+#'   linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
+#'   linear.sp$consistency.score.n, 10, n.bins
+#' )
 #' sum(score)
 #' }
 #'
@@ -397,23 +426,28 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 #' quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2, max.cs.permutations = 100000)
-#' score <- spectrumClassifier(quadratic.sp$adj.r.squared, quadratic.sp$degree,
-#'   quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins)
+#' score <- spectrumClassifier(
+#'   quadratic.sp$adj.r.squared, quadratic.sp$degree,
+#'   quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins
+#' )
 #' sum(score)
-#'
 #' \dontrun{
 #' # non-random quadratic spectrum with weak noise component
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.1)
 #' quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2)
-#' score <- spectrumClassifier(quadratic.sp$adj.r.squared, quadratic.sp$degree,
-#'   quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins)
+#' score <- spectrumClassifier(
+#'   quadratic.sp$adj.r.squared, quadratic.sp$degree,
+#'   quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins
+#' )
 #' sum(score)
 #' }
 #' @family SPMA functions
 #' @export
 spectrumClassifier <- function(adj.r.squared, degree, slope, consistency.score.n,
                                n.significant, n.bins) {
-  return(c(as.integer(adj.r.squared >= 0.4), as.integer(consistency.score.n > 1000000),
-           as.integer(n.significant >= ceiling(n.bins / 10))))
+  return(c(
+    as.integer(adj.r.squared >= 0.4), as.integer(consistency.score.n > 1000000),
+    as.integer(n.significant >= ceiling(n.bins / 10))
+  ))
 }

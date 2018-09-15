@@ -1,59 +1,74 @@
 Package: transite
 Title: RNA-binding protein motif analysis
-Version: 0.99.3
-Authors@R: c(person(given = "Konstantin", family = "Krismer",
-                    email = "krismer@mit.edu", role = c("aut", "cre", "cph")),
-             person(given = "Anna", family = "Gattinger",
-                    email = "agattinger@mit.edu", role = c("aut")),
-             person(given = "Michael", family = "Yaffe",
-                    email = "myaffe@mit.edu", role = c("ths", "cph")),
-             person(given = "Ian", family = "Cannell",
-                    email = "icannell@mit.edu", role = c("ths")))
+Version: 0.99.0
+Authors@R: 
+    c(person(given = "Konstantin",
+             family = "Krismer",
+             role = c("aut", "cre", "cph"),
+             email = "krismer@mit.edu"),
+      person(given = "Anna",
+             family = "Gattinger",
+             role = "aut",
+             email = "agattinger@mit.edu"),
+      person(given = "Michael",
+             family = "Yaffe",
+             role = c("ths", "cph"),
+             email = "myaffe@mit.edu"),
+      person(given = "Ian",
+             family = "Cannell",
+             role = "ths",
+             email = "icannell@mit.edu"))
 Maintainer: Konstantin Krismer <krismer@mit.edu>
-Description: transite is a computational method that allows comprehensive 
-    analysis of the regulatory role of RNA-binding proteins in various cellular 
-    processes by leveraging preexisting gene expression data
-    and current knowledge of binding preferences of RNA-binding proteins.
+Description: transite is a computational method that allows
+    comprehensive analysis of the regulatory role of RNA-binding proteins
+    in various cellular processes by leveraging preexisting gene
+    expression data and current knowledge of binding preferences of
+    RNA-binding proteins.
+License: GPL-3
 Depends:
     R (>= 3.5)
 Imports:
-    dplyr,
-    ggplot2,
-    gridExtra,
+    BiocGenerics (>= 0.26.0),
+    Biostrings (>= 2.48.0),
+    dplyr (>= 0.7.6),
+    GenomicRanges (>= 1.32.6),
+    ggplot2 (>= 3.0.0),
+    gridExtra (>= 2.3),
     methods,
     parallel,
-    Rcpp,
-    scales,
+    Rcpp (>= 0.12.18),
+    scales (>= 1.0.0),
     stats,
-    TFMPvalue,
+    TFMPvalue (>= 0.0.8),
     utils,
-    Biostrings,
-    BiocGenerics,
-    GenomicRanges
+    rlang (>= 0.1.2)
 Suggests:
-    knitr,
-    limma,
-    TxDb.Hsapiens.UCSC.hg38.knownGene,
-    TxDb.Mmusculus.UCSC.mm10.knownGene,
-    BSgenome.Hsapiens.NCBI.GRCh38,
-    BSgenome.Mmusculus.UCSC.mm10,
-    BSgenome,
-    org.Hs.eg.db,
-    org.Mm.eg.db,
-    VennDiagram,
-    arrayQualityMetrics,
-    GEOquery,
-    AnnotationDbi,
-    GenomicFeatures,
-    Biobase,
-    rmarkdown,
-    testthat
-biocViews: GeneExpression, Transcription, DifferentialExpression, Microarray,
-    mRNAMicroarray, Genetics, GeneSetEnrichment
-License: GPL-3
-LazyData: true
-SystemRequirements: C++11
-VignetteBuilder: knitr
-LinkingTo: Rcpp
-RoxygenNote: 6.1.0
+    AnnotationDbi (>= 1.42.1),
+    arrayQualityMetrics (>= 3.36.0),
+    Biobase (>= 2.40.0),
+    BSgenome (>= 1.48.0),
+    BSgenome.Hsapiens.NCBI.GRCh38 (>= 1.3.1000),
+    BSgenome.Mmusculus.UCSC.mm10 (>= 1.4.0),
+    GenomicFeatures (>= 1.32.2),
+    GEOquery (>= 2.48.0),
+    knitr (>= 1.20),
+    limma (>= 3.36.3),
+    org.Hs.eg.db (>= 3.6.0),
+    org.Mm.eg.db (>= 3.6.0),
+    rmarkdown (>= 1.10),
+    testthat (>= 2.0.0),
+    TxDb.Hsapiens.UCSC.hg38.knownGene (>= 3.4.0),
+    TxDb.Mmusculus.UCSC.mm10.knownGene (>= 3.4.0),
+    VennDiagram (>= 1.6.20),
+    roxygen2
+LinkingTo: 
+    Rcpp (>= 0.12.18)
+VignetteBuilder: 
+    knitr
+biocViews: GeneExpression, Transcription,
+    DifferentialExpression, Microarray, mRNAMicroarray, Genetics,
+    GeneSetEnrichment
 Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
+SystemRequirements: C++11

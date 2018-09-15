@@ -10,10 +10,13 @@ runKmerTSMA(foreground.sets, background.set, motifs = NULL, k = 6,
   p.combining.method = "fisher", n.cores = 1)
 }
 \arguments{
-\item{foreground.sets}{list of foreground sets; a foreground set is a character vector of
-DNA or RNA sequences (not both) and a strict subset of the \code{background.set}}
+\item{foreground.sets}{list of foreground sets; a foreground set is a
+character vector of
+DNA or RNA sequences (not both) and a strict subset of the
+\code{background.set}}
 
-\item{background.set}{character vector of DNA or RNA sequences that constitute the
+\item{background.set}{character vector of DNA or RNA sequences that
+constitute the
 background set}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
@@ -24,15 +27,19 @@ If \code{is.null(motifs)} then all Transite motifs are used.}
 
 \item{fg.permutations}{numer of foreground permutations}
 
-\item{kmer.significance.threshold}{p-value threshold for significance, e.g., \code{0.05} or
+\item{kmer.significance.threshold}{p-value threshold for significance,
+e.g., \code{0.05} or
 \code{0.01} (used for volcano plots)}
 
-\item{produce.plot}{if \code{TRUE} volcano plots and distribution plots are created}
+\item{produce.plot}{if \code{TRUE} volcano plots and distribution plots
+are created}
 
 \item{p.adjust.method}{see \code{\link[stats]{p.adjust}}}
 
-\item{p.combining.method}{one of the following: Fisher (1932) (\code{"fisher"}), Stouffer (1949),
-Liptak (1958) (\code{"SL"}), Mudholkar and George (1979) (\code{"MG"}), and Tippett (1931)
+\item{p.combining.method}{one of the following: Fisher (1932)
+(\code{"fisher"}), Stouffer (1949),
+Liptak (1958) (\code{"SL"}), Mudholkar and George (1979)
+(\code{"MG"}), and Tippett (1931)
 (\code{"tippett"}) (see \code{\link{pCombine}})}
 
 \item{n.cores}{number of computing cores to use}
@@ -50,25 +57,36 @@ A list of lists with the following components:
 }
 }
 \description{
-Calculates the enrichment of putative binding sites in foreground sets versus a background set
+Calculates the enrichment of putative binding sites in foreground sets
+versus a background set
 using \emph{k}-mers to identify putative binding sites
 }
 \details{
-Motif transcript set analysis can be used to identify RNA binding proteins, whose targets are
-significantly overrepresented or underrepresented in certain sets of transcripts.
+Motif transcript set analysis can be used to identify RNA binding
+proteins, whose targets are
+significantly overrepresented or underrepresented in certain sets
+of transcripts.
 
-The aim of Transcript Set Motif Analysis (TSMA) is to identify the overrepresentation
-and underrepresentation of potential RBP targets (binding sites) in a set (or sets) of
-sequences, i.e., the foreground set, relative to the entire population of sequences.
-The latter is called background set, which can be composed of all sequences of the genes
-of a microarray platform or all sequences of an organism or any other meaningful
+The aim of Transcript Set Motif Analysis (TSMA) is to identify the
+overrepresentation
+and underrepresentation of potential RBP targets (binding sites)
+in a set (or sets) of
+sequences, i.e., the foreground set, relative to the entire population
+of sequences.
+The latter is called background set, which can be composed of all
+sequences of the genes
+of a microarray platform or all sequences of an organism or any
+other meaningful
 superset of the foreground sets.
 
-The \emph{k}-mer-based approach breaks the sequences of foreground and background sets into
-\emph{k}-mers and calculates the enrichment on a \emph{k}-mer level. In this case, motifs are
+The \emph{k}-mer-based approach breaks the sequences of foreground
+and background sets into
+\emph{k}-mers and calculates the enrichment on a \emph{k}-mer level.
+In this case, motifs are
 not represented as position weight matrices, but as lists of \emph{k}-mers.
 
-Statistically significantly enriched or depleted \emph{k}-mers are then used to
+Statistically significantly enriched or depleted \emph{k}-mers
+are then used to
 calculate a score for each RNA-binding protein, which quantifies its
 target overrepresentation.
 }
@@ -106,14 +124,16 @@ background.set <- gsub("T", "U", ge$background$seq)
 results <- runKmerTSMA(foreground.sets, background.set)
 
 # run TSMA with a subset of Transite motifs
-results <- runKmerTSMA(foreground.sets, background.set, motifs = getMotifByRBP("ELAVL1"))
+results <- runKmerTSMA(foreground.sets, background.set,
+  motifs = getMotifByRBP("ELAVL1"))
 
 # run TSMA with user-defined motif
 toy.motif <- createKmerMotif(
   "toy.motif", "example RBP",
   c("AACCGG", "AAAACG", "AACACG"), "example type", "example species", "user"
 )
-results <- runMatrixTSMA(foreground.sets, background.set, motifs = list(toy.motif))
+results <- runMatrixTSMA(foreground.sets, background.set,
+  motifs = list(toy.motif))
 }
 
 }

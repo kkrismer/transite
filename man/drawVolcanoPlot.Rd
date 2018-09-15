@@ -8,15 +8,19 @@ drawVolcanoPlot(kmers, motif.kmers, motif.rbps,
   significance.threshold = 0.01, show.legend = TRUE)
 }
 \arguments{
-\item{kmers}{data frame with the following columns: kmer, adj.p.value, enrichment}
+\item{kmers}{data frame with the following columns: kmer,
+adj.p.value, enrichment}
 
-\item{motif.kmers}{set of \emph{k}-mers that are associated with a certain motif,
+\item{motif.kmers}{set of \emph{k}-mers that are associated with
+a certain motif,
 will be highlighted in volcano plot}
 
-\item{motif.rbps}{name of RNA-binding proteins associated with highlighted \emph{k}-mers
+\item{motif.rbps}{name of RNA-binding proteins associated with
+highlighted \emph{k}-mers
 (character vector of length 1)}
 
-\item{significance.threshold}{p-value threshold for significance, e.g., \code{0.05} or
+\item{significance.threshold}{p-value threshold for significance,
+e.g., \code{0.05} or
 \code{0.01}}
 
 \item{show.legend}{whether or not a legend should be shown}
@@ -25,8 +29,10 @@ will be highlighted in volcano plot}
 volcano plot
 }
 \description{
-Uses a volcano plot to visualize \emph{k}-mer enrichment. X-axis is \eqn{\log_2} enrichment value,
-y-axis is \eqn{\log_10} significance, i.e., multiple testing corrected p-value from
+Uses a volcano plot to visualize \emph{k}-mer enrichment.
+X-axis is \eqn{\log_2} enrichment value,
+y-axis is \eqn{\log_10} significance, i.e., multiple testing
+corrected p-value from
 Fisher's exact test or \eqn{\Chi^2} test.
 }
 \seealso{

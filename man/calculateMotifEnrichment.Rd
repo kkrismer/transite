@@ -10,10 +10,13 @@ calculateMotifEnrichment(foreground.scores.df, background.scores.df,
   min.fg.permutations = 1000, e = 5, p.adjust.method = "BH")
 }
 \arguments{
-\item{foreground.scores.df}{result of \code{\link{scoreTranscripts}} on foreground sequence
-set (foreground sequence sets must be a subset of the background sequence set)}
+\item{foreground.scores.df}{result of \code{\link{scoreTranscripts}} on
+foreground sequence
+set (foreground sequence sets must be a subset of the background
+sequence set)}
 
-\item{background.scores.df}{result of \code{\link{scoreTranscripts}} on background sequence set}
+\item{background.scores.df}{result of \code{\link{scoreTranscripts}}
+on background sequence set}
 
 \item{background.total.sites}{number of potential binding sites per sequence
 (returned by \code{\link{scoreTranscripts}})}
@@ -23,37 +26,47 @@ set (foreground sequence sets must be a subset of the background sequence set)}
 
 \item{n.transcripts.foreground}{number of sequences in the foreground set}
 
-\item{max.fg.permutations}{maximum number of foreground permutations performed in
+\item{max.fg.permutations}{maximum number of foreground permutations
+performed in
 Monte Carlo test for enrichment score}
 
-\item{min.fg.permutations}{minimum number of foreground permutations performed in
+\item{min.fg.permutations}{minimum number of foreground permutations
+performed in
 Monte Carlo test for enrichment score}
 
-\item{e}{stop criterion for enrichment score Monte Carlo test: aborting permutation process after
-observing \code{e} random enrichment values with more extreme values than the actual
+\item{e}{stop criterion for enrichment score Monte Carlo test: aborting
+permutation process after
+observing \code{e} random enrichment values with more extreme values than
+the actual
 enrichment value}
 
-\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to avoid alpha error
-accumulation, see \code{\link[stats]{p.adjust}}}
+\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to
+avoid alpha error
+ accumulation, see \code{\link[stats]{p.adjust}}}
 }
 \value{
 A data frame with the following columns:
 \tabular{rl}{
-  \code{motif.id} \tab the motif identifier that is used in the original motif library\cr
+  \code{motif.id} \tab the motif identifier that is used in the original
+  motif library\cr
   \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
-  \code{enrichment} \tab binding site enrichment between foreground and background sequences \cr
+  \code{enrichment} \tab binding site enrichment between foreground
+  and background sequences \cr
   \code{p.value} \tab unadjusted p-value from Monte Carlo test \cr
   \code{p.value.n} \tab number of Monte Carlo test permutations \cr
-  \code{adj.p.value} \tab adjusted p-value from Monte Carlo test (usually FDR)
+  \code{adj.p.value} \tab adjusted p-value from Monte Carlo test
+  (usually FDR)
 }
 }
 \description{
 This function is used to calculate binding site enrichment / depletion scores
-between predefined foreground and background sequence sets. Significance levels of
+between predefined foreground and background sequence sets. Significance
+levels of
 enrichment values are obtained by Monte Carlo tests.
 }
 \examples{
-foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT", "AGAT", "CCAGTAA")
+foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+  "AGAT", "CCAGTAA")
 background.seqs <- c(
   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
@@ -63,8 +76,10 @@ background.seqs <- c(
 )
 foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
 background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
-enrichments.df <- calculateMotifEnrichment(foreground.scores$df, background.scores$df,
-  background.scores$total.sites, background.scores$absolute.hits, length(foreground.seqs),
+enrichments.df <- calculateMotifEnrichment(foreground.scores$df,
+  background.scores$df,
+  background.scores$total.sites, background.scores$absolute.hits,
+  length(foreground.seqs),
   max.fg.permutations = 1000
 )
 }

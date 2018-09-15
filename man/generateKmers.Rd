@@ -13,7 +13,8 @@ generateKmers(sequences, k)
 \code{7} for heptamers}
 }
 \value{
-Returns a named numeric vector, where the elements are \emph{k}-mer counts and the
+Returns a named numeric vector, where the elements are
+\emph{k}-mer counts and the
 names are DNA \emph{k}-mers.
 }
 \description{
@@ -24,7 +25,8 @@ sequences. Corrects for homopolymeric stretches.
 
 \code{generateKmers} always returns DNA \emph{k}-mers, even if
 \code{sequences} contains RNA sequences.
-RNA sequences are internally converted to DNA sequences. It is not allowed to mix DNA and
+RNA sequences are internally converted to DNA sequences. It is not
+allowed to mix DNA and
 RNA sequences.
 }
 

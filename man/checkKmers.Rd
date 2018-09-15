@@ -13,8 +13,10 @@ checkKmers(kmers)
 \code{TRUE} if set of \emph{k}-mers is valid
 }
 \description{
-Checks if the provided set of \emph{k}-mers is valid. A valid set of \emph{k}-mers is
-(1) non-empty, (2) contains either only hexamers or only heptamers, and (3) contains
+Checks if the provided set of \emph{k}-mers is valid. A valid set
+of \emph{k}-mers is
+(1) non-empty, (2) contains either only hexamers or only heptamers,
+ and (3) contains
 only characters from the RNA alphabet (A, C, G, U)
 }
 \examples{

@@ -2,9 +2,12 @@ package.environment <- new.env(parent = emptyenv())
 
 #' transite
 #'
-#' transite is a computational method that allows comprehensive analysis of the regulatory
-#' role of RNA-binding proteins in various cellular processes by leveraging preexisting
-#' gene expression data and current knowledge of binding preferences of RNA-binding proteins.
+#' transite is a computational method that allows comprehensive analysis of
+#' the regulatory
+#' role of RNA-binding proteins in various cellular processes by leveraging
+#' preexisting
+#' gene expression data and current knowledge of binding preferences of
+#' RNA-binding proteins.
 #'
 #' @docType package
 #' @author Konstantin Krismer
@@ -25,7 +28,7 @@ NULL
 #' @importFrom utils data
 #' @export
 getMotifs <- function() {
-  return(package.environment$motifs)
+    return(package.environment$motifs)
 }
 
 #' @title Set Transite motif database
@@ -48,13 +51,13 @@ getMotifs <- function() {
 #' @importFrom utils data
 #' @export
 setMotifs <- function(value) {
-  old <- package.environment$motifs
-  package.environment$motifs <- value
-  invisible(old)
+    old <- package.environment$motifs
+    package.environment$motifs <- value
+    invisible(old)
 }
 
 .onLoad <- function(libname = find.package("transite"), pkgname = "transite") {
-  utils::data("motifs", package = pkgname, envir = package.environment)
+    utils::data("motifs", package = pkgname, envir = package.environment)
 }
 
 # .onUnload <- function(libpath) {

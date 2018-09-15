@@ -84,7 +84,7 @@
 #'
 #' @examples
 #' pCombine(c(0.01, 0.05, 0.5))
-#' 
+#'
 #' pCombine(c(0.01, 0.05, 0.5), method = "tippett")
 #' @importFrom stats pchisq
 #' @importFrom stats qnorm
@@ -92,73 +92,80 @@
 #' @importFrom stats pt
 #' @export
 pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
-  p <- p[!is.na(p)]
-  n <- length(p)
-  if (max(p) > 1) {
-    stop("invalid input, p > 1")
-  }
+    p <- p[!is.na(p)]
+    n <- length(p)
+    if (max(p) > 1) {
+        stop("invalid input, p > 1")
+    }
 
-  if (n == 0) {
-    warning("vector of p-values is empty")
-    if (method[1] == "fisher") {
-      return(list(statistic = NA, p.value = NA, method = "Fisher (1932)", statistic.name = "Xsq"))
-    } else if (method[1] == "SL") {
-      return(list(
-        statistic = NA, p.value = NA, method = "Stouffer (1949), Liptak (1958)",
-        statistic.name = "Z"
-      ))
-    } else if (method[1] == "MG") {
-      return(list(
-        statistic = NA, p.value = NA, method = "Mudholkar and George (1979)",
-        statistic.name = "L"
-      ))
-    } else if (method[1] == "tippett") {
-      return(list(
-        statistic = NA, p.value = NA, method = "Tippett (1931)",
-        statistic.name = "p.min"
-      ))
-    } else {
-      stop("method not supported")
-    }
-  } else {
-    if (method[1] == "fisher") {
-      Xsq <- -2 * sum(log(p))
-      p.val <- stats::pchisq(Xsq, df = 2 * n, lower.tail = FALSE)
-      return(list(
-        statistic = Xsq, p.value = p.val, method = "Fisher (1932)",
-        statistic.name = "Xsq"
-      ))
-    } else if (method[1] == "SL") {
-      if (is.null(w)) {
-        w <- rep(1, n) / n
-      } else {
-        if (length(w) != n) {
-          stop("length of p and w must be equal")
+    if (n == 0) {
+        warning("vector of p-values is empty")
+        if (method[1] == "fisher") {
+            return(list(statistic = NA, p.value = NA, method = "Fisher (1932)",
+                        statistic.name = "Xsq"))
+        } else if (method[1] == "SL") {
+            return(list(
+                statistic = NA, p.value = NA,
+                method = "Stouffer (1949), Liptak (1958)",
+                statistic.name = "Z"
+            ))
+        } else if (method[1] == "MG") {
+            return(list(
+                statistic = NA, p.value = NA,
+                method = "Mudholkar and George (1979)",
+                statistic.name = "L"
+            ))
+        } else if (method[1] == "tippett") {
+            return(list(
+                statistic = NA, p.value = NA,
+                method = "Tippett (1931)",
+                statistic.name = "p.min"
+            ))
+        } else {
+            stop("method not supported")
         }
-      }
-      Zi <- stats::qnorm(1 - p)
-      Z <- sum(w * Zi) / sqrt(sum(w^2))
-      p.value <- 1 - stats::pnorm(Z)
-      return(list(
-        statistic = Z, p.value = p.value, method = "Stouffer (1949), Liptak (1958)",
-        statistic.name = "Z"
-      ))
-    } else if (method[1] == "MG") {
-      L <- sum((-1) * log(p / (1 - p)))
-      p.value <- stats::pt(L * sqrt((15 * n + 12) / (pi^2 * n * (5 * n + 2))),
-        df = 5 * n + 4, lower.tail = FALSE
-      )
-      return(list(
-        statistic = L, p.value = p.value, method = "Mudholkar and George (1979)",
-        statistic.name = "L"
-      ))
-    } else if (method[1] == "tippett") {
-      return(list(
-        statistic = min(p), p.value = 1 - (1 - min(p))^n, method = "Tippett (1931)",
-        statistic.name = "p.min"
-      ))
     } else {
-      stop("method not supported")
+        if (method[1] == "fisher") {
+            Xsq <- -2 * sum(log(p))
+            p.val <- stats::pchisq(Xsq, df = 2 * n, lower.tail = FALSE)
+            return(list(
+                statistic = Xsq, p.value = p.val, method = "Fisher (1932)",
+                statistic.name = "Xsq"
+            ))
+        } else if (method[1] == "SL") {
+            if (is.null(w)) {
+                w <- rep(1, n) / n
+            } else {
+                if (length(w) != n) {
+                    stop("length of p and w must be equal")
+                }
+            }
+            Zi <- stats::qnorm(1 - p)
+            Z <- sum(w * Zi) / sqrt(sum(w^2))
+            p.value <- 1 - stats::pnorm(Z)
+            return(list(
+                statistic = Z, p.value = p.value,
+                method = "Stouffer (1949), Liptak (1958)",
+                statistic.name = "Z"
+            ))
+        } else if (method[1] == "MG") {
+            L <- sum((-1) * log(p / (1 - p)))
+            p.value <- stats::pt(L * sqrt((15 * n + 12) / (pi^2 * n * (5 * n + 2))),
+                                 df = 5 * n + 4, lower.tail = FALSE
+            )
+            return(list(
+                statistic = L, p.value = p.value,
+                method = "Mudholkar and George (1979)",
+                statistic.name = "L"
+            ))
+        } else if (method[1] == "tippett") {
+            return(list(
+                statistic = min(p), p.value = 1 - (1 - min(p))^n,
+                method = "Tippett (1931)",
+                statistic.name = "p.min"
+            ))
+        } else {
+            stop("method not supported")
+        }
     }
-  }
 }

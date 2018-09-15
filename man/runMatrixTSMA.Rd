@@ -11,93 +11,131 @@ runMatrixTSMA(foreground.sets, background.set, motifs = NULL,
   n.cores = 1, cache = paste0(getwd(), "/sc/"))
 }
 \arguments{
-\item{foreground.sets}{a list of named character vectors of foreground sequences
-(only containing upper case characters A, C, G, T), where the names are RefSeq identifiers
+\item{foreground.sets}{a list of named character vectors of
+foreground sequences
+(only containing upper case characters A, C, G, T), where the
+names are RefSeq identifiers
 and sequence
-type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g. \code{"NM_010356|3UTR"}}
+type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
+\code{"NM_010356|3UTR"}}
 
-\item{background.set}{a named character vector of background sequences (naming follows same
+\item{background.set}{a named character vector of background
+sequences (naming follows same
 rules as foreground set sequences)}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
 
-\item{max.hits}{maximum number of putative binding sites per mRNA that are counted}
+\item{max.hits}{maximum number of putative binding sites per mRNA
+that are counted}
 
-\item{threshold.method}{either \code{"p.value"} (default) or \code{"relative"}.
-If \code{threshold.method} equals \code{"p.value"}, the default \code{threshold.value}
+\item{threshold.method}{either \code{"p.value"} (default) or
+\code{"relative"}.
+If \code{threshold.method} equals \code{"p.value"}, the default
+\code{threshold.value}
  is \code{0.25^6}, which is
-lowest p-value that can be achieved by hexamer motifs, the shortest supported motifs.
-If \code{threshold.method} equals \code{"relative"}, the default \code{threshold.value}
+lowest p-value that can be achieved by hexamer motifs, the shortest
+supported motifs.
+If \code{threshold.method} equals \code{"relative"}, the default
+\code{threshold.value}
 is \code{0.9}, which is 90\% of the maximum PWM score.}
 
 \item{threshold.value}{semantics of the \code{threshold.value} depend on
 \code{threshold.method} (default is 0.25^6)}
 
-\item{max.fg.permutations}{maximum number of foreground permutations performed in
+\item{max.fg.permutations}{maximum number of foreground permutations
+performed in
 Monte Carlo test for enrichment score}
 
-\item{min.fg.permutations}{minimum number of foreground permutations performed in
+\item{min.fg.permutations}{minimum number of foreground permutations
+performed in
 Monte Carlo test for enrichment score}
 
-\item{e}{stop criterion for enrichment score Monte Carlo test: aborting permutation process after
-observing \code{e} random enrichment values with more extreme values than the actual
+\item{e}{stop criterion for enrichment score Monte Carlo test: aborting
+permutation process after
+observing \code{e} random enrichment values with more extreme values than
+the actual
 enrichment value}
 
-\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to avoid alpha error
-accumulation, see \code{\link[stats]{p.adjust}}}
+\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to
+avoid alpha error
+ accumulation, see \code{\link[stats]{p.adjust}}}
 
 \item{n.cores}{the number of cores that are used}
 
-\item{cache}{either logical or path to a directory where scores are cached. The scores of each
+\item{cache}{either logical or path to a directory where scores are cached.
+The scores of each
 motif are stored in a
-separate file that contains a hash table with RefSeq identifiers and sequence type
+separate file that contains a hash table with RefSeq identifiers and
+sequence type
 qualifiers as keys and the number of putative binding sites as values.
 If \code{cache} is \code{FALSE}, scores will not be cached.}
 }
 \value{
 A list with the following components:
 \tabular{rl}{
-  \code{foreground.scores} \tab the result of \code{\link{scoreTranscripts}} for the foreground
+  \code{foreground.scores} \tab the result of \code{\link{scoreTranscripts}}
+  for the foreground
   sets\cr
-  \code{background.scores} \tab the result of \code{\link{scoreTranscripts}} for the background
+  \code{background.scores} \tab the result of \code{\link{scoreTranscripts}}
+  for the background
   set\cr
   \code{enrichment.dfs} \tab a list of data frames, returned by
   \code{\link{calculateMotifEnrichment}}
 }
 }
 \description{
-Calculates motif enrichment in foreground sets versus a background set using position
+Calculates motif enrichment in foreground sets versus a background
+set using position
 weight matrices to identify putative binding sites
 }
 \details{
-Motif transcript set analysis can be used to identify RNA binding proteins, whose targets are
-significantly overrepresented or underrepresented in certain sets of transcripts.
+Motif transcript set analysis can be used to identify RNA binding proteins,
+whose targets are
+significantly overrepresented or underrepresented in certain sets of
+transcripts.
 
-The aim of Transcript Set Motif Analysis (TSMA) is to identify the overrepresentation
-and underrepresentation of potential RBP targets (binding sites) in a set (or sets) of
-sequences, i.e., the foreground set, relative to the entire population of sequences.
-The latter is called background set, which can be composed of all sequences of the genes
-of a microarray platform or all sequences of an organism or any other meaningful
+The aim of Transcript Set Motif Analysis (TSMA) is to identify the
+overrepresentation
+and underrepresentation of potential RBP targets (binding sites)
+in a set (or sets) of
+sequences, i.e., the foreground set, relative to the entire population
+of sequences.
+The latter is called background set, which can be composed of all
+sequences of the genes
+of a microarray platform or all sequences of an organism or any
+other meaningful
 superset of the foreground sets.
 
-The matrix-based approach skips the \emph{k}-merization step of the \emph{k}-mer-based approach
-and instead scores the transcript sequence as a whole with a position specific scoring matrix.
+The matrix-based approach skips the \emph{k}-merization step of
+the \emph{k}-mer-based approach
+and instead scores the transcript sequence as a whole with a
+position specific scoring matrix.
 
-For each sequence in foreground and background sets and each sequence motif,
-the scoring algorithm evaluates the score for each sequence position. Positions with
+For each sequence in foreground and background sets and each
+sequence motif,
+the scoring algorithm evaluates the score for each sequence position.
+Positions with
 a relative score greater than a certain threshold are considered hits, i.e.,
 putative binding sites.
 
-By scoring all sequences in foreground and background sets, a hit count for each motif and
-each set is obtained, which is used to calculate enrichment values and associated p-values
-in the same way in which motif-compatible hexamer enrichment values are calculated in
-the k -mer-based approach. P-values are adjusted with one of the available adjustment methods.
+By scoring all sequences in foreground and background sets, a hit count
+for each motif and
+each set is obtained, which is used to calculate enrichment values and
+associated p-values
+in the same way in which motif-compatible hexamer enrichment values are
+calculated in
+the k -mer-based approach. P-values are adjusted with one of the available
+adjustment methods.
 
-An advantage of the matrix-based approach is the possibility of detecting clusters of
-binding sites. This can be done by counting regions with many hits using positional
-hit information or by simply applying a hit count threshold per sequence, e.g., only
-sequences with more than some number of hits are considered. Homotypic clusters of RBP
+An advantage of the matrix-based approach is the possibility of detecting
+clusters of
+binding sites. This can be done by counting regions with many hits using
+positional
+hit information or by simply applying a hit count threshold per sequence,
+e.g., only
+sequences with more than some number of hits are considered. Homotypic
+clusters of RBP
 binding sites may play a similar role as clusters of transcription factors.
 }
 \examples{
@@ -111,8 +149,10 @@ foreground.set1 <- c(
 )
 names(foreground.set1) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
-  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
-  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
+  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
+  "NM_7_DUMMY|3UTR",
+  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR",
+  "NM_11_DUMMY|3UTR",
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
@@ -135,10 +175,14 @@ background.set <- c(
 )
 names(background.set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
-  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
-  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
-  "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR", "NM_15_DUMMY|3UTR",
-  "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR", "NM_18_DUMMY|3UTR", "NM_19_DUMMY|3UTR",
+  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
+  "NM_7_DUMMY|3UTR",
+  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR",
+  "NM_11_DUMMY|3UTR",
+  "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR",
+  "NM_15_DUMMY|3UTR",
+  "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR", "NM_18_DUMMY|3UTR",
+  "NM_19_DUMMY|3UTR",
   "NM_20_DUMMY|3UTR", "NM_21_DUMMY|3UTR", "NM_22_DUMMY|3UTR"
 )
 
@@ -148,17 +192,20 @@ results <- runMatrixTSMA(foreground.sets, background.set)
 # define exemplary sequence sets for foreground and background
 foreground1.df <- ge$foreground1
 foreground.set1 <- foreground1.df$seq
-names(foreground.set1) <- paste0(foreground1.df$refseq, "|", foreground1.df$seq.type)
+names(foreground.set1) <- paste0(foreground1.df$refseq, "|",
+  foreground1.df$seq.type)
 
 foreground2.df <- ge$foreground2
 foreground.set2 <- foreground2.df$seq
-names(foreground.set2) <- paste0(foreground2.df$refseq, "|", foreground2.df$seq.type)
+names(foreground.set2) <- paste0(foreground2.df$refseq, "|",
+  foreground2.df$seq.type)
 
 foreground.sets <- list(foreground.set1, foreground.set2)
 
 background.df <- ge$background
 background.set <- background.df$seq
-names(background.set) <- paste0(background.df$refseq, "|", background.df$seq.type)
+names(background.set) <- paste0(background.df$refseq, "|",
+  background.df$seq.type)
 
 # run cached version of TSMA with all Transite motifs (recommended)
 results <- runMatrixTSMA(foreground.sets, background.set)
@@ -167,14 +214,16 @@ results <- runMatrixTSMA(foreground.sets, background.set)
 results <- runMatrixTSMA(foreground.sets, background.set, cache = FALSE)
 
 # run TSMA with a subset of Transite motifs
-results <- runMatrixTSMA(foreground.sets, background.set, motifs = getMotifByRBP("ELAVL1"))
+results <- runMatrixTSMA(foreground.sets, background.set,
+  motifs = getMotifByRBP("ELAVL1"))
 
 # run TSMA with user-defined motif
 toy.motif <- createMatrixMotif(
   "toy.motif", "example RBP", toy.motif.matrix,
   "example type", "example species", "user"
 )
-results <- runMatrixTSMA(foreground.sets, background.set, motifs = list(toy.motif))
+results <- runMatrixTSMA(foreground.sets, background.set,
+  motifs = list(toy.motif))
 }
 
 }

@@ -8,12 +8,14 @@ empiricalEnrichmentMeanCDF(random.means, actual.mean,
   alternative = c("two.sided", "less", "greater"), conf.level = 0.95)
 }
 \arguments{
-\item{random.means}{numeric vector of means based on random permutations of the data
+\item{random.means}{numeric vector of means based on random permutations
+of the data
 (empirical null distribution)}
 
 \item{actual.mean}{observed mean}
 
-\item{alternative}{side of the test, one of the following: \code{"two.sided"},
+\item{alternative}{side of the test, one of the following:
+\code{"two.sided"},
 \code{"less"}, \code{"greater"}}
 
 \item{conf.level}{confidence level for the returned confidence
@@ -27,7 +29,8 @@ A list with the following components:
 }
 }
 \description{
-\code{empiricalEnrichmentMeanCDF} returns an estimate of the significance of the observed
+\code{empiricalEnrichmentMeanCDF} returns an estimate of the significance
+of the observed
 mean, given a vector of means based on random permutations of the data.
 }
 \examples{

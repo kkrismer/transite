@@ -7,7 +7,8 @@
 motifsMetaInfo()
 }
 \value{
-A data frame containing meta information for all Transite motifs, with the
+A data frame containing meta information for all Transite
+motifs, with the
 following columns:
 \itemize{
   \item \code{id}

@@ -40,8 +40,7 @@ Imports:
     scales (>= 1.0.0),
     stats,
     TFMPvalue (>= 0.0.8),
-    utils,
-    rlang (>= 0.1.2)
+    utils
 Suggests:
     AnnotationDbi (>= 1.42.1),
     arrayQualityMetrics (>= 3.36.0),

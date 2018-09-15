@@ -9,19 +9,24 @@ calculateKmerEnrichment(foreground.sets, background.set, k,
   p.adjust.method = "BH", n.cores = 4)
 }
 \arguments{
-\item{foreground.sets}{list of foreground sets; a foreground set is a character vector of
-DNA or RNA sequences (not both) and a strict subset of the \code{background.set}}
+\item{foreground.sets}{list of foreground sets; a foreground set is a
+character vector of
+DNA or RNA sequences (not both) and a strict subset of the
+\code{background.set}}
 
-\item{background.set}{character vector of DNA or RNA sequences that constitute the
+\item{background.set}{character vector of DNA or RNA sequences that
+constitute the
 background set}
 
 \item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
 \code{7} for heptamers}
 
-\item{permutation}{if \code{TRUE}, only the enrichment value is returned (efficiency mode
+\item{permutation}{if \code{TRUE}, only the enrichment value is returned
+(efficiency mode
 used for permutation testing)}
 
-\item{chisq.p.value.threshold}{threshold below which Fisher's exact test is used instead of
+\item{chisq.p.value.threshold}{threshold below which Fisher's exact test
+is used instead of
 \eqn{\Chi^2} test}
 
 \item{p.adjust.method}{see \code{\link[stats]{p.adjust}}}
@@ -31,12 +36,15 @@ used for permutation testing)}
 \value{
 A list with two entries:
 
-(1) dfs: a list of data frames with results from \code{\link{computeKmerEnrichment}} for each of the foreground sets
+(1) dfs: a list of data frames with results from
+\code{\link{computeKmerEnrichment}} for each of the foreground sets
 (2) kmers: a character vector of all k-mers
 }
 \description{
-Calls \code{\link{computeKmerEnrichment}} to compute \emph{k}-mer enrichment values
-for multiple foregrounds. Calculates enrichment for foreground sets in parallel.
+Calls \code{\link{computeKmerEnrichment}} to compute \emph{k}-mer
+enrichment values
+for multiple foregrounds. Calculates enrichment for foreground sets in
+parallel.
 }
 \examples{
 # define simple sequence sets for foreground and background
@@ -59,7 +67,8 @@ background.set <- c(
   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 )
 
-kmer.enrichment.values <- calculateKmerEnrichment(foreground.sets, background.set, 6)
+kmer.enrichment.values <- calculateKmerEnrichment(foreground.sets,
+  background.set, 6)
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{checkKmers}},

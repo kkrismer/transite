@@ -9,14 +9,18 @@ createMatrixMotif(id, rbps, matrix, type, species, src)
 \arguments{
 \item{id}{motif id (character vector of length 1)}
 
-\item{rbps}{character vector of names of RNA-binding proteins associated with this motif}
+\item{rbps}{character vector of names of RNA-binding proteins associated
+with this motif}
 
-\item{matrix}{data frame with four columns (A, C, G, U) and 6 - 15 rows (positions),
+\item{matrix}{data frame with four columns (A, C, G, U) and 6 - 15 rows
+(positions),
 where cell (i, j) contains weight of nucleotide j on position i}
 
-\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'}, \code{'SELEX'}, etc.)}
+\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
+\code{'SELEX'}, etc.)}
 
-\item{species}{species where motif was discovered (e.g., \code{'Homo sapiens'})}
+\item{species}{species where motif was discovered (e.g.,
+\code{'Homo sapiens'})}
 
 \item{src}{source of motif (e.g., \code{'RBPDB v1.3.1'})}
 }
@@ -24,5 +28,6 @@ where cell (i, j) contains weight of nucleotide j on position i}
 object of class Motif
 }
 \description{
-Takes a position weight matrix (PWM) and meta info and returns an object of class \code{Motif}.
+Takes a position weight matrix (PWM) and meta info and returns an object of
+class \code{Motif}.
 }

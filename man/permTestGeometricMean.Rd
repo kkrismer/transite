@@ -11,30 +11,37 @@ permTestGeometricMean(actual.mean, motif.kmers, random.permutations,
 \arguments{
 \item{actual.mean}{observed mean}
 
-\item{motif.kmers}{set of \emph{k}-mers that were used to compute the \code{actual.mean}}
+\item{motif.kmers}{set of \emph{k}-mers that were used to compute
+the \code{actual.mean}}
 
-\item{random.permutations}{a set of random permutations of the original data, used
+\item{random.permutations}{a set of random permutations of the
+original data, used
 to generate an empirical null distribution.}
 
-\item{alternative}{side of the test, one of the following: \code{"two.sided"},
+\item{alternative}{side of the test, one of the following:
+\code{"two.sided"},
 \code{"less"}, \code{"greater"}}
 
 \item{conf.level}{confidence level for the returned confidence
     interval.}
 
-\item{produce.plot}{if distribution plot should be part of the returned list}
+\item{produce.plot}{if distribution plot should be part of the
+returned list}
 }
 \value{
 A list with the following components:
 \tabular{rl}{
-  \code{p.value.estimate} \tab the estimated p-value of the observed mean\cr
+  \code{p.value.estimate} \tab the estimated p-value of the
+  observed mean\cr
   \code{conf.int} \tab the confidence interval around that estimate\cr
-  \code{plot} \tab plot of the empirical distribution of geometric means of the
+  \code{plot} \tab plot of the empirical distribution of
+  geometric means of the
   enrichment values
 }
 }
 \description{
-\code{permTestGeometricMean} returns an estimate of the significance of the observed
+\code{permTestGeometricMean} returns an estimate of the significance
+of the observed
 mean, given a set of random permutations of the data.
 }
 \seealso{

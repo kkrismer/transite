@@ -10,20 +10,27 @@ scoreTranscripts(sequences, motifs = NULL, max.hits = 5,
 }
 \arguments{
 \item{sequences}{character vector of named sequences
-(only containing upper case characters A, C, G, T), where the names are RefSeq identifiers
+(only containing upper case characters A, C, G, T), where the names are
+RefSeq identifiers
 and sequence
-type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g. \code{"NM_010356|3UTR"}}
+type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
+\code{"NM_010356|3UTR"}}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
 
-\item{max.hits}{maximum number of putative binding sites per mRNA that are counted}
+\item{max.hits}{maximum number of putative binding sites per mRNA
+that are counted}
 
-\item{threshold.method}{either \code{"p.value"} (default) or \code{"relative"}.
-If \code{threshold.method} equals \code{"p.value"}, the default \code{threshold.value}
+\item{threshold.method}{either \code{"p.value"} (default) or
+\code{"relative"}.
+If \code{threshold.method} equals \code{"p.value"}, the default
+\code{threshold.value}
  is \code{0.25^6}, which is
-lowest p-value that can be achieved by hexamer motifs, the shortest supported motifs.
-If \code{threshold.method} equals \code{"relative"}, the default \code{threshold.value}
+lowest p-value that can be achieved by hexamer motifs, the shortest
+supported motifs.
+If \code{threshold.method} equals \code{"relative"}, the default
+\code{threshold.value}
 is \code{0.9}, which is 90\% of the maximum PWM score.}
 
 \item{threshold.value}{semantics of the \code{threshold.value} depend on
@@ -31,9 +38,11 @@ is \code{0.9}, which is 90\% of the maximum PWM score.}
 
 \item{n.cores}{the number of cores that are used}
 
-\item{cache}{either logical or path to a directory where scores are cached. The scores of each
+\item{cache}{either logical or path to a directory where scores are cached.
+The scores of each
 motif are stored in a
-separate file that contains a hash table with RefSeq identifiers and sequence type
+separate file that contains a hash table with RefSeq identifiers and
+sequence type
 qualifiers as keys and the number of putative binding sites as values.
 If \code{cache} is \code{FALSE}, scores will not be cached.}
 }
@@ -42,24 +51,31 @@ A list with three entries:
 
 (1) df: a data frame with the following columns:
 \tabular{rl}{
-  \code{motif.id} \tab the motif identifier that is used in the original motif library\cr
+  \code{motif.id} \tab the motif identifier that is used in the original
+  motif library\cr
   \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
-  \code{absolute.hits} \tab the absolute frequency of putative binding sites per motif in all
+  \code{absolute.hits} \tab the absolute frequency of putative binding
+  sites per motif in all
   transcripts \cr
-  \code{relative.hits} \tab  the relative, i.e., absolute divided by total, frequency of
+  \code{relative.hits} \tab  the relative, i.e., absolute divided by total,
+  frequency of
   binding sites per motif in all transcripts \cr
   \code{total.sites} \tab the total number of potential binding sites \cr
-  \code{one.hit}, \code{two.hits}, ... \tab number of transcripts with one, two,
+  \code{one.hit}, \code{two.hits}, ... \tab number of transcripts with one,
+  two,
   three, ... putative binding sites
 }
-(2) total.sites: a numeric vector with the total number of potential binding sites
+(2) total.sites: a numeric vector with the total number of potential
+binding sites
 per transcript
 
-(3) absolute.hits: a numeric vector with the absolute (not relative) number of putative
+(3) absolute.hits: a numeric vector with the absolute (not relative)
+number of putative
 binding sites per transcript
 }
 \description{
-This function is used to count the binding sites in a set of sequences for all or a
+This function is used to count the binding sites in a set of sequences for
+all or a
 subset of RNA-binding protein sequence
 motifs and returns the result in a data frame, which is subsequently used by
 \code{\link{calculateMotifEnrichment}} to
@@ -74,12 +90,14 @@ foreground.set <- c(
   "ATAGAC", "AGTTC", "CCAGTAA"
 )
 # names are used as keys in the hash table (cached version only)
-# ideally sequence identifiers (e.g., RefSeq ids) and region labels (e.g., 3UTR for 3'-UTR)
+# ideally sequence identifiers (e.g., RefSeq ids) and region labels
+# (e.g., 3UTR for 3'-UTR)
 names(foreground.set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
-  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
-  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
-  "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
+  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
+  "NM_7_DUMMY|3UTR", "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR",
+  "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR", "NM_12_DUMMY|3UTR",
+  "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
 # cached (writes scores to disk)
@@ -94,7 +112,8 @@ scores <- scoreTranscripts(foreground.set, motifs = motifs)
 \dontrun{
 foreground.df <- ge$foreground1
 foreground.set <- foreground.df$seq
-names(foreground.set) <- paste0(foreground.df$refseq, "|", foreground.df$seq.type)
+names(foreground.set) <- paste0(foreground.df$refseq, "|",
+   foreground.df$seq.type)
 scores <- scoreTranscripts(foreground.set)
 }
 }

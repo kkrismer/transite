@@ -10,9 +10,11 @@ Motif(id, rbps, matrix, hexamers, heptamers, length, iupac, type, species,
 \arguments{
 \item{id}{motif id (character vector of length 1)}
 
-\item{rbps}{character vector of names of RNA-binding proteins associated with this motif}
+\item{rbps}{character vector of names of RNA-binding proteins associated
+with this motif}
 
-\item{matrix}{data frame with four columns (A, C, G, U) and 6 - 15 rows (positions),
+\item{matrix}{data frame with four columns (A, C, G, U) and 6 - 15 rows
+(positions),
 where cell (i, j) contains weight of nucleotide j on position i}
 
 \item{hexamers}{character vector of hexamers associated with this motif}
@@ -21,11 +23,14 @@ where cell (i, j) contains weight of nucleotide j on position i}
 
 \item{length}{length of the motif (i.e., \code{nrow(matrix)})}
 
-\item{iupac}{IUPAC code for motif matrix (see \code{\link{generateIUPACByMatrix}})}
+\item{iupac}{IUPAC code for motif matrix
+(see \code{\link{generateIUPACByMatrix}})}
 
-\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'}, \code{'SELEX'}, etc.)}
+\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
+\code{'SELEX'}, etc.)}
 
-\item{species}{species where motif was discovered (e.g., \code{'Homo sapiens'})}
+\item{species}{species where motif was discovered (e.g.,
+\code{'Homo sapiens'})}
 
 \item{src}{source of motif (e.g., \code{'RBPDB v1.3.1'})}
 }

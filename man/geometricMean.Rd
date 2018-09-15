@@ -7,7 +7,8 @@
 geometricMean(x, na.rm = TRUE)
 }
 \arguments{
-\item{x}{numeric vector of values for which the geometric mean will be computed}
+\item{x}{numeric vector of values for which the geometric mean
+will be computed}
 
 \item{na.rm}{logical.  Should missing values (including \code{NaN}) be
     removed?}

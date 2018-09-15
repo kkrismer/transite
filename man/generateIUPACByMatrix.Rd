@@ -9,7 +9,8 @@ generateIUPACByMatrix(matrix, threshold = 0.215, code = NULL)
 \arguments{
 \item{matrix}{the position probability matrix of an RNA-binding protein}
 
-\item{threshold}{the threshold probability (nucleotides with lower probabilities are ignored)}
+\item{threshold}{the threshold probability (nucleotides with lower
+probabilities are ignored)}
 
 \item{code}{if IUPAC code table has already been initialized by
 \code{\link{initIUPAClookupTable}}, it can be specified here}
@@ -18,7 +19,8 @@ generateIUPACByMatrix(matrix, threshold = 0.215, code = NULL)
 the IUPAC string of the binding site
 }
 \description{
-Generates a compact logo of a motif based on IUPAC codes given by a position weight matrix
+Generates a compact logo of a motif based on IUPAC codes given by a
+position weight matrix
 }
 \details{
 IUPAC RNA nucleotide code:

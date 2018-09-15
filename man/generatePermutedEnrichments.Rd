@@ -8,9 +8,11 @@ generatePermutedEnrichments(n.transcripts.foreground, background.set, k,
   n.permutations = 1000, n.cores = 4)
 }
 \arguments{
-\item{n.transcripts.foreground}{number of transcripts in the original foreground set}
+\item{n.transcripts.foreground}{number of transcripts in the original
+foreground set}
 
-\item{background.set}{character vector of DNA or RNA sequences that constitute the
+\item{background.set}{character vector of DNA or RNA sequences that
+constitute the
 background set}
 
 \item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
@@ -21,10 +23,12 @@ background set}
 \item{n.cores}{number of computing cores to use}
 }
 \value{
-The result of \code{\link{calculateKmerEnrichment}} for the random foreground sets.
+The result of \code{\link{calculateKmerEnrichment}} for the
+random foreground sets.
 }
 \description{
-Calculates \emph{k}-mer enrichment values for randomly sampled (without replacement) foreground sets.
+Calculates \emph{k}-mer enrichment values for randomly sampled (without
+replacement) foreground sets.
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},

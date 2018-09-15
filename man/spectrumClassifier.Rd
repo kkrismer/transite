@@ -8,17 +8,21 @@ spectrumClassifier(adj.r.squared, degree, slope, consistency.score.n,
   n.significant, n.bins)
 }
 \arguments{
-\item{adj.r.squared}{adjusted \eqn{R^2} of polynomial model, returned by \link{scoreSpectrum}}
+\item{adj.r.squared}{adjusted \eqn{R^2} of polynomial model, returned by
+\link{scoreSpectrum}}
 
 \item{degree}{degree of polynomial, returned by \link{scoreSpectrum}}
 
-\item{slope}{coefficient of the linear term of the polynomial model (spectrum "direction"),
+\item{slope}{coefficient of the linear term of the polynomial model
+(spectrum "direction"),
 returned by \link{scoreSpectrum}}
 
-\item{consistency.score.n}{number of performed permutations before early stopping,
+\item{consistency.score.n}{number of performed permutations before
+early stopping,
 returned by \link{scoreSpectrum}}
 
-\item{n.significant}{number of bins with statistically significant enrichment}
+\item{n.significant}{number of bins with statistically significant
+enrichment}
 
 \item{n.bins}{number of bins}
 }
@@ -38,7 +42,8 @@ If \code{sum(score) == 3} spectrum considered non-random, random otherwise.
 n.bins <- 40
 
 # random spectrum
-random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1), max.model.degree = 1)
+random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1),
+  max.model.degree = 1)
 score <- spectrumClassifier(
   random.sp$adj.r.squared, random.sp$degree, random.sp$slope,
   random.sp$consistency.score.n, 0, n.bins
@@ -48,7 +53,8 @@ sum(score)
 # non-random linear spectrum with strong noise component
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
+linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
+  max.cs.permutations = 100000)
 score <- spectrumClassifier(
   linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
   linear.sp$consistency.score.n, 10, n.bins
@@ -58,7 +64,8 @@ sum(score)
 # non-random linear spectrum with weak noise component
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
+linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
+  max.cs.permutations = 100000)
 score <- spectrumClassifier(
   linear.sp$adj.r.squared, linear.sp$degree, linear.sp$slope,
   linear.sp$consistency.score.n, 10, n.bins
@@ -69,7 +76,8 @@ sum(score)
 # non-random quadratic spectrum with strong noise component
 signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2, max.cs.permutations = 100000)
+quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2,
+  max.cs.permutations = 100000)
 score <- spectrumClassifier(
   quadratic.sp$adj.r.squared, quadratic.sp$degree,
   quadratic.sp$slope, quadratic.sp$consistency.score.n, 10, n.bins

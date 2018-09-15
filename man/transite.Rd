@@ -6,9 +6,12 @@
 \alias{transite-package}
 \title{transite}
 \description{
-transite is a computational method that allows comprehensive analysis of the regulatory
-role of RNA-binding proteins in various cellular processes by leveraging preexisting
-gene expression data and current knowledge of binding preferences of RNA-binding proteins.
+transite is a computational method that allows comprehensive analysis of
+the regulatory
+role of RNA-binding proteins in various cellular processes by leveraging
+preexisting
+gene expression data and current knowledge of binding preferences of
+RNA-binding proteins.
 }
 \author{
 Konstantin Krismer

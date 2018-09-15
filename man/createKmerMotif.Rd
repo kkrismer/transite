@@ -9,17 +9,22 @@ createKmerMotif(id, rbps, kmers, type, species, src)
 \arguments{
 \item{id}{motif id (character vector of length 1)}
 
-\item{rbps}{character vector of names of RNA-binding proteins associated with this motif}
+\item{rbps}{character vector of names of RNA-binding proteins associated
+with this motif}
 
-\item{kmers}{character vector of \emph{k}-mers that are associated with the motif, set of
+\item{kmers}{character vector of \emph{k}-mers that are associated with
+the motif, set of
 \emph{k}-mers is
 valid if
-(1) all \emph{k}-mers must have the same length, (2) only hexamers or heptamers
+(1) all \emph{k}-mers must have the same length, (2) only hexamers or
+heptamers
 allowed, (3) allowed characters are A, C, G, U}
 
-\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'}, \code{'SELEX'}, etc.)}
+\item{type}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
+\code{'SELEX'}, etc.)}
 
-\item{species}{species where motif was discovered (e.g., \code{'Homo sapiens'})}
+\item{species}{species where motif was discovered (e.g.,
+\code{'Homo sapiens'})}
 
 \item{src}{source of motif (e.g., \code{'RBPDB v1.3.1'})}
 }
@@ -27,7 +32,8 @@ allowed, (3) allowed characters are A, C, G, U}
 object of class Motif
 }
 \description{
-Takes a position weight matrix (PWM) and meta info and returns an object of class \code{Motif}.
+Takes a position weight matrix (PWM) and meta info and returns an object of
+class \code{Motif}.
 }
 \examples{
 custom.motif <- createKmerMotif(

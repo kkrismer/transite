@@ -7,19 +7,23 @@
 subdivideData(background.set, n.bins = 40)
 }
 \arguments{
-\item{background.set}{character vector of named sequences (names are usually RefSeq
+\item{background.set}{character vector of named sequences (names are
+usually RefSeq
 identifiers and sequence region labels,
- e.g., "NM_1_DUMMY|3UTR"). It is important that the sequences are already sorted by fold change,
+ e.g., "NM_1_DUMMY|3UTR"). It is important that the sequences are
+ already sorted by fold change,
  signal-to-noise ratio or any other meaningful measure.}
 
-\item{n.bins}{specifies the number of bins in which the sequences will be divided,
+\item{n.bins}{specifies the number of bins in which the sequences
+will be divided,
 valid values are between 7 and 100}
 }
 \value{
 An array of \code{n.bins} length, containing the binned sequences
 }
 \description{
-Preprocessing function for SPMA, divides transcript sequences into \emph{n} bins.
+Preprocessing function for SPMA, divides transcript sequences
+into \emph{n} bins.
 }
 \examples{
 # toy example
@@ -33,8 +37,10 @@ toy.background.set <- c(
 # sequence region labels (e.g., 3UTR for 3'-UTR)
 names(toy.background.set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
-  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
-  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
+  "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
+  "NM_7_DUMMY|3UTR",
+  "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR",
+  "NM_11_DUMMY|3UTR",
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
@@ -46,7 +52,8 @@ background.df <- ge$background
 background.df <- dplyr::arrange(background.df, value)
 # character vector of named sequences
 background.set <- background.df$seq
-names(background.set) <- paste0(background.df$refseq, "|", background.df$seq.type)
+names(background.set) <- paste0(background.df$refseq, "|",
+  background.df$seq.type)
 
 foreground.sets <- subdivideData(background.set)
 }

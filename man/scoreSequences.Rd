@@ -17,3 +17,14 @@ list of PWM scores for each sequence
 \description{
 C++ implementation of PWM scoring algorithm
 }
+\examples{
+motif <- getMotifById("M178_0.6")[[1]]
+sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
+  "AATTGGTGTCTGGATACTTCCCTGTACAT", "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
+  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA")
+seq.char.vectors <- lapply(sequences, function(seq) {
+  unlist(strsplit(seq, ""))
+})
+scoreSequences(seq.char.vectors, as.matrix(motif$matrix))
+
+}

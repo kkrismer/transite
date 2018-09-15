@@ -16,6 +16,16 @@ using namespace Rcpp;
 //' @param pwm position weight matrix
 //'
 //' @return list of PWM scores for each sequence
+//' @examples
+//' motif <- getMotifById("M178_0.6")[[1]]
+//' sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
+//'   "AATTGGTGTCTGGATACTTCCCTGTACAT", "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
+//'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA")
+//' seq.char.vectors <- lapply(sequences, function(seq) {
+//'   unlist(strsplit(seq, ""))
+//' })
+//' scoreSequences(seq.char.vectors, as.matrix(motif$matrix))
+//'
 //' @export
 // [[Rcpp::export]]
 SEXP scoreSequences(List sequences, NumericMatrix pwm) {
@@ -59,6 +69,11 @@ SEXP scoreSequences(List sequences, NumericMatrix pwm) {
 //' @param pwm position weight matrix
 //'
 //' @return list of PWM scores for the specified \emph{k}-mers
+//'
+//' @examples
+//' motif <- getMotifById("M178_0.6")[[1]]
+//' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
+//' calculateKmerScores(kmers, as.matrix(motif$matrix))
 //'
 //' @export
 // [[Rcpp::export]]
@@ -119,7 +134,6 @@ NumericVector calculateKmerScores(List kmers, NumericMatrix pwm) {
 //' @param kmerScores position weight matrix
 //'
 //' @return numeric vector of \emph{k}-mer scores
-//' @export
 // [[Rcpp::export]]
 NumericVector lookupKmerScores(List kmers, Environment kmerScores) {
   NumericVector scores(kmers.size());
@@ -138,7 +152,6 @@ NumericVector lookupKmerScores(List kmers, Environment kmerScores) {
 //' @param kmers list of \emph{k}-mers
 //' @return data frame with columns \code{score}, \code{top.kmer},
 //' and \code{top.kmer.enrichment}
-//' @export
 // [[Rcpp::export]]
 DataFrame computeMotifScore(List kmers) {
 // kmers is a list of data frames (sorted desc(score), filtered score > 0)
@@ -199,6 +212,13 @@ double calculateConsistencyScore(NumericVector x) {
 //' process after observing \code{e} random consistency values with more extreme values
 //' than the actual consistency value
 //' @return list with \code{score}, \code{p.value}, and \code{n} components
+//'
+//' @examples
+//' poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4, 0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
+//' local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
+//'
+//' enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8, 0.9, 1.2, 1.4, 1.6, 1.4)
+//' local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
 //' @export
 // [[Rcpp::export]]
 List calculateLocalConsistency(NumericVector x, int numPermutations, int minPermutations, int e) {
@@ -227,10 +247,10 @@ List calculateLocalConsistency(NumericVector x, int numPermutations, int minPerm
   return List::create(Named("score") = score, Named("p.value") = pValue, Named("n") = i);
 }
 
-//' @title Local Consistency Score
+//' @title Motif Enrichment calculation
 //'
 //' @description
-//' C++ implementation of Local Consistency Score algorithm.
+//' C++ implementation of Motif Enrichment calculation
 //'
 //' @param absoluteHits number of putative binding sites per sequence
 //' (returned by \code{\link{scoreTranscripts}})
@@ -248,7 +268,24 @@ List calculateLocalConsistency(NumericVector x, int numPermutations, int minPerm
 //'
 //' @return list with p-value and number of iterations of Monte Carlo sampling
 //' for local consistency score
-//' @export
+//'
+//' @examples
+//' foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT", "AGAT", "CCAGTAA")
+//' background.seqs <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+//'                      "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+//'                      "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+//'                      "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+//'                      "ATAGAC", "AGTTC", "CCAGTAA")
+//' foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
+//' background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
+//'
+//' fg <- dplyr::filter(foreground.scores$df, motif.id == "M178_0.6")
+//' bg <- dplyr::filter(background.scores$df, motif.id == "M178_0.6")
+//'
+//' mc.result <- calculateTranscriptMC(bg$absolute.hits, bg$total.sites,
+//'                                    fg$absolute.hits / fg$total.sites,
+//'                                    length(foreground.seqs), 10000, 5000, 5)
+//'
 // [[Rcpp::export]]
 List calculateTranscriptMC(NumericVector absoluteHits, NumericVector totalSites, double relHitsForeground,
                              int n, int maxPermutations, int minPermutations, int e) {

@@ -15,6 +15,12 @@ void
 \description{
 Globally sets Transite motif database, use with care.
 }
+\examples{
+custom.motif <- createKmerMotif("custom.motif", "RBP1",
+                                c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+                                "Homo sapiens", "user")
+setMotifs(list(custom.motif))
+}
 \seealso{
 Other motif functions: \code{\link{generateIUPACByKmers}},
   \code{\link{generateIUPACByMatrix}},

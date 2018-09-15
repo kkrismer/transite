@@ -487,6 +487,7 @@ cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix, thresho
 #' enrichments.df <- calculateMotifEnrichment(foreground.scores$df, background.scores$df,
 #'   background.scores$total.sites, background.scores$absolute.hits, length(foreground.seqs),
 #'   max.fg.permutations = 1000)
+#'
 #' @family matrix functions
 #' @importFrom dplyr filter
 #' @importFrom stats p.adjust

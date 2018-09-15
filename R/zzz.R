@@ -36,6 +36,12 @@ getMotifs <- function() {
 #' @param value list of Motif objects
 #'
 #' @return void
+#'
+#' @examples
+#' custom.motif <- createKmerMotif("custom.motif", "RBP1",
+#'                                 c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+#'                                 "Homo sapiens", "user")
+#' setMotifs(list(custom.motif))
 #' @family motif functions
 #' @importFrom utils data
 #' @export

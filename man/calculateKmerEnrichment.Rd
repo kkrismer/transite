@@ -38,6 +38,26 @@ A list with two entries:
 Calls \code{\link{computeKmerEnrichment}} to compute \emph{k}-mer enrichment values
 for multiple foregrounds. Calculates enrichment for foreground sets in parallel.
 }
+\examples{
+# define simple sequence sets for foreground and background
+foreground.set1 <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+                                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+                                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+                                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+                                   "AUAGAC", "AGUUC", "CCAGUAA")
+foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU")
+foreground.sets <- list(foreground.set1, foreground.set2)
+background.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+                                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+                                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+                                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+                                   "AUAGAC", "AGUUC", "CCAGUAA",
+                                   "UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU",
+                                   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
+
+kmer.enrichment.values <- calculateKmerEnrichment(foreground.sets, background.set, 6)
+
+}
 \seealso{
 Other \emph{k}-mer functions: \code{\link{checkKmers}},
   \code{\link{computeKmerEnrichment}},

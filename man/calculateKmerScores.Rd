@@ -17,3 +17,9 @@ list of PWM scores for the specified \emph{k}-mers
 \description{
 C++ implementation of \emph{k}-mer score calculation
 }
+\examples{
+motif <- getMotifById("M178_0.6")[[1]]
+kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
+calculateKmerScores(kmers, as.matrix(motif$matrix))
+
+}

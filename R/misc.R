@@ -16,6 +16,13 @@
 #' @param species species where motif was discovered (e.g., \code{"Homo sapiens"})
 #' @param src source of motif (e.g., \code{"RBPDB v1.3.1"})
 #' @return object of class Motif
+#' @examples
+#' kmers <- c("AAAAAA", "CAAAAA")
+#' iupac <- transite::generateIUPACByKmers(kmers, code = transite::initIUPAClookupTable())
+#' hexamers <- transite::generateKmersFromIUPAC(iupac, 6)
+#' heptamers <- transite::generateKmersFromIUPAC(iupac, 7)
+#' Motif("custom.motif", "RBP1", NULL, hexamers, heptamers, 6,
+#'       iupac, "HITS-CLIP", "Homo sapiens", "user")
 #' @export
 Motif <- function(id, rbps, matrix, hexamers, heptamers, length, iupac, type, species, src) {
   object <- list(id = id,
@@ -72,6 +79,10 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
 #' @param species species where motif was discovered (e.g., \code{"Homo sapiens"})
 #' @param src source of motif (e.g., \code{"RBPDB v1.3.1"})
 #' @return object of class Motif
+#' @examples
+#' custom.motif <- createKmerMotif("custom.motif", "RBP1",
+#'                                 c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+#'                                 "Homo sapiens", "user")
 #' @export
 createKmerMotif <- function(id, rbps, kmers, type, species, src) {
   kmers <- toupper(kmers)

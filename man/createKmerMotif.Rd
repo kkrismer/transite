@@ -29,3 +29,8 @@ object of class Motif
 \description{
 Takes a position weight matrix (PWM) and meta info and returns an object of class \code{Motif}.
 }
+\examples{
+custom.motif <- createKmerMotif("custom.motif", "RBP1",
+                                c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+                                "Homo sapiens", "user")
+}

@@ -30,6 +30,13 @@ A list with the following components:
 \code{empiricalEnrichmentMeanCDF} returns an estimate of the significance of the observed
 mean, given a vector of means based on random permutations of the data.
 }
+\examples{
+test.sd <- 1.0
+test.null.distribution <- rnorm(n = 10000, mean = 1.0, sd = test.sd)
+
+empiricalEnrichmentMeanCDF(test.null.distribution, test.sd * 2, "greater")
+
+}
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
   \code{\link{checkKmers}},

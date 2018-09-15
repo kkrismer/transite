@@ -64,6 +64,7 @@ background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
 enrichments.df <- calculateMotifEnrichment(foreground.scores$df, background.scores$df,
   background.scores$total.sites, background.scores$absolute.hits, length(foreground.seqs),
   max.fg.permutations = 1000)
+
 }
 \seealso{
 Other matrix functions: \code{\link{runMatrixSPMA}},

@@ -19,6 +19,16 @@ for consistency score}
 process after observing \code{e} random consistency values with more extreme values
 than the actual consistency value}
 }
+\value{
+list with \code{score}, \code{p.value}, and \code{n} components
+}
 \description{
 C++ implementation of Local Consistency Score algorithm.
+}
+\examples{
+poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4, 0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
+local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
+
+enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8, 0.9, 1.2, 1.4, 1.6, 1.4)
+local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
 }

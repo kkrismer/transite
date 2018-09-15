@@ -79,6 +79,25 @@ homopolymerCorrection <- function(sequences, k, kmers, is.rna = FALSE) {
 #' (1) dfs: a list of data frames with results from \code{\link{computeKmerEnrichment}} for each of the foreground sets
 #' (2) kmers: a character vector of all k-mers
 #'
+#' @examples
+#' # define simple sequence sets for foreground and background
+#' foreground.set1 <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'                                    "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'                                    "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'                                    "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'                                    "AUAGAC", "AGUUC", "CCAGUAA")
+#' foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU")
+#' foreground.sets <- list(foreground.set1, foreground.set2)
+#' background.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'                                    "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'                                    "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'                                    "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'                                    "AUAGAC", "AGUUC", "CCAGUAA",
+#'                                    "UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU",
+#'                                    "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
+#'
+#' kmer.enrichment.values <- calculateKmerEnrichment(foreground.sets, background.set, 6)
+#'
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply
@@ -212,6 +231,26 @@ generateKmers <- function(sequences, k) {
 #' performed in situations, where exact p-values are preferred, e.g., if expected < 5 or
 #' significant p-values.
 #'
+#' @examples
+#' # define simple sequence sets for foreground and background
+#' foreground.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'                                    "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'                                    "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'                                    "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'                                    "AUAGAC", "AGUUC", "CCAGUAA")
+#' background.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'                                    "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'                                    "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'                                    "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'                                    "AUAGAC", "AGUUC", "CCAGUAA",
+#'                                    "UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU",
+#'                                    "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
+#' foreground.kmers <- generateKmers(foreground.set, 6)
+#' background.kmers <- generateKmers(background.set, 6)
+#'
+#'
+#' kmer.enrichment.values <- computeKmerEnrichment(foreground.kmers, background.kmers)
+#'
 #' @importFrom stats chisq.test
 #' @importFrom stats p.adjust
 #' @importFrom stats fisher.test
@@ -295,6 +334,13 @@ computeKmerEnrichment <- function(foreground.kmers, background.kmers, permutatio
 #'   \code{p.value.estimate} \tab the estimated p-value of the observed mean\cr
 #'   \code{conf.int} \tab the confidence interval around that estimate
 #' }
+#'
+#' @examples
+#' test.sd <- 1.0
+#' test.null.distribution <- rnorm(n = 10000, mean = 1.0, sd = test.sd)
+#'
+#' empiricalEnrichmentMeanCDF(test.null.distribution, test.sd * 2, "greater")
+#'
 #' @importFrom stats binom.test
 #' @family \emph{k}-mer functions
 #' @export

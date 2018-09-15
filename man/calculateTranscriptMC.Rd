@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{calculateTranscriptMC}
 \alias{calculateTranscriptMC}
-\title{Local Consistency Score}
+\title{Motif Enrichment calculation}
 \usage{
 calculateTranscriptMC(absoluteHits, totalSites, relHitsForeground, n,
   maxPermutations, minPermutations, e)
@@ -33,5 +33,23 @@ list with p-value and number of iterations of Monte Carlo sampling
 for local consistency score
 }
 \description{
-C++ implementation of Local Consistency Score algorithm.
+C++ implementation of Motif Enrichment calculation
+}
+\examples{
+foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT", "AGAT", "CCAGTAA")
+background.seqs <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+                     "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+                     "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+                     "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+                     "ATAGAC", "AGTTC", "CCAGTAA")
+foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
+background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
+
+fg <- dplyr::filter(foreground.scores$df, motif.id == "M178_0.6")
+bg <- dplyr::filter(background.scores$df, motif.id == "M178_0.6")
+
+mc.result <- calculateTranscriptMC(bg$absolute.hits, bg$total.sites,
+                                   fg$absolute.hits / fg$total.sites,
+                                   length(foreground.seqs), 10000, 5000, 5)
+
 }

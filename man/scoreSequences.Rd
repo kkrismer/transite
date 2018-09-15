@@ -11,6 +11,9 @@ scoreSequences(sequences, pwm)
 
 \item{pwm}{position weight matrix}
 }
+\value{
+list of PWM scores for each sequence
+}
 \description{
 C++ implementation of PWM scoring algorithm
 }

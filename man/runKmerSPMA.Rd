@@ -16,7 +16,8 @@ background set}
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
 
-\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or \code{7} for heptamers}
+\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
+\code{7} for heptamers}
 
 \item{n.bins}{specifies the number of bins in which the sequences will be divided,
 valid values are between 7 and 100}

@@ -9,6 +9,9 @@ setMotifs(value)
 \arguments{
 \item{value}{list of Motif objects}
 }
+\value{
+void
+}
 \description{
 Globally sets Transite motif database, use with care.
 }

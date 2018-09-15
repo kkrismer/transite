@@ -4,7 +4,8 @@
 \name{toy.motif.matrix}
 \alias{toy.motif.matrix}
 \title{A toy motif matrix.}
-\format{A data frame with four columns (A, C, G, U) and seven rows (position 1 - 7)}
+\format{A data frame with four columns (A, C, G, U) and seven
+rows (position 1 - 7)}
 \usage{
 toy.motif.matrix
 }

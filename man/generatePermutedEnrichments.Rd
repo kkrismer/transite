@@ -13,7 +13,8 @@ generatePermutedEnrichments(n.transcripts.foreground, background.set, k,
 \item{background.set}{character vector of DNA or RNA sequences that constitute the
 background set}
 
-\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or \code{7} for heptamers}
+\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
+\code{7} for heptamers}
 
 \item{n.permutations}{number of permutations to perform}
 

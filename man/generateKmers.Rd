@@ -9,7 +9,8 @@ generateKmers(sequences, k)
 \arguments{
 \item{sequences}{character vector of DNA or RNA sequences}
 
-\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or \code{7} for heptamers}
+\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
+\code{7} for heptamers}
 }
 \value{
 Returns a named numeric vector, where the elements are \emph{k}-mer counts and the

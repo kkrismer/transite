@@ -14,6 +14,8 @@ using namespace Rcpp;
 //'
 //' @param sequences list of sequences
 //' @param pwm position weight matrix
+//'
+//' @return list of PWM scores for each sequence
 //' @export
 // [[Rcpp::export]]
 SEXP scoreSequences(List sequences, NumericMatrix pwm) {
@@ -55,6 +57,9 @@ SEXP scoreSequences(List sequences, NumericMatrix pwm) {
 //'
 //' @param kmers list of \emph{k}-mers
 //' @param pwm position weight matrix
+//'
+//' @return list of PWM scores for the specified \emph{k}-mers
+//'
 //' @export
 // [[Rcpp::export]]
 NumericVector calculateKmerScores(List kmers, NumericMatrix pwm) {
@@ -112,6 +117,9 @@ NumericVector calculateKmerScores(List kmers, NumericMatrix pwm) {
 //'
 //' @param kmers list of \emph{k}-mers
 //' @param kmerScores position weight matrix
+//'
+//' @return numeric vector of \emph{k}-mer scores
+//' @export
 // [[Rcpp::export]]
 NumericVector lookupKmerScores(List kmers, Environment kmerScores) {
   NumericVector scores(kmers.size());
@@ -128,6 +136,8 @@ NumericVector lookupKmerScores(List kmers, Environment kmerScores) {
 //' C++ implementation of motif score algorithm.
 //'
 //' @param kmers list of \emph{k}-mers
+//' @return data frame with columns \code{score}, \code{top.kmer},
+//' and \code{top.kmer.enrichment}
 //' @export
 // [[Rcpp::export]]
 DataFrame computeMotifScore(List kmers) {
@@ -188,25 +198,12 @@ double calculateConsistencyScore(NumericVector x) {
 //' @param e stop criterion for consistency score Monte Carlo test: aborting permutation
 //' process after observing \code{e} random consistency values with more extreme values
 //' than the actual consistency value
+//' @return list with \code{score}, \code{p.value}, and \code{n} components
 //' @export
 // [[Rcpp::export]]
 List calculateLocalConsistency(NumericVector x, int numPermutations, int minPermutations, int e) {
   double score(calculateConsistencyScore(x));
   int k(0);
-
-//   for(int i(0); i < numPermutations; ++i) {
-//     // shuffle spectrum
-//     NumericVector shuffledSpectrum = clone(x);
-//     std::random_shuffle(shuffledSpectrum.begin(), shuffledSpectrum.end());
-//
-//     // calculate consistency score
-//     double shuffledScore(calculateConsistencyScore(shuffledSpectrum));
-//     // lower tail probability
-//     if(shuffledScore <= score) {
-//       ++k;
-//     }
-//   }
-
   int i(1);
   std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
@@ -248,6 +245,9 @@ List calculateLocalConsistency(NumericVector x, int numPermutations, int minPerm
 //' @param e stop criterion for enrichment score Monte Carlo test: aborting permutation process
 //' after observing \code{e} random enrichment values with more extreme values than the actual
 //' enrichment value
+//'
+//' @return list with p-value and number of iterations of Monte Carlo sampling
+//' for local consistency score
 //' @export
 // [[Rcpp::export]]
 List calculateTranscriptMC(NumericVector absoluteHits, NumericVector totalSites, double relHitsForeground,

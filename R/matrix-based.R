@@ -253,7 +253,7 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max.hits = 5,
     if(file.exists(motif.cache.file)) {
       motif.cache <- readMotifCache(cache.path, motif.id.file)
 
-      cached <- sapply(names(sequences), function(seq.id) {
+      cached <- vapply(names(sequences), function(seq.id) {
         return(exists(seq.id, envir = motif.cache, inherits = FALSE))
       })
 
@@ -297,11 +297,11 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max.hits = 5,
   MAX.HITS.COL <- MAX.HITS.COL + 1
   multiple.hits <- unlist(lapply(1 : MAX.HITS.COL, function(hit.count) {
     if(hit.count == MAX.HITS.COL) {
-      sum(sapply(absolute.hits, function(x) {
+      sum(vapply(absolute.hits, function(x) {
         x >= hit.count
       }))
     } else {
-      sum(sapply(absolute.hits, function(x) {
+      sum(vapply(absolute.hits, function(x) {
         x == hit.count
       }))
     }

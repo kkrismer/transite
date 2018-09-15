@@ -2,7 +2,7 @@
 % Please edit documentation in R/k-mer-based.R
 \name{calculateKmerEnrichment}
 \alias{calculateKmerEnrichment}
-\title{Correction for homopolymeric stretches}
+\title{\emph{k}-mer Enrichment between Foreground and Background Sets}
 \usage{
 calculateKmerEnrichment(foreground.sets, background.set, k,
   permutation = FALSE, chisq.p.value.threshold = 0.05,
@@ -15,7 +15,8 @@ DNA or RNA sequences (not both) and a strict subset of the \code{background.set}
 \item{background.set}{character vector of DNA or RNA sequences that constitute the
 background set}
 
-\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or \code{7} for heptamers}
+\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
+\code{7} for heptamers}
 
 \item{permutation}{if \code{TRUE}, only the enrichment value is returned (efficiency mode
 used for permutation testing)}
@@ -27,8 +28,15 @@ used for permutation testing)}
 
 \item{n.cores}{number of computing cores to use}
 }
+\value{
+A list with two entries:
+
+(1) dfs: a list of data frames with results from \code{\link{computeKmerEnrichment}} for each of the foreground sets
+(2) kmers: a character vector of all k-mers
+}
 \description{
-Counts all non-overlapping instances of \emph{k}-mers in a given set of sequences.
+Calls \code{\link{computeKmerEnrichment}} to compute \emph{k}-mer enrichment values
+for multiple foregrounds. Calculates enrichment for foreground sets in parallel.
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{checkKmers}},

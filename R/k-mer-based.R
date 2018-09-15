@@ -60,10 +60,11 @@ homopolymerCorrection <- function(sequences, k, kmers, is.rna = FALSE) {
   return(kmers)
 }
 
-#' @title Correction for homopolymeric stretches
+#' @title \emph{k}-mer Enrichment between Foreground and Background Sets
 #'
 #' @description
-#' Counts all non-overlapping instances of \emph{k}-mers in a given set of sequences.
+#' Calls \code{\link{computeKmerEnrichment}} to compute \emph{k}-mer enrichment values
+#' for multiple foregrounds. Calculates enrichment for foreground sets in parallel.
 #'
 #' @param foreground.sets list of foreground sets; a foreground set is a character vector of
 #' DNA or RNA sequences (not both) and a strict subset of the \code{background.set}
@@ -72,6 +73,11 @@ homopolymerCorrection <- function(sequences, k, kmers, is.rna = FALSE) {
 #' @param n.cores number of computing cores to use
 #' @inheritParams generateKmers
 #' @inheritParams computeKmerEnrichment
+#'
+#' @return A list with two entries:
+#'
+#' (1) dfs: a list of data frames with results from \code{\link{computeKmerEnrichment}} for each of the foreground sets
+#' (2) kmers: a character vector of all k-mers
 #'
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
@@ -230,7 +236,7 @@ computeKmerEnrichment <- function(foreground.kmers, background.kmers, permutatio
     return(enrichment)
   } else {
     # Pearson's Chi-squared test
-    chisq.p.values <- sapply(1 : length(foreground.kmers), function(i) {
+    chisq.p.values <- vapply(1 : length(foreground.kmers), function(i) {
       cont <- matrix(c(foreground.kmers[i], other.foreground.kmers[i],
                        background.kmers[i], other.background.kmers[i]), nrow = 2)
       res <- suppressWarnings(stats::chisq.test(cont))
@@ -246,7 +252,7 @@ computeKmerEnrichment <- function(foreground.kmers, background.kmers, permutatio
 
     if(length(idx) > 0) {
       # Fisher's exact test
-      fisher.p.values <- sapply(idx, function(i) {
+      fisher.p.values <- vapply(idx, function(i) {
         cont <- matrix(c(foreground.kmers[i],
                          other.foreground.kmers[i],
                          background.kmers[i],

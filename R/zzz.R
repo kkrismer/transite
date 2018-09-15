@@ -35,6 +35,7 @@ getMotifs <- function() {
 #'
 #' @param value list of Motif objects
 #'
+#' @return void
 #' @family motif functions
 #' @importFrom utils data
 #' @export

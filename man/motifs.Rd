@@ -7,8 +7,10 @@
 \format{A list of lists with the following components:
 \tabular{rl}{
   \code{id} \tab motif id\cr
-  \code{rbps} \tab gene symbols of RNA-binding proteins associated with motif\cr
-  \code{matrix} \tab data frame of sequence motif (position weight matrix)\cr
+  \code{rbps} \tab gene symbols of RNA-binding proteins
+  associated with motif\cr
+  \code{matrix} \tab data frame of sequence motif
+  (position weight matrix)\cr
   \code{hexamers} \tab all motif-associated hexamers\cr
   \code{heptamers} \tab all motif-associated heptamers\cr
   \code{length} \tab length of motif in nucleotides\cr

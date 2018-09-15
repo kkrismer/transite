@@ -11,6 +11,9 @@ calculateKmerScores(kmers, pwm)
 
 \item{pwm}{position weight matrix}
 }
+\value{
+list of PWM scores for the specified \emph{k}-mers
+}
 \description{
 C++ implementation of \emph{k}-mer score calculation
 }

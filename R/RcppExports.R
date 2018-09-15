@@ -8,6 +8,8 @@
 #'
 #' @param sequences list of sequences
 #' @param pwm position weight matrix
+#'
+#' @return list of PWM scores for each sequence
 #' @export
 scoreSequences <- function(sequences, pwm) {
     .Call('_transite_scoreSequences', PACKAGE = 'transite', sequences, pwm)
@@ -20,6 +22,9 @@ scoreSequences <- function(sequences, pwm) {
 #'
 #' @param kmers list of \emph{k}-mers
 #' @param pwm position weight matrix
+#'
+#' @return list of PWM scores for the specified \emph{k}-mers
+#'
 #' @export
 calculateKmerScores <- function(kmers, pwm) {
     .Call('_transite_calculateKmerScores', PACKAGE = 'transite', kmers, pwm)
@@ -32,6 +37,9 @@ calculateKmerScores <- function(kmers, pwm) {
 #'
 #' @param kmers list of \emph{k}-mers
 #' @param kmerScores position weight matrix
+#'
+#' @return numeric vector of \emph{k}-mer scores
+#' @export
 lookupKmerScores <- function(kmers, kmerScores) {
     .Call('_transite_lookupKmerScores', PACKAGE = 'transite', kmers, kmerScores)
 }
@@ -42,6 +50,8 @@ lookupKmerScores <- function(kmers, kmerScores) {
 #' C++ implementation of motif score algorithm.
 #'
 #' @param kmers list of \emph{k}-mers
+#' @return data frame with columns \code{score}, \code{top.kmer},
+#' and \code{top.kmer.enrichment}
 #' @export
 computeMotifScore <- function(kmers) {
     .Call('_transite_computeMotifScore', PACKAGE = 'transite', kmers)
@@ -83,6 +93,9 @@ calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
 #' @param e stop criterion for enrichment score Monte Carlo test: aborting permutation process
 #' after observing \code{e} random enrichment values with more extreme values than the actual
 #' enrichment value
+#'
+#' @return list with p-value and number of iterations of Monte Carlo sampling
+#' for local consistency score
 #' @export
 calculateTranscriptMC <- function(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e) {
     .Call('_transite_calculateTranscriptMC', PACKAGE = 'transite', absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e)

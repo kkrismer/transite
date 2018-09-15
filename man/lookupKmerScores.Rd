@@ -11,6 +11,9 @@ lookupKmerScores(kmers, kmerScores)
 
 \item{kmerScores}{position weight matrix}
 }
+\value{
+numeric vector of \emph{k}-mer scores
+}
 \description{
 C++ implementation of \emph{k}-mer score hash table lookup.
 }

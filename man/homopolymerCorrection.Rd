@@ -9,7 +9,8 @@ homopolymerCorrection(sequences, k, kmers, is.rna = FALSE)
 \arguments{
 \item{sequences}{character vector of DNA or RNA sequences}
 
-\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or \code{7} for heptamers}
+\item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
+\code{7} for heptamers}
 
 \item{kmers}{column sums of return value of
 \code{Biostrings::oligonucleotideFrequency(sequences)}}
@@ -18,11 +19,12 @@ homopolymerCorrection(sequences, k, kmers, is.rna = FALSE)
 flag needs to be set}
 }
 \value{
-Returns a named numeric vector, where the elements are \emph{k}-mer counts and the
-names are \emph{k}-mers.
+Returns a named numeric vector, where the elements are
+\emph{k}-mer counts and the names are \emph{k}-mers.
 }
 \description{
-Counts all non-overlapping instances of \emph{k}-mers in a given set of sequences.
+Counts all non-overlapping instances of \emph{k}-mers in a given set
+of sequences.
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},

@@ -23,6 +23,9 @@ allowed, (3) allowed characters are A, C, G, U}
 
 \item{src}{source of motif (e.g., \code{"RBPDB v1.3.1"})}
 }
+\value{
+object of class Motif
+}
 \description{
 Takes a position weight matrix (PWM) and meta info and returns an object of class \code{Motif}.
 }

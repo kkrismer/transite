@@ -3,17 +3,21 @@
 \docType{data}
 \name{ge}
 \alias{ge}
-\title{A toy data set with gene expression measurements and 3'-UTR sequences of 1000 genes}
+\title{A toy data set with gene expression measurements and 3'-UTR sequences
+of 1000 genes}
 \format{A list with the following components:
 \tabular{rl}{
-  \code{foreground1.df} \tab data frame that contains down-regulated genes after treatment\cr
-  \code{foreground2.df} \tab data frame that contains up-regulated genes after treatment\cr
+  \code{foreground1.df} \tab data frame that contains down-regulated
+  genes after treatment\cr
+  \code{foreground2.df} \tab data frame that contains up-regulated
+  genes after treatment\cr
   \code{background.df} \tab data frame that contains all genes measured
 }}
 \usage{
 ge
 }
 \description{
-A toy data set with gene expression measurements and 3'-UTR sequences of 1000 genes
+A toy data set with gene expression measurements and 3'-UTR sequences
+of 1000 genes
 }
 \keyword{datasets}

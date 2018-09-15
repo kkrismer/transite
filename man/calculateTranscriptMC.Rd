@@ -28,6 +28,10 @@ Monte Carlo test for enrichment score}
 after observing \code{e} random enrichment values with more extreme values than the actual
 enrichment value}
 }
+\value{
+list with p-value and number of iterations of Monte Carlo sampling
+for local consistency score
+}
 \description{
 C++ implementation of Local Consistency Score algorithm.
 }

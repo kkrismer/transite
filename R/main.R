@@ -477,7 +477,7 @@ runKmerTSMA <- function(foreground.sets, background.set, motifs = NULL, k = 6,
     }
     message("calculated enrichment for all permuted sets")
 
-    motif.result <- lapply(1 : length(foreground.sets), function(i) {
+    motif.result <- lapply(seq_len(length(foreground.sets)), function(i) {
       kmers.df <- enrichment.result$dfs[[i]]
       kmers.df$kmer <- enrichment.result$kmers
 
@@ -551,7 +551,7 @@ runKmerTSMA <- function(foreground.sets, background.set, motifs = NULL, k = 6,
                   depleted.kmers.combined.p.values = depleted.kmers.combined.p.values))
     })
 
-    result <- lapply(1 : length(foreground.sets), function(i) {
+    result <- lapply(seq_len(length(foreground.sets)), function(i) {
       enrichment.df <- enrichment.result$dfs[[i]]
       enrichment.df$kmer <- enrichment.result$kmers
       return(list(enrichment.df = enrichment.df,

@@ -333,8 +333,8 @@ generateIUPACByKmers <- function(kmers, code = NULL) {
     code <- initIUPAClookupTable()
   }
 
-  codes <- lapply(1 : nchar(kmers[1]), function(i) {
-    return(code[[paste0(sort(unique(unlist(lapply(1 : length(kmers), function(j) {
+  codes <- lapply(seq_len(nchar(kmers[1])), function(i) {
+    return(code[[paste0(sort(unique(unlist(lapply(seq_len(length(kmers)), function(j) {
       return(substr(kmers[j], i, i))
     })))), collapse = "")]])
   })
@@ -437,7 +437,7 @@ generateKmersFromIUPAC <- function(iupac, k) {
   n <- nchar(iupac)
   full.length <- do.call(paste0, expand.grid(expanded, stringsAsFactors = FALSE))
   kmers <- unique(as.vector(apply(as.matrix(full.length), 1, function(x) {
-    substring(x, 1 : (n - k + 1), k : n)
+    substring(x, seq_len(n - k + 1), k : n)
   })))
   return(gsub(pattern = "T", replacement = "U", x = kmers, fixed = TRUE))
 }

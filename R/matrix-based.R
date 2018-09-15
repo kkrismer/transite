@@ -295,7 +295,7 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max.hits = 5,
     MAX.HITS.COL <- max.hits
   }
   MAX.HITS.COL <- MAX.HITS.COL + 1
-  multiple.hits <- unlist(lapply(1 : MAX.HITS.COL, function(hit.count) {
+  multiple.hits <- unlist(lapply(seq_len(MAX.HITS.COL), function(hit.count) {
     if(hit.count == MAX.HITS.COL) {
       sum(vapply(absolute.hits, function(x) {
         x >= hit.count
@@ -434,7 +434,7 @@ cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix, thresho
                                        motif.cache, cache.path, motif.id.file) {
   absolute.hits <- scoreSequencesHelper(sequences, motif.matrix, threshold.score)
 
-  for(i in 1 : length(absolute.hits)) {
+  for(i in seq_len(length(absolute.hits))) {
     assign(seq.ids[i], absolute.hits[i], envir = motif.cache)
   }
 

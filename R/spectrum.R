@@ -45,9 +45,9 @@ subdivideData <- function(background.set, n.bins = 40) {
   }
 
   bin.size <- floor(length(background.set) / n.bins)
-  cuts <- 1 : (n.bins - 1) * bin.size
+  cuts <- seq_len(n.bins - 1) * bin.size
   cuts <- c(0, cuts, length(background.set))
-  foreground.sets <- tapply(background.set, cut(1 : length(background.set), breaks = cuts), identity)
+  foreground.sets <- tapply(background.set, cut(seq_len(length(background.set)), breaks = cuts), identity)
   return(foreground.sets)
 }
 
@@ -241,7 +241,7 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
   if(max.model.degree > 5 || max.model.degree < 1) {
     stop("supported values for max.model.degree: 1, 2, 3, 4, 5")
   }
-  bin <- 1 : length(x)
+  bin <- seq_len(length(x))
 
   df <- data.frame(bin = bin, value = x, p.value = p.value, RBP = rep("", length(bin)),
                    stringsAsFactors = FALSE)

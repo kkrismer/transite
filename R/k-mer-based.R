@@ -236,7 +236,7 @@ computeKmerEnrichment <- function(foreground.kmers, background.kmers, permutatio
     return(enrichment)
   } else {
     # Pearson's Chi-squared test
-    chisq.p.values <- vapply(1 : length(foreground.kmers), function(i) {
+    chisq.p.values <- vapply(seq_len(length(foreground.kmers)), function(i) {
       cont <- matrix(c(foreground.kmers[i], other.foreground.kmers[i],
                        background.kmers[i], other.background.kmers[i]), nrow = 2)
       res <- suppressWarnings(stats::chisq.test(cont))
@@ -314,7 +314,7 @@ empiricalEnrichmentMeanCDF <- function(random.means, actual.mean,
   p.value <- (k + 1) / (length(random.means) + 1)
 
   conf.int <- stats::binom.test(k, length(random.means), p = 0.5,
-                                conf.level = conf.level)$conf.int[1 : 2]
+                                conf.level = conf.level)$conf.int[seq_len(2)]
   return(list(p.value.estimate = p.value, conf.int = conf.int))
 }
 
@@ -355,7 +355,7 @@ geometricMean <- function(x, na.rm = TRUE) {
 generatePermutedEnrichments <- function(n.transcripts.foreground, background.set, k,
                                         n.permutations = 1000, n.cores = 4) {
   background.seq.n <- length(background.set)
-  random.foreground.sets <- lapply(1 : n.permutations, function(i) {
+  random.foreground.sets <- lapply(seq_len(n.permutations), function(i) {
     return(background.set[sample.int(background.seq.n, n.transcripts.foreground)])
   })
   return(calculateKmerEnrichment(random.foreground.sets, background.set, k,

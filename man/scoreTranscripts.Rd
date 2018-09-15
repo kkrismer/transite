@@ -66,17 +66,21 @@ motifs and returns the result in a data frame, which is subsequently used by
 obtain binding site enrichment scores.
 }
 \examples{
-foreground.set <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-                                   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-                                   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-                                   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-                                   "ATAGAC", "AGTTC", "CCAGTAA")
+foreground.set <- c(
+  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+  "ATAGAC", "AGTTC", "CCAGTAA"
+)
 # names are used as keys in the hash table (cached version only)
 # ideally sequence identifiers (e.g., RefSeq ids) and region labels (e.g., 3UTR for 3'-UTR)
-names(foreground.set) <- c("NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
+names(foreground.set) <- c(
+  "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
   "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
-  "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR")
+  "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
+)
 
 # cached (writes scores to disk)
 scores <- scoreTranscripts(foreground.set)
@@ -87,7 +91,6 @@ scores <- scoreTranscripts(foreground.set, cache = FALSE)
 # specific motifs
 motifs <- transite::getMotifByRBP("ELAVL1")
 scores <- scoreTranscripts(foreground.set, motifs = motifs)
-
 \dontrun{
 foreground.df <- ge$foreground1
 foreground.set <- foreground.df$seq

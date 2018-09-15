@@ -35,7 +35,6 @@ test.sd <- 1.0
 test.null.distribution <- rnorm(n = 10000, mean = 1.0, sd = test.sd)
 
 empiricalEnrichmentMeanCDF(test.null.distribution, test.sd * 2, "greater")
-
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},

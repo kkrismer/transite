@@ -26,9 +26,9 @@
 #'   "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
 #'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 #' )
-#'
+#' 
 #' foreground.sets <- subdivideData(toy.background.set, n.bins = 7)
-#'
+#' 
 #' # exemplary data set
 #' background.df <- ge$background
 #' # sort sequences by signal-to-noise ratio
@@ -36,7 +36,7 @@
 #' # character vector of named sequences
 #' background.set <- background.df$seq
 #' names(background.set) <- paste0(background.df$refseq, "|", background.df$seq.type)
-#'
+#' 
 #' foreground.sets <- subdivideData(background.set)
 #' @family SPMA functions
 #' @export
@@ -198,12 +198,12 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' @examples
 #' # random spectrum
 #' scoreSpectrum(runif(n = 40, min = -1, max = 1), max.model.degree = 1)
-#'
+#' 
 #' # non-random linear spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
 #' scoreSpectrum(signal + noise, max.model.degree = 1, max.cs.permutations = 100000)
-#'
+#' 
 #' # non-random quadratic spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
@@ -392,7 +392,7 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 #' }
 #' @examples
 #' n.bins <- 40
-#'
+#' 
 #' # random spectrum
 #' random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1), max.model.degree = 1)
 #' score <- spectrumClassifier(
@@ -400,7 +400,7 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 #'   random.sp$consistency.score.n, 0, n.bins
 #' )
 #' sum(score)
-#'
+#' 
 #' # non-random linear spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
@@ -421,7 +421,7 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)), x.label = "log enric
 #' )
 #' sum(score)
 #' }
-#'
+#' 
 #' # non-random quadratic spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)

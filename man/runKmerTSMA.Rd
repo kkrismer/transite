@@ -74,24 +74,27 @@ target overrepresentation.
 }
 \examples{
 # define simple sequence sets for foreground and background
-foreground.set1 <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-                                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-                                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-                                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-                                   "AUAGAC", "AGUUC", "CCAGUAA")
-foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU")
+foreground.set1 <- c(
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA"
+)
+foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
 foreground.sets <- list(foreground.set1, foreground.set2)
-background.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-                                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-                                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-                                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-                                   "AUAGAC", "AGUUC", "CCAGUAA",
-                                   "UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU",
-                                   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
+background.set <- c(
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA",
+  "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
+  "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
+)
 
 # run k-mer based TSMA with all Transite motifs
 results <- runKmerTSMA(foreground.sets, background.set)
-
 \dontrun{
 # define exemplary sequence sets for foreground and background
 foreground.set1 <- gsub("T", "U", ge$foreground1$seq)
@@ -106,8 +109,10 @@ results <- runKmerTSMA(foreground.sets, background.set)
 results <- runKmerTSMA(foreground.sets, background.set, motifs = getMotifByRBP("ELAVL1"))
 
 # run TSMA with user-defined motif
-toy.motif <- createKmerMotif("toy.motif", "example RBP",
-  c("AACCGG", "AAAACG", "AACACG"), "example type", "example species", "user")
+toy.motif <- createKmerMotif(
+  "toy.motif", "example RBP",
+  c("AACCGG", "AAAACG", "AACACG"), "example type", "example species", "user"
+)
 results <- runMatrixTSMA(foreground.sets, background.set, motifs = list(toy.motif))
 }
 

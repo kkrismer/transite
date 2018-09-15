@@ -54,17 +54,19 @@ enrichment values are obtained by Monte Carlo tests.
 }
 \examples{
 foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT", "AGAT", "CCAGTAA")
-background.seqs <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-                                              "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-                                              "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-                                              "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-                                              "ATAGAC", "AGTTC", "CCAGTAA")
+background.seqs <- c(
+  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+  "ATAGAC", "AGTTC", "CCAGTAA"
+)
 foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
 background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
 enrichments.df <- calculateMotifEnrichment(foreground.scores$df, background.scores$df,
   background.scores$total.sites, background.scores$absolute.hits, length(foreground.seqs),
-  max.fg.permutations = 1000)
-
+  max.fg.permutations = 1000
+)
 }
 \seealso{
 Other matrix functions: \code{\link{runMatrixSPMA}},

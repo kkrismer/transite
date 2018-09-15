@@ -41,7 +41,7 @@ IUPAC RNA nucleotide code:
 }
 }
 \examples{
-generateIUPACByKmers(c('AACCAA', 'AACCGG', 'CACCGA'))
+generateIUPACByKmers(c("AACCAA", "AACCGG", "CACCGA"))
 }
 \references{
 \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}

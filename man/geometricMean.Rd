@@ -20,5 +20,4 @@ Calculates the geometric mean of the specified values.
 }
 \examples{
 geometricMean(c(0.123, 0.441, 0.83))
-
 }

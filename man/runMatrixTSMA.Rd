@@ -102,39 +102,48 @@ binding sites may play a similar role as clusters of transcription factors.
 }
 \examples{
 # define simple sequence sets for foreground and background
-foreground.set1 <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-                                   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-                                   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-                                   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-                                   "ATAGAC", "AGTTC", "CCAGTAA")
-names(foreground.set1) <- c("NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
+foreground.set1 <- c(
+  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+  "ATAGAC", "AGTTC", "CCAGTAA"
+)
+names(foreground.set1) <- c(
+  "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
   "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
-  "NM_12_DUMMY|3UTR","NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR")
+  "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
+)
 
-foreground.set2 <- c("TTATTTA", "ATCCTTTACA", "TTTTTTT","TTTCATCATT")
-names(foreground.set2) <- c("NM_15_DUMMY|3UTR", "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR",
-  "NM_18_DUMMY|3UTR")
+foreground.set2 <- c("TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT")
+names(foreground.set2) <- c(
+  "NM_15_DUMMY|3UTR", "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR",
+  "NM_18_DUMMY|3UTR"
+)
 
 foreground.sets <- list(foreground.set1, foreground.set2)
 
-background.set <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-                                   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-                                   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-                                   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-                                   "ATAGAC", "AGTTC", "CCAGTAA",
-                                   "TTATTTA", "ATCCTTTACA", "TTTTTTT","TTTCATCATT",
-                                   "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA")
-names(background.set) <- c("NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
+background.set <- c(
+  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+  "ATAGAC", "AGTTC", "CCAGTAA",
+  "TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT",
+  "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA"
+)
+names(background.set) <- c(
+  "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR", "NM_7_DUMMY|3UTR",
   "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR", "NM_10_DUMMY|3UTR", "NM_11_DUMMY|3UTR",
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR", "NM_15_DUMMY|3UTR",
   "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR", "NM_18_DUMMY|3UTR", "NM_19_DUMMY|3UTR",
-  "NM_20_DUMMY|3UTR", "NM_21_DUMMY|3UTR", "NM_22_DUMMY|3UTR")
+  "NM_20_DUMMY|3UTR", "NM_21_DUMMY|3UTR", "NM_22_DUMMY|3UTR"
+)
 
 # run cached version of TSMA with all Transite motifs (recommended)
 results <- runMatrixTSMA(foreground.sets, background.set)
-
 \dontrun{
 # define exemplary sequence sets for foreground and background
 foreground1.df <- ge$foreground1
@@ -161,8 +170,10 @@ results <- runMatrixTSMA(foreground.sets, background.set, cache = FALSE)
 results <- runMatrixTSMA(foreground.sets, background.set, motifs = getMotifByRBP("ELAVL1"))
 
 # run TSMA with user-defined motif
-toy.motif <- createMatrixMotif("toy.motif", "example RBP", toy.motif.matrix,
-  "example type", "example species", "user")
+toy.motif <- createMatrixMotif(
+  "toy.motif", "example RBP", toy.motif.matrix,
+  "example type", "example species", "user"
+)
 results <- runMatrixTSMA(foreground.sets, background.set, motifs = list(toy.motif))
 }
 

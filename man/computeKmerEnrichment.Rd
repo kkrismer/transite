@@ -48,24 +48,27 @@ significant p-values.
 }
 \examples{
 # define simple sequence sets for foreground and background
-foreground.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-                                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-                                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-                                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-                                   "AUAGAC", "AGUUC", "CCAGUAA")
-background.set <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-                                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-                                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-                                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-                                   "AUAGAC", "AGUUC", "CCAGUAA",
-                                   "UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU",
-                                   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
+foreground.set <- c(
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA"
+)
+background.set <- c(
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA",
+  "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
+  "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
+)
 foreground.kmers <- generateKmers(foreground.set, 6)
 background.kmers <- generateKmers(background.set, 6)
 
 
 kmer.enrichment.values <- computeKmerEnrichment(foreground.kmers, background.kmers)
-
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},

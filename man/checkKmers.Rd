@@ -23,7 +23,6 @@ checkKmers(c("ACGCUC", "AAACCC", "UUUACA"))
 
 # invalid set (contains hexamers and heptamers)
 checkKmers(c("ACGCUC", "AAACCC", "UUUACAA"))
-
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},

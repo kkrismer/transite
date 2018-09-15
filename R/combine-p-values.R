@@ -84,7 +84,7 @@
 #'
 #' @examples
 #' pCombine(c(0.01, 0.05, 0.5))
-#'
+#' 
 #' pCombine(c(0.01, 0.05, 0.5), method = "tippett")
 #' @importFrom stats pchisq
 #' @importFrom stats qnorm

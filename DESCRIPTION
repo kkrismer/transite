@@ -60,7 +60,7 @@ Suggests:
     TxDb.Hsapiens.UCSC.hg38.knownGene (>= 3.4.0),
     TxDb.Mmusculus.UCSC.mm10.knownGene (>= 3.4.0),
     VennDiagram (>= 1.6.20),
-    roxygen2
+    roxygen2 (>= 6.1.0)
 LinkingTo: 
     Rcpp (>= 0.12.18)
 VignetteBuilder: 

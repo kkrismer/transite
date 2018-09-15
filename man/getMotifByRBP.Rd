@@ -16,9 +16,9 @@ A list of objects of class Motif
 Retrieves one or more motif objects identified by gene symbol.
 }
 \examples{
-getMotifByRBP('ELAVL1')
+getMotifByRBP("ELAVL1")
 
-getMotifByRBP(c('ELAVL1', 'ELAVL2'))
+getMotifByRBP(c("ELAVL1", "ELAVL2"))
 }
 \seealso{
 Other motif functions: \code{\link{generateIUPACByKmers}},

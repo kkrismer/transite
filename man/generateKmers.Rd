@@ -30,26 +30,29 @@ RNA sequences.
 
 \examples{
 # count hexamers in set of RNA sequences
-rna.sequences <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-                   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-                   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-                   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-                   "AUAGAC", "AGUUC", "CCAGUAA",
-                   "UUAUUUA", "AUCCUUUACA", "UUUUUUU","UUUCAUCAUU",
-                   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
+rna.sequences <- c(
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA",
+  "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
+  "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
+)
 hexamer.counts <- generateKmers(rna.sequences, 6)
 
 
 # count heptamers in set of DNA sequences
-dna.sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-                   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-                   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-                   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-                   "ATAGAC", "AGTTC", "CCAGTAA",
-                   "TTATTTA", "ATCCTTTACA", "TTTTTTT","TTTCATCATT",
-                   "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA")
+dna.sequences <- c(
+  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
+  "ATAGAC", "AGTTC", "CCAGTAA",
+  "TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT",
+  "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA"
+)
 hexamer.counts <- generateKmers(dna.sequences, 7)
-
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},

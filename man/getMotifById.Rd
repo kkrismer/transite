@@ -16,9 +16,9 @@ A list of objects of class Motif
 Retrieves one or more motif objects identified by motif id.
 }
 \examples{
-getMotifById('M178_0.6')
+getMotifById("M178_0.6")
 
-getMotifById(c('M178_0.6', 'M188_0.6'))
+getMotifById(c("M178_0.6", "M188_0.6"))
 }
 \seealso{
 Other motif functions: \code{\link{generateIUPACByKmers}},

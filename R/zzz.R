@@ -38,9 +38,11 @@ getMotifs <- function() {
 #' @return void
 #'
 #' @examples
-#' custom.motif <- createKmerMotif("custom.motif", "RBP1",
-#'                                 c("AAAAAA", "CAAAAA"), "HITS-CLIP",
-#'                                 "Homo sapiens", "user")
+#' custom.motif <- createKmerMotif(
+#'   "custom.motif", "RBP1",
+#'   c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+#'   "Homo sapiens", "user"
+#' )
 #' setMotifs(list(custom.motif))
 #' @family motif functions
 #' @importFrom utils data
@@ -55,6 +57,6 @@ setMotifs <- function(value) {
   utils::data("motifs", package = pkgname, envir = package.environment)
 }
 
-#.onUnload <- function(libpath) {
+# .onUnload <- function(libpath) {
 #  library.dynam.unload("transite", libpath)
-#}
+# }

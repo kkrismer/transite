@@ -41,12 +41,13 @@ object of class Motif
 Creates an object of class \code{Motif}.
 }
 \examples{
-kmers <- c("AAAAAA", "CAAAAA")
-iupac <- transite::generateIUPACByKmers(kmers, code = transite::initIUPAClookupTable())
-hexamers <- transite::generateKmersFromIUPAC(iupac, 6)
-heptamers <- transite::generateKmersFromIUPAC(iupac, 7)
+kmers <- c("AAAAAAA", "CAAAAAA")
+iupac <- generateIUPACByKmers(kmers,
+  code = initIUPAClookupTable())
+hexamers <- generateKmersFromIUPAC(iupac, 6)
+heptamers <- generateKmersFromIUPAC(iupac, 7)
 Motif(
-  "custom.motif", "RBP1", NULL, hexamers, heptamers, 6,
+  "custom.motif", "RBP1", NULL, hexamers, heptamers, 7,
   iupac, "HITS-CLIP", "Homo sapiens", "user"
 )
 }

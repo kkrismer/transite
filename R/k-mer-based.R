@@ -383,7 +383,7 @@ computeKmerEnrichment <-
                         res$p.value <- 0
                     }
                     return(res$p.value)
-                })
+                }, numeric(1))
 
             # calculate Fisher's exact test for Chi-squared test
             # p-values <= chisq.p.value.threshold
@@ -405,7 +405,7 @@ computeKmerEnrichment <-
                         nrow = 2
                     )
                     return(stats::fisher.test(cont)$p.value)
-                })
+                }, numeric(1))
 
                 # replace Chi-squared test p-values with Fisher's
                 # exact test p-values

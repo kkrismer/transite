@@ -12,9 +12,11 @@
 #' @return list of PWM scores for each sequence
 #' @examples
 #' motif <- getMotifById("M178_0.6")[[1]]
-#' sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
-#'   "AATTGGTGTCTGGATACTTCCCTGTACAT", "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA")
+#' sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+#'                "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+#'                "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
+#'                "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC",
+#'                "AGTTC", "CCAGTAA")
 #' seq.char.vectors <- lapply(sequences, function(seq) {
 #'   unlist(strsplit(seq, ""))
 #' })
@@ -76,21 +78,29 @@ computeMotifScore <- function(kmers) {
 #' C++ implementation of Local Consistency Score algorithm.
 #'
 #' @param x numeric vector that contains values for shuffling
-#' @param numPermutations maximum number of permutations performed in Monte Carlo test
+#' @param numPermutations maximum number of permutations performed in
+#' Monte Carlo test
 #' for consistency score
-#' @param minPermutations minimum number of permutations performed in Monte Carlo test
+#' @param minPermutations minimum number of permutations performed in
+#' Monte Carlo test
 #' for consistency score
-#' @param e stop criterion for consistency score Monte Carlo test: aborting permutation
-#' process after observing \code{e} random consistency values with more extreme values
+#' @param e stop criterion for consistency score Monte Carlo test:
+#' aborting permutation
+#' process after observing \code{e} random consistency values with
+#' more extreme values
 #' than the actual consistency value
 #' @return list with \code{score}, \code{p.value}, and \code{n} components
 #'
 #' @examples
-#' poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4, 0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
-#' local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
+#' poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4,
+#'   0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
+#' local.consistency <- calculateLocalConsistency(poor.enrichment.spectrum,
+#'   1000000, 1000, 5)
 #'
-#' enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8, 0.9, 1.2, 1.4, 1.6, 1.4)
-#' local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
+#' enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
+#'   0.9, 1.2, 1.4, 1.6, 1.4)
+#' local.consistency <- calculateLocalConsistency(enrichment.spectrum,
+#'   1000000, 1000, 5)
 #' @export
 calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
     .Call('_transite_calculateLocalConsistency', PACKAGE = 'transite', x, numPermutations, minPermutations, e)
@@ -107,34 +117,39 @@ calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
 #' (returned by \code{\link{scoreTranscripts}})
 #' @param relHitsForeground relative number of hits in foreground set
 #' @param n number of sequences in the foreground set
-#' @param maxPermutations maximum number of foreground permutations performed in
+#' @param maxPermutations maximum number of foreground permutations
+#' performed in
 #' Monte Carlo test for enrichment score
-#' @param minPermutations minimum number of foreground permutations performed in
+#' @param minPermutations minimum number of foreground permutations
+#' performed in
 #' Monte Carlo test for enrichment score
-#' @param e stop criterion for enrichment score Monte Carlo test: aborting permutation process
-#' after observing \code{e} random enrichment values with more extreme values than the actual
+#' @param e stop criterion for enrichment score Monte Carlo test:
+#' aborting permutation process
+#' after observing \code{e} random enrichment values with more extreme
+#' values than the actual
 #' enrichment value
 #'
 #' @return list with p-value and number of iterations of Monte Carlo sampling
-#' for local consistency score
+#' for foreground enrichment
 #'
 #' @examples
-#' foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT", "AGAT", "CCAGTAA")
-#' background.seqs <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-#'                      "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'                      "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+#' foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTTGTGGGGCTTCCCTGTACAT",
+#'                      "AGAT", "CCAGTAA", "TGTGGGG")
+#' background.seqs <- c(foreground.seqs, "CAACAGCCTTAATT", "CTTTGGGGAAT",
+#'                      "TCATTTTATTAAA", "ATCAAATTA", "GACACTTAAAGATCCT",
 #'                      "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-#'                      "ATAGAC", "AGTTC", "CCAGTAA")
-#' foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
-#' background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
+#'                      "ATAGAC", "AGTTC")
+#' motif.db <- getMotifById("M178_0.6")
+#' fg <- scoreTranscripts(foreground.seqs, cache = FALSE,
+#'   motifs = motif.db)
+#' bg <- scoreTranscripts(background.seqs, cache = FALSE,
+#'   motifs = motif.db)
 #'
-#' fg <- dplyr::filter(foreground.scores$df, motif.id == "M178_0.6")
-#' bg <- dplyr::filter(background.scores$df, motif.id == "M178_0.6")
-#'
-#' mc.result <- calculateTranscriptMC(bg$absolute.hits, bg$total.sites,
-#'                                    fg$absolute.hits / fg$total.sites,
-#'                                    length(foreground.seqs), 10000, 5000, 5)
-#'
+#' mc.result <- calculateTranscriptMC(unlist(bg$absolute.hits),
+#'  unlist(bg$total.sites),
+#'  fg$df$absolute.hits / fg$df$total.sites,
+#'  length(foreground.seqs), 1000, 500, 5)
+#' @export
 calculateTranscriptMC <- function(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e) {
     .Call('_transite_calculateTranscriptMC', PACKAGE = 'transite', absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e)
 }

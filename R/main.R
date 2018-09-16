@@ -127,23 +127,29 @@
 #'   "NM_20_DUMMY|3UTR", "NM_21_DUMMY|3UTR", "NM_22_DUMMY|3UTR"
 #' )
 #'
-#' # run cached version of TSMA with all Transite motifs (recommended)
-#' results <- runMatrixTSMA(foreground.sets, background.set)
+#' # run cached version of TSMA with all Transite motifs (recommended):
+#' # results <- runMatrixTSMA(foreground.sets, background.set)
+#'
+#' # run uncached version with one motif:
+#' motif.db <- getMotifById("M178_0.6")
+#' results <- runMatrixTSMA(foreground.sets, background.set, motifs = motif.db,
+#' cache = FALSE)
+#'
 #' \dontrun{
-#' # define exemplary sequence sets for foreground and background
-#' foreground1.df <- ge$foreground1
+#' # define example sequence sets for foreground and background
+#' foreground1.df <- transite:::ge$foreground1
 #' foreground.set1 <- foreground1.df$seq
 #' names(foreground.set1) <- paste0(foreground1.df$refseq, "|",
 #'   foreground1.df$seq.type)
 #'
-#' foreground2.df <- ge$foreground2
+#' foreground2.df <- transite:::ge$foreground2
 #' foreground.set2 <- foreground2.df$seq
 #' names(foreground.set2) <- paste0(foreground2.df$refseq, "|",
 #'   foreground2.df$seq.type)
 #'
 #' foreground.sets <- list(foreground.set1, foreground.set2)
 #'
-#' background.df <- ge$background
+#' background.df <- transite:::ge$background
 #' background.set <- background.df$seq
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
@@ -314,8 +320,8 @@ runMatrixTSMA <-
 #'
 #' @examples
 #' \dontrun{
-#' # exemplary data set
-#' background.df <- ge$background
+#' # example data set
+#' background.df <- transite:::ge$background
 #' # sort sequences by signal-to-noise ratio
 #' background.df <- dplyr::arrange(background.df, value)
 #' # character vector of named sequences
@@ -626,14 +632,18 @@ runMatrixSPMA <-
 #'   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 #' )
 #'
-#' # run k-mer based TSMA with all Transite motifs
-#' results <- runKmerTSMA(foreground.sets, background.set)
+#' # run k-mer based TSMA with all Transite motifs (recommended):
+#' # results <- runKmerTSMA(foreground.sets, background.set)
+#'
+#' # run TSMA with one motif:
+#' motif.db <- getMotifById("M178_0.6")
+#' results <- runKmerTSMA(foreground.sets, background.set, motifs = motif.db)
 #' \dontrun{
-#' # define exemplary sequence sets for foreground and background
-#' foreground.set1 <- gsub("T", "U", ge$foreground1$seq)
-#' foreground.set2 <- gsub("T", "U", ge$foreground2$seq)
+#' # define example sequence sets for foreground and background
+#' foreground.set1 <- gsub("T", "U", transite:::ge$foreground1$seq)
+#' foreground.set2 <- gsub("T", "U", transite:::ge$foreground2$seq)
 #' foreground.sets <- list(foreground.set1, foreground.set2)
-#' background.set <- gsub("T", "U", ge$background$seq)
+#' background.set <- gsub("T", "U", transite:::ge$background$seq)
 #'
 #' # run TSMA with all Transite motifs
 #' results <- runKmerTSMA(foreground.sets, background.set)
@@ -922,8 +932,8 @@ runKmerTSMA <-
 #'
 #' @examples
 #' \dontrun{
-#' # exemplary data set
-#' background.df <- ge$background
+#' # example data set
+#' background.df <- transite:::ge$background
 #' # sort sequences by signal-to-noise ratio
 #' background.df <- dplyr::arrange(background.df, value)
 #' # character vector of named sequences

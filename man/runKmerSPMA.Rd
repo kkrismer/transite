@@ -82,8 +82,8 @@ target overrepresentation.
 }
 \examples{
 \dontrun{
-# exemplary data set
-background.df <- ge$background
+# example data set
+background.df <- transite:::ge$background
 # sort sequences by signal-to-noise ratio
 background.df <- dplyr::arrange(background.df, value)
 # character vector of named sequences

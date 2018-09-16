@@ -19,9 +19,11 @@ C++ implementation of PWM scoring algorithm
 }
 \examples{
 motif <- getMotifById("M178_0.6")[[1]]
-sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
-  "AATTGGTGTCTGGATACTTCCCTGTACAT", "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
-  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA")
+sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
+               "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
+               "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
+               "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC",
+               "AGTTC", "CCAGTAA")
 seq.char.vectors <- lapply(sequences, function(seq) {
   unlist(strsplit(seq, ""))
 })

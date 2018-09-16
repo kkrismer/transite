@@ -38,7 +38,7 @@ class \code{Motif}.
 \examples{
 custom.motif <- createKmerMotif(
   "custom.motif", "RBP1",
-  c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+  c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
   "Homo sapiens", "user"
 )
 }

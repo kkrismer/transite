@@ -22,12 +22,13 @@
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
 #' @return object of class Motif
 #' @examples
-#' kmers <- c("AAAAAA", "CAAAAA")
-#' iupac <- transite::generateIUPACByKmers(kmers, code = transite::initIUPAClookupTable())
-#' hexamers <- transite::generateKmersFromIUPAC(iupac, 6)
-#' heptamers <- transite::generateKmersFromIUPAC(iupac, 7)
+#' kmers <- c("AAAAAAA", "CAAAAAA")
+#' iupac <- generateIUPACByKmers(kmers,
+#'   code = initIUPAClookupTable())
+#' hexamers <- generateKmersFromIUPAC(iupac, 6)
+#' heptamers <- generateKmersFromIUPAC(iupac, 7)
 #' Motif(
-#'   "custom.motif", "RBP1", NULL, hexamers, heptamers, 6,
+#'   "custom.motif", "RBP1", NULL, hexamers, heptamers, 7,
 #'   iupac, "HITS-CLIP", "Homo sapiens", "user"
 #' )
 #' @export
@@ -42,7 +43,6 @@ Motif <- function(id, rbps, matrix, hexamers, heptamers, length, iupac, type,
     class(object) <- append(class(object), "Motif")
     return(object)
 }
-
 
 #' @title Creates Transite motif object from position weight matrix
 #'
@@ -62,12 +62,18 @@ Motif <- function(id, rbps, matrix, hexamers, heptamers, length, iupac, type,
 #' \code{'Homo sapiens'})
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
 #' @return object of class Motif
+#' @examples
+#' custom.motif <- createMatrixMotif(
+#'   "custom.motif", "RBP1",
+#'   transite:::toy.motif.matrix, "HITS-CLIP",
+#'   "Homo sapiens", "user"
+#' )
 #' @export
 createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
-    iupac <- transite::generateIUPACByMatrix(matrix, code = transite::initIUPAClookupTable())
+    iupac <- generateIUPACByMatrix(matrix, code = initIUPAClookupTable())
     motif.length <- nrow(matrix)
-    hexamers <- transite::generateKmersFromIUPAC(iupac, 6)
-    heptamers <- transite::generateKmersFromIUPAC(iupac, 7)
+    hexamers <- generateKmersFromIUPAC(iupac, 6)
+    heptamers <- generateKmersFromIUPAC(iupac, 7)
 
     return(Motif(
         id, rbps, matrix, hexamers, heptamers, motif.length, iupac, type,
@@ -100,7 +106,7 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
 #' @examples
 #' custom.motif <- createKmerMotif(
 #'   "custom.motif", "RBP1",
-#'   c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+#'   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
 #' @export
@@ -120,9 +126,9 @@ createKmerMotif <- function(id, rbps, kmers, type, species, src) {
         heptamers <- kmers
     }
 
-    iupac <- transite::generateIUPACByKmers(kmers, code = transite::initIUPAClookupTable())
-    hexamers <- transite::generateKmersFromIUPAC(iupac, 6)
-    heptamers <- transite::generateKmersFromIUPAC(iupac, 7)
+    iupac <- generateIUPACByKmers(kmers, code = initIUPAClookupTable())
+    hexamers <- generateKmersFromIUPAC(iupac, 6)
+    heptamers <- generateKmersFromIUPAC(iupac, 7)
 
     return(Motif(
         id, rbps, NULL, hexamers, heptamers, motif.length, iupac, type,

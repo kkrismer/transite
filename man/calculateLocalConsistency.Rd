@@ -9,14 +9,18 @@ calculateLocalConsistency(x, numPermutations, minPermutations, e)
 \arguments{
 \item{x}{numeric vector that contains values for shuffling}
 
-\item{numPermutations}{maximum number of permutations performed in Monte Carlo test
+\item{numPermutations}{maximum number of permutations performed in
+Monte Carlo test
 for consistency score}
 
-\item{minPermutations}{minimum number of permutations performed in Monte Carlo test
+\item{minPermutations}{minimum number of permutations performed in
+Monte Carlo test
 for consistency score}
 
-\item{e}{stop criterion for consistency score Monte Carlo test: aborting permutation
-process after observing \code{e} random consistency values with more extreme values
+\item{e}{stop criterion for consistency score Monte Carlo test:
+aborting permutation
+process after observing \code{e} random consistency values with
+more extreme values
 than the actual consistency value}
 }
 \value{
@@ -26,9 +30,13 @@ list with \code{score}, \code{p.value}, and \code{n} components
 C++ implementation of Local Consistency Score algorithm.
 }
 \examples{
-poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4, 0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
-local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
+poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4,
+  0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
+local.consistency <- calculateLocalConsistency(poor.enrichment.spectrum,
+  1000000, 1000, 5)
 
-enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8, 0.9, 1.2, 1.4, 1.6, 1.4)
-local.consistency <- calculateLocalConsistency(enrichment.values, 1000000, 1000, 5)
+enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
+  0.9, 1.2, 1.4, 1.6, 1.4)
+local.consistency <- calculateLocalConsistency(enrichment.spectrum,
+  1000000, 1000, 5)
 }

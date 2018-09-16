@@ -31,3 +31,10 @@ object of class Motif
 Takes a position weight matrix (PWM) and meta info and returns an object of
 class \code{Motif}.
 }
+\examples{
+custom.motif <- createMatrixMotif(
+  "custom.motif", "RBP1",
+  transite:::toy.motif.matrix, "HITS-CLIP",
+  "Homo sapiens", "user"
+)
+}

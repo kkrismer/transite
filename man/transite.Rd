@@ -11,7 +11,6 @@ the regulatory
 role of RNA-binding proteins in various cellular processes by leveraging
 preexisting
 gene expression data and current knowledge of binding preferences of
-RNA-binding proteins.
 }
 \author{
 Konstantin Krismer

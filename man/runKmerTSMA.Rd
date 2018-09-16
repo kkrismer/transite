@@ -111,14 +111,18 @@ background.set <- c(
   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 )
 
-# run k-mer based TSMA with all Transite motifs
-results <- runKmerTSMA(foreground.sets, background.set)
+# run k-mer based TSMA with all Transite motifs (recommended):
+# results <- runKmerTSMA(foreground.sets, background.set)
+
+# run TSMA with one motif:
+motif.db <- getMotifById("M178_0.6")
+results <- runKmerTSMA(foreground.sets, background.set, motifs = motif.db)
 \dontrun{
-# define exemplary sequence sets for foreground and background
-foreground.set1 <- gsub("T", "U", ge$foreground1$seq)
-foreground.set2 <- gsub("T", "U", ge$foreground2$seq)
+# define example sequence sets for foreground and background
+foreground.set1 <- gsub("T", "U", transite:::ge$foreground1$seq)
+foreground.set2 <- gsub("T", "U", transite:::ge$foreground2$seq)
 foreground.sets <- list(foreground.set1, foreground.set2)
-background.set <- gsub("T", "U", ge$background$seq)
+background.set <- gsub("T", "U", transite:::ge$background$seq)
 
 # run TSMA with all Transite motifs
 results <- runKmerTSMA(foreground.sets, background.set)

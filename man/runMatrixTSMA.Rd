@@ -186,23 +186,29 @@ names(background.set) <- c(
   "NM_20_DUMMY|3UTR", "NM_21_DUMMY|3UTR", "NM_22_DUMMY|3UTR"
 )
 
-# run cached version of TSMA with all Transite motifs (recommended)
-results <- runMatrixTSMA(foreground.sets, background.set)
+# run cached version of TSMA with all Transite motifs (recommended):
+# results <- runMatrixTSMA(foreground.sets, background.set)
+
+# run uncached version with one motif:
+motif.db <- getMotifById("M178_0.6")
+results <- runMatrixTSMA(foreground.sets, background.set, motifs = motif.db,
+cache = FALSE)
+
 \dontrun{
-# define exemplary sequence sets for foreground and background
-foreground1.df <- ge$foreground1
+# define example sequence sets for foreground and background
+foreground1.df <- transite:::ge$foreground1
 foreground.set1 <- foreground1.df$seq
 names(foreground.set1) <- paste0(foreground1.df$refseq, "|",
   foreground1.df$seq.type)
 
-foreground2.df <- ge$foreground2
+foreground2.df <- transite:::ge$foreground2
 foreground.set2 <- foreground2.df$seq
 names(foreground.set2) <- paste0(foreground2.df$refseq, "|",
   foreground2.df$seq.type)
 
 foreground.sets <- list(foreground.set1, foreground.set2)
 
-background.df <- ge$background
+background.df <- transite:::ge$background
 background.set <- background.df$seq
 names(background.set) <- paste0(background.df$refseq, "|",
   background.df$seq.type)

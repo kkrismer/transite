@@ -100,17 +100,17 @@ names(foreground.set) <- c(
   "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
-# cached (writes scores to disk)
+# specific motifs, uncached
+motifs <- getMotifByRBP("ELAVL1")
+scores <- scoreTranscripts(foreground.set, motifs = motifs, cache = FALSE)
+\dontrun{
+# all Transite motifs, cached (writes scores to disk)
 scores <- scoreTranscripts(foreground.set)
 
-# uncached
+# all Transite motifs, uncached
 scores <- scoreTranscripts(foreground.set, cache = FALSE)
 
-# specific motifs
-motifs <- transite::getMotifByRBP("ELAVL1")
-scores <- scoreTranscripts(foreground.set, motifs = motifs)
-\dontrun{
-foreground.df <- ge$foreground1
+foreground.df <- transite:::ge$foreground1
 foreground.set <- foreground.df$seq
 names(foreground.set) <- paste0(foreground.df$refseq, "|",
    foreground.df$seq.type)

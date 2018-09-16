@@ -7,7 +7,7 @@ package.environment <- new.env(parent = emptyenv())
 #' role of RNA-binding proteins in various cellular processes by leveraging
 #' preexisting
 #' gene expression data and current knowledge of binding preferences of
-#' RNA-binding proteins.
+# RNA-binding proteins.
 #'
 #' @docType package
 #' @author Konstantin Krismer
@@ -43,7 +43,7 @@ getMotifs <- function() {
 #' @examples
 #' custom.motif <- createKmerMotif(
 #'   "custom.motif", "RBP1",
-#'   c("AAAAAA", "CAAAAA"), "HITS-CLIP",
+#'   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
 #' setMotifs(list(custom.motif))
@@ -58,6 +58,9 @@ setMotifs <- function(value) {
 
 .onLoad <- function(libname = find.package("transite"), pkgname = "transite") {
     utils::data("motifs", package = pkgname, envir = package.environment)
+    envir <- parent.env(environment())
+    utils::data("ge", package = pkgname, envir = envir)
+    utils::data("toy.motif.matrix", package = pkgname, envir = envir)
 }
 
 # .onUnload <- function(libpath) {

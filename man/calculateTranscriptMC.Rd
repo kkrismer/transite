@@ -18,38 +18,42 @@ calculateTranscriptMC(absoluteHits, totalSites, relHitsForeground, n,
 
 \item{n}{number of sequences in the foreground set}
 
-\item{maxPermutations}{maximum number of foreground permutations performed in
+\item{maxPermutations}{maximum number of foreground permutations
+performed in
 Monte Carlo test for enrichment score}
 
-\item{minPermutations}{minimum number of foreground permutations performed in
+\item{minPermutations}{minimum number of foreground permutations
+performed in
 Monte Carlo test for enrichment score}
 
-\item{e}{stop criterion for enrichment score Monte Carlo test: aborting permutation process
-after observing \code{e} random enrichment values with more extreme values than the actual
+\item{e}{stop criterion for enrichment score Monte Carlo test:
+aborting permutation process
+after observing \code{e} random enrichment values with more extreme
+values than the actual
 enrichment value}
 }
 \value{
 list with p-value and number of iterations of Monte Carlo sampling
-for local consistency score
+for foreground enrichment
 }
 \description{
 C++ implementation of Motif Enrichment calculation
 }
 \examples{
-foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT", "AGAT", "CCAGTAA")
-background.seqs <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-                     "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-                     "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
+foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTTGTGGGGCTTCCCTGTACAT",
+                     "AGAT", "CCAGTAA", "TGTGGGG")
+background.seqs <- c(foreground.seqs, "CAACAGCCTTAATT", "CTTTGGGGAAT",
+                     "TCATTTTATTAAA", "ATCAAATTA", "GACACTTAAAGATCCT",
                      "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-                     "ATAGAC", "AGTTC", "CCAGTAA")
-foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
-background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
+                     "ATAGAC", "AGTTC")
+motif.db <- getMotifById("M178_0.6")
+fg <- scoreTranscripts(foreground.seqs, cache = FALSE,
+  motifs = motif.db)
+bg <- scoreTranscripts(background.seqs, cache = FALSE,
+  motifs = motif.db)
 
-fg <- dplyr::filter(foreground.scores$df, motif.id == "M178_0.6")
-bg <- dplyr::filter(background.scores$df, motif.id == "M178_0.6")
-
-mc.result <- calculateTranscriptMC(bg$absolute.hits, bg$total.sites,
-                                   fg$absolute.hits / fg$total.sites,
-                                   length(foreground.seqs), 10000, 5000, 5)
-
+mc.result <- calculateTranscriptMC(unlist(bg$absolute.hits),
+ unlist(bg$total.sites),
+ fg$df$absolute.hits / fg$df$total.sites,
+ length(foreground.seqs), 1000, 500, 5)
 }

@@ -83,11 +83,11 @@ obtain binding site enrichment scores.
 }
 \examples{
 foreground.set <- c(
-  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-  "ATAGAC", "AGTTC", "CCAGTAA"
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA"
 )
 # names are used as keys in the hash table (cached version only)
 # ideally sequence identifiers (e.g., RefSeq ids) and region labels

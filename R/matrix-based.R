@@ -47,11 +47,11 @@
 #' binding sites per transcript
 #' @examples
 #' foreground.set <- c(
-#'   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-#'   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-#'   "ATAGAC", "AGTTC", "CCAGTAA"
+#'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'   "AUAGAC", "AGUUC", "CCAGUAA"
 #' )
 #' # names are used as keys in the hash table (cached version only)
 #' # ideally sequence identifiers (e.g., RefSeq ids) and region labels
@@ -583,15 +583,12 @@ cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix,
 #'   (usually FDR)
 #' }
 #' @examples
-#' foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'   "AGAT", "CCAGTAA")
-#' background.seqs <- c(
-#'   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-#'   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-#'   "ATAGAC", "AGTTC", "CCAGTAA"
-#' )
+#' foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'   "AGAU", "CCAGUAA")
+#' background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+#'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
+#'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'                      "AUAGAC", "AGUUC")
 #' foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
 #' background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
 #' enrichments.df <- calculateMotifEnrichment(foreground.scores$df,

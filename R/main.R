@@ -82,11 +82,11 @@
 #' @examples
 #' # define simple sequence sets for foreground and background
 #' foreground.set1 <- c(
-#'   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-#'   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-#'   "ATAGAC", "AGTTC", "CCAGTAA"
+#'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'   "AUAGAC", "AGUUC", "CCAGUAA"
 #' )
 #' names(foreground.set1) <- c(
 #'   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
@@ -97,7 +97,7 @@
 #'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 #' )
 #'
-#' foreground.set2 <- c("TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT")
+#' foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
 #' names(foreground.set2) <- c(
 #'   "NM_15_DUMMY|3UTR", "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR",
 #'   "NM_18_DUMMY|3UTR"
@@ -106,13 +106,13 @@
 #' foreground.sets <- list(foreground.set1, foreground.set2)
 #'
 #' background.set <- c(
-#'   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-#'   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-#'   "ATAGAC", "AGTTC", "CCAGTAA",
-#'   "TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT",
-#'   "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA"
+#'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'   "AUAGAC", "AGUUC", "CCAGUAA",
+#'   "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
+#'   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 #' )
 #' names(background.set) <- c(
 #'   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
@@ -138,19 +138,19 @@
 #' \dontrun{
 #' # define example sequence sets for foreground and background
 #' foreground1.df <- transite:::ge$foreground1
-#' foreground.set1 <- foreground1.df$seq
+#' foreground.set1 <- gsub("T", "U", foreground1.df$seq)
 #' names(foreground.set1) <- paste0(foreground1.df$refseq, "|",
 #'   foreground1.df$seq.type)
 #'
 #' foreground2.df <- transite:::ge$foreground2
-#' foreground.set2 <- foreground2.df$seq
+#' foreground.set2 <- gsub("T", "U", foreground2.df$seq)
 #' names(foreground.set2) <- paste0(foreground2.df$refseq, "|",
 #'   foreground2.df$seq.type)
 #'
 #' foreground.sets <- list(foreground.set1, foreground.set2)
 #'
 #' background.df <- transite:::ge$background
-#' background.set <- background.df$seq
+#' background.set <- gsub("T", "U", background.df$seq)
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
 #'
@@ -325,7 +325,7 @@ runMatrixTSMA <-
 #' # sort sequences by signal-to-noise ratio
 #' background.df <- dplyr::arrange(background.df, value)
 #' # character vector of named sequences
-#' background.set <- background.df$seq
+#' background.set <- gsub("T", "U", background.df$seq)
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
 #'
@@ -354,11 +354,9 @@ runMatrixSPMA <-
              n.cores = 1,
              cache = paste0(getwd(), "/sc/")) {
         # avoid CRAN note
-        motif.id <-
-            motif.rbps <-
-            adj.r.squared <- degree <- residuals <- slope <- NULL
-        f.statistic <-
-            f.statistic.p.value <- f.statistic.adj.p.value <- NULL
+        motif.id <- motif.rbps <- adj.r.squared <- degree <-
+            residuals <- slope <- NULL
+        f.statistic <- f.statistic.p.value <- f.statistic.adj.p.value <- NULL
         consistency.score <-
             consistency.score.p.value <-
             consistency.score.adj.p.value <-
@@ -390,7 +388,9 @@ runMatrixSPMA <-
             enrichment.df$adj.p.value <-
                 stats::p.adjust(enrichment.df$p.value, method = p.adjust.method)
 
-            motifs <- getMotifs()
+            if (is.null(motifs)) {
+                motifs <- getMotifs()
+            }
             spectrum.info <- lapply(motifs, function(motif) {
                 motif.data.df <- dplyr::filter(enrichment.df,
                                                motif.id == motif$id)
@@ -937,7 +937,7 @@ runKmerTSMA <-
 #' # sort sequences by signal-to-noise ratio
 #' background.df <- dplyr::arrange(background.df, value)
 #' # character vector of named sequences
-#' background.set <- background.df$seq
+#' background.set <- gsub("T", "U", background.df$seq)
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
 #'

@@ -141,11 +141,11 @@ binding sites may play a similar role as clusters of transcription factors.
 \examples{
 # define simple sequence sets for foreground and background
 foreground.set1 <- c(
-  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-  "ATAGAC", "AGTTC", "CCAGTAA"
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA"
 )
 names(foreground.set1) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
@@ -156,7 +156,7 @@ names(foreground.set1) <- c(
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
-foreground.set2 <- c("TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT")
+foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
 names(foreground.set2) <- c(
   "NM_15_DUMMY|3UTR", "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR",
   "NM_18_DUMMY|3UTR"
@@ -165,13 +165,13 @@ names(foreground.set2) <- c(
 foreground.sets <- list(foreground.set1, foreground.set2)
 
 background.set <- c(
-  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-  "ATAGAC", "AGTTC", "CCAGTAA",
-  "TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT",
-  "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA"
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA",
+  "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
+  "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 )
 names(background.set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
@@ -197,19 +197,19 @@ cache = FALSE)
 \dontrun{
 # define example sequence sets for foreground and background
 foreground1.df <- transite:::ge$foreground1
-foreground.set1 <- foreground1.df$seq
+foreground.set1 <- gsub("T", "U", foreground1.df$seq)
 names(foreground.set1) <- paste0(foreground1.df$refseq, "|",
   foreground1.df$seq.type)
 
 foreground2.df <- transite:::ge$foreground2
-foreground.set2 <- foreground2.df$seq
+foreground.set2 <- gsub("T", "U", foreground2.df$seq)
 names(foreground.set2) <- paste0(foreground2.df$refseq, "|",
   foreground2.df$seq.type)
 
 foreground.sets <- list(foreground.set1, foreground.set2)
 
 background.df <- transite:::ge$background
-background.set <- background.df$seq
+background.set <- gsub("T", "U", background.df$seq)
 names(background.set) <- paste0(background.df$refseq, "|",
   background.df$seq.type)
 

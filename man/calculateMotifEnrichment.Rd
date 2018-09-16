@@ -65,15 +65,12 @@ levels of
 enrichment values are obtained by Monte Carlo tests.
 }
 \examples{
-foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-  "AGAT", "CCAGTAA")
-background.seqs <- c(
-  "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-  "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-  "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-  "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-  "ATAGAC", "AGTTC", "CCAGTAA"
-)
+foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AGAU", "CCAGUAA")
+background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+                     "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
+                     "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+                     "AUAGAC", "AGUUC")
 foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
 background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
 enrichments.df <- calculateMotifEnrichment(foreground.scores$df,

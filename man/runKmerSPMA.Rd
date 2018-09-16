@@ -87,7 +87,7 @@ background.df <- transite:::ge$background
 # sort sequences by signal-to-noise ratio
 background.df <- dplyr::arrange(background.df, value)
 # character vector of named sequences
-background.set <- background.df$seq
+background.set <- gsub("T", "U", background.df$seq)
 names(background.set) <- paste0(background.df$refseq, "|",
   background.df$seq.type)
 

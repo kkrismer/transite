@@ -17,9 +17,9 @@
 #' @examples
 #' # toy example
 #' toy.background.set <- c(
-#'   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT", "TCATTTTATTAAA",
-#'   "AATTGGTGTCTGGATACTTCCCTGTACAT", "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
-#'   "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC", "AGTTC", "CCAGTAA"
+#'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU", "UCAUUUUAUUAAA",
+#'   "AAUUGGUGUCUGGAUACUUCCCUGUACAU", "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+#'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC", "AGUUC", "CCAGUAA"
 #' )
 #' # names are used as keys in the hash table (cached version only)
 #' # ideally sequence identifiers (e.g., RefSeq ids) and
@@ -304,6 +304,8 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
                           max.cs.permutations = 10000000,
                           min.cs.permutations = 5000, e = 5) {
     if (length(x) < 7) {
+        print(x)
+        message(x)
         stop("too few bins")
     }
     if (max.model.degree > 5 || max.model.degree < 1) {

@@ -12,11 +12,11 @@
 #' @return list of PWM scores for each sequence
 #' @examples
 #' motif <- getMotifById("M178_0.6")[[1]]
-#' sequences <- c("CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
-#'                "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
-#'                "ATCAAATTA", "TGTGGGG", "GACACTTAAAGATCCT",
-#'                "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA", "ATAGAC",
-#'                "AGTTC", "CCAGTAA")
+#' sequences <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+#'                "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#'                "AUCAAAUUA", "UGUGGGG", "GACACUUAAAGAUCCU",
+#'                "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC",
+#'                "AGUUC", "CCAGUAA")
 #' seq.char.vectors <- lapply(sequences, function(seq) {
 #'   unlist(strsplit(seq, ""))
 #' })
@@ -133,12 +133,12 @@ calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
 #' for foreground enrichment
 #'
 #' @examples
-#' foreground.seqs <- c("CAGTCAAGACTCC", "AATTGGTTGTGGGGCTTCCCTGTACAT",
-#'                      "AGAT", "CCAGTAA", "TGTGGGG")
-#' background.seqs <- c(foreground.seqs, "CAACAGCCTTAATT", "CTTTGGGGAAT",
-#'                      "TCATTTTATTAAA", "ATCAAATTA", "GACACTTAAAGATCCT",
-#'                      "TAGCATTAACTTAATG", "ATGGA", "GAAGAGTGCTCA",
-#'                      "ATAGAC", "AGTTC")
+#' foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUUGUGGGGCUUCCCUGUACAU",
+#'                      "AGAU", "CCAGUAA", "UGUGGGG")
+#' background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+#'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
+#'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+#'                      "AUAGAC", "AGUUC")
 #' motif.db <- getMotifById("M178_0.6")
 #' fg <- scoreTranscripts(foreground.seqs, cache = FALSE,
 #'   motifs = motif.db)

@@ -3,7 +3,6 @@ inst/doc
 .Rproj.user
 .RData
 .Rhistory
-.Rbuildignore
 data-raw
 sc
 tests

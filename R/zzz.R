@@ -1,4 +1,4 @@
-package.environment <- new.env(parent = emptyenv())
+motif.db <- new.env(parent = emptyenv())
 
 #' transite
 #'
@@ -28,7 +28,7 @@ NULL
 #' @importFrom utils data
 #' @export
 getMotifs <- function() {
-    return(package.environment$motifs)
+    return(motif.db$motifs)
 }
 
 #' @title Set Transite motif database
@@ -51,13 +51,13 @@ getMotifs <- function() {
 #' @importFrom utils data
 #' @export
 setMotifs <- function(value) {
-    old <- package.environment$motifs
-    package.environment$motifs <- value
+    old <- motif.db$motifs
+    motif.db$motifs <- value
     invisible(old)
 }
 
 .onLoad <- function(libname = find.package("transite"), pkgname = "transite") {
-    utils::data("motifs", package = pkgname, envir = package.environment)
+    utils::data("motifs", package = pkgname, envir = motif.db)
     envir <- parent.env(environment())
     utils::data("ge", package = pkgname, envir = envir)
     utils::data("toy.motif.matrix", package = pkgname, envir = envir)

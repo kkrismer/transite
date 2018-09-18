@@ -2,6 +2,8 @@
 
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+[![Travis build status](https://travis-ci.org/kkrismer/transite.svg?branch=master)](https://travis-ci.org/kkrismer/transite)
+
 RNA-binding protein motif analysis
 
 https://transite.mit.edu

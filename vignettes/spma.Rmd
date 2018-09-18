@@ -1,0 +1,105 @@
+---
+title: "Spectrum Motif Motif Analysis"
+author: "Konstantin Krismer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Spectrum Motif Motif Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+In order to investigate how RBP targets are distributed across a spectrum of transcripts (e.g., all transcripts of a platform, ordered by fold change), Spectrum Motif Analysis visualizes the distribution of putative RBP binding sites across all transcripts.
+
+```{r}
+library(transite)
+```
+
+Load example data set from `transite` package, a data frame with 1000 rows and the following columns:
+
+* `refseq`: RefSeq identifiers
+* `value`: signal-to-noise ratios between treatment and control samples (sorting criterion)
+* `seq.type`: specifying the type of sequence in `seq` column; either 3'-UTR, 5'-UTR, or entire mRNAs (including 5'-UTRs, coding regions, and 3'-UTRs)
+* `seq`: sequence
+
+```{r, message=FALSE}
+background.df <- transite:::ge$background
+```
+
+Sort sequences (i.e., transcripts) by ascending signal-to-noise ratio. Transcripts upregulated in control samples are at the beginning of list, transcripts upregulated in treatment samples at the end.
+
+```{r, message=FALSE}
+background.df <- dplyr::arrange(background.df, value)
+```
+
+The DNA sequences in the data frame are converted to RNA sequences. Motifs in the Transite motif database are RNA-based.
+
+```{r, message=FALSE}
+background.set <- gsub("T", "U", background.df$seq)
+```
+
+Prepare named character vector of presorted sequences for `runMatrixSPMA`. The function expects a character vector containing sequences, sorted in a meaningful way, named according to the following format: `[REFSEQ]|[SEQ.TYPE]`
+
+The name is only important if results are cached. It is used as the key in a dictionary that stores the number of putative binding sites for each RefSeq identifier and sequence type.
+
+```{r, message=FALSE}
+names(background.set) <- paste0(background.df$refseq, "|", background.df$seq.type)
+```
+
+In this example we limit our analysis to an arbitrarily selected motif in the motif database in order to reduce run-time.
+
+```{r, message=FALSE}
+motif.db <- getMotifById("M178_0.6")
+```
+
+Matrix-based SPMA is executed:
+
+```{r, message=FALSE}
+results <- runMatrixSPMA(background.set, motifs = motif.db, cache = FALSE)
+
+# Usually, all motifs are included in the analysis and results are cached to make subsequent analyses more efficient.
+# results <- runMatrixSPMA(background.set)
+```
+
+Matrix-based SPMA returns a number of result objects, combined in a list with the following components:
+
+* `foreground.scores`
+* `background.scores`
+* `enrichment.dfs`
+* `spectrum.info.df`
+* `spectrum.plots`
+* `classifier.scores`
+
+In the following, we plot the spectrum plot, showing how putative binding sites are distributed across the spectrum of transcripts. (`spectrum.plots`).
+
+In addition, we show statistics describing the spectrum plot (`spectrum.info.df`).
+
+```{r, results='asis', echo=FALSE, fig.width=10, fig.height=7}
+cat("\n\n####", results$spectrum.info.df$motif.rbps, " (", results$spectrum.info.df$motif.id, ")\n\n", sep = "")
+  
+cat("\n\n**Spectrum plot with polynomial regression:**\n\n")
+
+grid::grid.draw(results$spectrum.plots[[1]])
+
+cat("\n\n**Classification:**\n\n")
+
+if (results$spectrum.info.df$aggregate.classifier.score == 3) {
+    cat('\n\n<p style="background-color: #2ecc71; padding: 10px; color: white; margin: 0">spectrum classification: non-random (3 out of 3 criteria met)</p>\n\n')
+} else if (results$spectrum.info.df$aggregate.classifier.score == 2) {
+    cat('\n\n<p style="background-color: #f1c40f; padding: 10px; color: white; margin: 0">spectrum classification: random (2 out of 3 criteria met)</p>\n\n')
+} else if (results$spectrum.info.df$aggregate.classifier.score == 1) {
+    cat('\n\n<p style="background-color: #e67e22; padding: 10px; color: white; margin: 0">spectrum classification: random (1 out of 3 criteria met)</p>\n\n')
+} else {
+    cat('\n\n<p style="background-color: #c0392b; padding: 10px; color: white; margin: 0">spectrum classification: random (0 out of 3 criteria met)</p>\n\n')
+}
+
+cat("\n\nProperty | Value | Threshold\n")
+cat("------------- | ------------- | -------------\n")
+cat("adjusted $R^2$ | ", round(results$spectrum.info.df$adj.r.squared, 3), " | $\\geq 0.4$ \n")
+cat("polynomial degree | ", results$spectrum.info.df$degree, " | $\\geq 1$ \n")
+cat("slope | ", round(results$spectrum.info.df$slope, 3), " | $\\neq 0$ \n")
+cat("unadjusted p-value estimate of consistency score | ", round(results$spectrum.info.df$consistency.score.p.value, 7), " | $< 0.000005$ \n")
+cat("number of significant bins | ", results$spectrum.info.df$n.significant, " | ", paste0("$\\geq ", floor(40 / 10), "$"), " \n\n")
+```
+
+Visual inspection of the spectrum plot as well as the classification and the underlying properties suggest that the putative binding sites of this particular RNA-binding protein are distributed in a random fashion across the spectrum of transcripts. There is no evidence that this RNA-binding protein is involved in modulating gene expression changes between treatment and control group.

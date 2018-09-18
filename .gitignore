@@ -7,7 +7,6 @@ inst/doc
 data-raw
 sc
 tests
-vignettes
 transite.Rproj
 src/*.o
 src/*.dll

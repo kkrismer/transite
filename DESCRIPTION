@@ -20,8 +20,8 @@ Authors@R:
       person(given = "Ian",
              family = "Cannell",
              role = "ths",
-             email = "icannell@mit.edu"),
-             comment = c(ORCID = "0000-0001-5832-9210"))
+             email = "icannell@mit.edu",
+             comment = c(ORCID = "0000-0001-5832-9210")))
 Maintainer: Konstantin Krismer <krismer@mit.edu>
 Description: transite is a computational method that allows
     comprehensive analysis of the regulatory role of RNA-binding proteins

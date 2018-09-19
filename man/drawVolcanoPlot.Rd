@@ -33,7 +33,7 @@ Uses a volcano plot to visualize \emph{k}-mer enrichment.
 X-axis is \eqn{\log_2} enrichment value,
 y-axis is \eqn{\log_10} significance, i.e., multiple testing
 corrected p-value from
-Fisher's exact test or \eqn{\Chi^2} test.
+Fisher's exact test or Pearson's chi-squared test.
 }
 \seealso{
 Other TSMA functions: \code{\link{runKmerTSMA}},

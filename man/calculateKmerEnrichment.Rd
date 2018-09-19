@@ -26,8 +26,7 @@ background set}
 used for permutation testing)}
 
 \item{chisq.p.value.threshold}{threshold below which Fisher's exact test
-is used instead of
-\eqn{\Chi^2} test}
+is used instead of Pearson's chi-squared test}
 
 \item{p.adjust.method}{see \code{\link[stats]{p.adjust}}}
 

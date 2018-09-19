@@ -60,7 +60,7 @@ and the correction term \eqn{C} is neutral, i.e., equals \eqn{1}, the
 following statement can be
 made about the sampling distribution of the test statistic \eqn{T_f}
 under the null hypothesis:
-\deqn{t_f \overset{H_0}{\sim} \chi^2_{2n},}
+\eqn{t_f} is distributed as chi-square with \eqn{2n} degrees of freedom,
 where \eqn{n} is the number of p-values.
 
 Stouffer's method, or the inverse normal method, uses a p-value
@@ -71,10 +71,10 @@ distribution by transforming
 each p-value to its corresponding normal score. The correction
 term scales the sum of the normal
 scores by the root of the number of p-values.
-\deqn{h(p) =&~\Phi^{-1}(1 - p)}
-\deqn{C =&~\frac{1}{\sqrt{n}}}
-\deqn{t_s \overset{H_0}{\sim}&~N(0, 1)}
-where \eqn{\Phi^{-1}} is the inverse of the cumulative standard
+\deqn{h(p) = \Phi^{-1}(1 - p)}
+\deqn{C = \frac{1}{\sqrt{n}}}
+Under the null hypothesis, \eqn{t_s} is distributed as standard normal.
+\eqn{\Phi^{-1}} is the inverse of the cumulative standard
 normal distribution function.
 
 An extension of Stouffer's method with weighted p-values is
@@ -84,8 +84,8 @@ The logit method by Mudholkar and George uses the following transformation:
 \deqn{h(p) = -\ln(p / (1 - p))}
 When the sum of the transformed p-values is corrected in the following way:
 \deqn{C = \sqrt{\frac{3(5n + 4)}{\pi^2 n (5n + 2)}},}
-the test statistic \eqn{t_m} is approximately t-distributed:
-\deqn{t_m \overset{H_0}{\sim} t_{5n + 4}}
+the test statistic \eqn{t_m} is approximately t-distributed with
+\eqn{5n + 4} degrees of freedom.
 
 In Tippett's method the smallest p-value is used as the test
 statistic \eqn{t_t} and the

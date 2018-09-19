@@ -97,7 +97,7 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' the more consistent
 #' the trend in the spectrum plot. Formally, the local consistency score
 #' \eqn{x_c} is defined as
-#' \deqn{x_c = \frac{1}{n} \sum_{i = 1}^{n - 2}{\left|\frac{s_i + s_{i + 2}}{2} - s_{i + 1}\right|}.}
+#' \deqn{x_c = \frac{1}{n} \sum_{i = 1}^{n - 2}{|\frac{s_i + s_{i + 2}}{2} - s_{i + 1}|}.}
 #' In order to obtain an estimate of the significance of a particular
 #' score \eqn{x_c'},
 #' Monte Carlo sampling
@@ -107,8 +107,8 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' The probability estimate \eqn{\hat{p}} is given by the lower tail
 #' version of the cumulative
 #' distribution function
-#' \deqn{\hat{Pr}(T(x)) &= \frac{\sum\limits_{i = 1}^n \mathbbm{1}\left(T(y_i) \le T(x)\right) + 1}{n + 1},}
-#' where \eqn{\mathbbm{1}} is the indicator function, \eqn{n} is the
+#' \deqn{\hat{Pr}(T(x)) = \frac{\sum_{i = 1}^n 1(T(y_i) \le T(x)) + 1}{n + 1},}
+#' where \eqn{1} is the indicator function, \eqn{n} is the
 #' sample size, i.e.,
 #' the number of performed permutations, and \eqn{T} equals \eqn{x_c}
 #' in the above equation.
@@ -117,9 +117,9 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' via polynomial regression.
 #' In a first step, polynomial regression models of various degrees are
 #' fitted to the data, i.e.,
-#' the dependent variable \eqn{\boldsymbol{s}} (vector of scores), and
+#' the dependent variable \eqn{s} (vector of scores), and
 #' orthogonal
-#' polynomials of the independent variable \eqn{\boldsymbol{b}} (vector of
+#' polynomials of the independent variable \eqn{b} (vector of
 #' bin numbers).
 #' Secondly, the model that reflects best the true nature of the data is
 #' selected by
@@ -133,15 +133,15 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' where \eqn{m} is the degree of the polynomial (usually \eqn{m \le 5}),
 #' and \eqn{\epsilon_i}
 #' is the error term.
-#' The dependent variable \eqn{\boldsymbol{y}} is the vector of
-#' scores \eqn{\boldsymbol{s}}
-#' and \eqn{\boldsymbol{x}}
-#' to \eqn{\boldsymbol{x}^m} are the orthogonal polynomials of
+#' The dependent variable \eqn{y} is the vector of
+#' scores \eqn{s}
+#' and \eqn{x}
+#' to \eqn{x^m} are the orthogonal polynomials of
 #' the vector of bin
-#' numbers \eqn{\boldsymbol{b}}.
+#' numbers \eqn{b}.
 #' Orthogonal polynomials are used in order to reduce the correlation
 #' between the different
-#' powers of \eqn{\boldsymbol{b}}
+#' powers of \eqn{b}
 #' and therefore avoid multicollinearity in the model. This is important,
 #' because correlated
 #' predictors lead to unstable coefficients, i.e., the coefficients of a
@@ -149,51 +149,51 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' regression model of
 #' degree \eqn{m} can be greatly different from a model of degree \eqn{m + 1}.
 #'
-#' The orthogonal polynomials of vector \eqn{\boldsymbol{b}} are obtained by
+#' The orthogonal polynomials of vector \eqn{b} are obtained by
 #' centering (subtracting the mean),
 #' QR decomposition, and subsequent normalization.
-#' Given the dependent variable \eqn{\boldsymbol{y}} and the orthogonal
+#' Given the dependent variable \eqn{y} and the orthogonal
 #' polynomials
-#' of \eqn{\boldsymbol{b}} \eqn{\boldsymbol{x}} to
-#' \eqn{\boldsymbol{x}^m}, the model coefficients \eqn{\boldsymbol{\beta}}
+#' of \eqn{b} \eqn{x} to
+#' \eqn{x^m}, the model coefficients \eqn{\beta}
 #' are chosen
 #' in a way to minimize
 #' the deviance between the actual and the predicted values characterized by
-#' \deqn{\mathcal{M}(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_m x^m}
-#' \deqn{\mathcal{M} = \argmin_{\mathcal{M}}{\left(\sum_{i = 1}^n{L(y_i, \mathcal{M}(x_i))}\right)},}
-#' where \eqn{L(\text{actual value}, \text{predicted value})} denotes
+#' \deqn{M(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_m x^m}
+#' \deqn{M = argmin_{M}{(\sum_{i = 1}^n{L(y_i, M(x_i))})},}
+#' where L(actual value, predicted value) denotes
 #' the loss function.
 #'
 #' Ordinary least squares is used as estimation method for the model
-#' coefficients \eqn{\boldsymbol{\beta}}. The loss
+#' coefficients \eqn{\beta}. The loss
 #' function of ordinary least squares is the sum of squared residuals
-#' (\eqn{\mathit{SSR}})
+#' (SSR)
 #' and is defined as follows
-#' \deqn{\mathit{SSR}(\boldsymbol{y},
-#' \boldsymbol{\hat{y}}) = \sum_{i = 1}^n{(y_i - \hat{y}_i)^2},}
-#' where \eqn{\boldsymbol{y}} are the observed data
-#' and \eqn{\boldsymbol{\hat{y}}} the
+#' SSR\eqn{(y,
+#' \hat{y}) = \sum_{i = 1}^n{(y_i - \hat{y}_i)^2},}
+#' where \eqn{y} are the observed data
+#' and \eqn{\hat{y}} the
 #' model predictions.
 #'
 #' Thus the ordinary least squares estimate of the
-#' coefficients \eqn{\boldsymbol{\hat{\beta}}}
+#' coefficients \eqn{\hat{\beta}}
 #' (including the
-#' intercept \eqn{\hat{\beta}_0}) of the model \eqn{\mathcal{M}} is defined by
-#' \deqn{\boldsymbol{\hat{\beta}} = \argmin_{\boldsymbol{\beta}}{\left(\sum_{i = 1}^n{\left(y_i - \beta_0 - \sum_{j = 1}^m{\beta_j x_i^j}\right)^2}\right)}.}
+#' intercept \eqn{\hat{\beta}_0}) of the model \eqn{M} is defined by
+#' \deqn{\hat{\beta} = argmin_{\beta}{(\sum_{i = 1}^n{(y_i - \beta_0 - \sum_{j = 1}^m{\beta_j x_i^j})^2})}.}
 #'
 #' After polynomial models of various degrees have been fitted to the
 #' data, the F-test
 #' is used to select
-#' the model that best fits the data. Since the \eqn{\mathit{SSR}}
+#' the model that best fits the data. Since the SSR
 #' monotonically decreases with
 #' increasing model degree (model complexity), the relative decrease
-#' of the \eqn{\mathit{SSR}}
+#' of the SSR
 #' between the
 #' simpler model and the more complex model must outweigh the increase
 #' in model complexity
 #' between the two
 #' models. The F-test gives the probability that a relative decrease of
-#' the \eqn{\mathit{SSR}}
+#' the SSR
 #' between the simpler
 #' and the more complex model given their respective degrees of freedom is due
 #' to chance.
@@ -204,14 +204,13 @@ SpectrumScore <- function(adj.r.squared, degree, residuals, slope,
 #' the data than would be expected after a mere increase of degrees of freedom.
 #'
 #' The F-statistic is calculated as follows
-#' \deqn{F = \frac{(\mathit{SSR}_1 - \mathit{SSR}_2) / (p_2 - p_1)}{\mathit{SSR}_2 / (n - p_2)},}
-#' where \eqn{\mathit{SSR}_i} is the sum of squared residuals
+#' \deqn{F = \frac{(SSR_1 - SSR_2) / (p_2 - p_1)}{SSR_2 / (n - p_2)},}
+#' where \eqn{SSR_i} is the sum of squared residuals
 #' and \eqn{p_i} is the number
 #' of parameters of
 #' model \eqn{i}. The number of data points, i.e., bins, is denoted as \eqn{n}.
 #' \eqn{F} is distributed according to the F-distribution
 #' with \eqn{df_1 = p_2 - p_1} and \eqn{df_2 = n - p_2}.
-#'
 #'
 #' @param x vector of values (e.g., enrichment values, normalized RBP
 #' scores) per bin

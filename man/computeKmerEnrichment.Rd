@@ -20,8 +20,7 @@ computeKmerEnrichment(foreground.kmers, background.kmers,
 used for permutation testing)}
 
 \item{chisq.p.value.threshold}{threshold below which Fisher's exact test
-is used instead of
-\eqn{\Chi^2} test}
+is used instead of Pearson's chi-squared test}
 
 \item{p.adjust.method}{see \code{\link[stats]{p.adjust}}}
 }
@@ -33,8 +32,7 @@ A data frame with the following columns is returned:
   \code{background.count} \tab background counts for each \emph{k}-mer\cr
   \code{enrichment} \tab \emph{k}-mer enrichment\cr
   \code{p.value} \tab p-value of \emph{k}-mer enrichment (either from
-  Fisher's exact test or
-  \eqn{\Chi^2} test.\cr
+  Fisher's exact test or Pearson's chi-squared test.\cr
   \code{adj.p.value} \tab multiple testing corrected p-value\cr
 }
 }
@@ -44,9 +42,9 @@ enrichment values
 for each possible \emph{k}-mer.
 }
 \details{
-Usually uses Pearson's \eqn{\Chi^2} test, but recalculates p-values
+Usually uses Pearson's chi-squared test, but recalculates p-values
 with Fisher's exact test
-for \eqn{\Chi^2} test p-values \code{<= chisq.p.value.threshold}.
+for Pearson's chi-squared test p-values \code{<= chisq.p.value.threshold}.
 The reason this is done is
 computational efficiency. Fisher's exact tests are computationally
 demanding and are only

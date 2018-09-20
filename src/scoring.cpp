@@ -5,8 +5,6 @@
 #include <chrono>
 #include <unordered_set>
 
-using namespace Rcpp;
-
 //' @title Score Sequences with PWM
 //'
 //' @description
@@ -30,17 +28,17 @@ using namespace Rcpp;
 //'
 //' @export
 // [[Rcpp::export]]
-SEXP scoreSequences(List sequences, NumericMatrix pwm) {
-    std::vector<NumericVector> scores;
+SEXP scoreSequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm) {
+    std::vector<Rcpp::NumericVector> scores;
     for(int i(0); i < sequences.size(); ++i) {
-        CharacterVector seq(sequences[i]);
+        Rcpp::CharacterVector seq(sequences[i]);
 
         if(seq.size() >= pwm.nrow()) {
-            NumericVector positionalScores(seq.size() - pwm.nrow() + 1);
+            Rcpp::NumericVector positionalScores(seq.size() - pwm.nrow() + 1);
             for (int j(0); j < (seq.size() - pwm.nrow() + 1); ++j) {
                 double sum = 0;
                 for(int k(0); k < pwm.nrow(); ++k) {
-                    String pos = seq[j + k];
+                    Rcpp::String pos = seq[j + k];
                     if(pos == "A") {
                         sum += pwm(k, 0);
                     } else if(pos == "C") {
@@ -59,7 +57,7 @@ SEXP scoreSequences(List sequences, NumericMatrix pwm) {
             }
             scores.push_back(positionalScores);
         } else {
-            NumericVector positionalScores(0);
+            Rcpp::NumericVector positionalScores(0);
             scores.push_back(positionalScores);
         }
     }
@@ -83,17 +81,17 @@ SEXP scoreSequences(List sequences, NumericMatrix pwm) {
 //'
 //' @export
 // [[Rcpp::export]]
-NumericVector calculateKmerScores(List kmers, NumericMatrix pwm) {
-    NumericVector scores(kmers.size());
+Rcpp::NumericVector calculateKmerScores(Rcpp::List kmers, Rcpp::NumericMatrix pwm) {
+    Rcpp::NumericVector scores(kmers.size());
     for(int i(0); i < kmers.size(); ++i) {
-        CharacterVector seq(kmers[i]);
+        Rcpp::CharacterVector seq(kmers[i]);
 
         if(seq.size() >= pwm.nrow()) {
-            NumericVector positionalScores(seq.size() - pwm.nrow() + 1);
+            Rcpp::NumericVector positionalScores(seq.size() - pwm.nrow() + 1);
             for (int j(0); j < (seq.size() - pwm.nrow() + 1); ++j) {
                 double sum = 0;
                 for(int k(0); k < pwm.nrow(); ++k) {
-                    String pos = seq[j + k];
+                    Rcpp::String pos = seq[j + k];
                     if(pos == "A") {
                         sum += pwm(k, 0);
                     } else if(pos == "C") {
@@ -108,11 +106,11 @@ NumericVector calculateKmerScores(List kmers, NumericMatrix pwm) {
             }
             scores[i] = max(positionalScores);
         } else {
-            NumericVector positionalScores(pwm.nrow() - seq.size() + 1);
+            Rcpp::NumericVector positionalScores(pwm.nrow() - seq.size() + 1);
             for (int j(0); j < (pwm.nrow() - seq.size() + 1); ++j) {
                 double sum = 0;
                 for(int k(0); k < seq.size(); ++k) {
-                    String pos = seq[k];
+                    Rcpp::String pos = seq[k];
                     if(pos == "A") {
                         sum += pwm(j + k, 0);
                     } else if(pos == "C") {
@@ -141,8 +139,8 @@ NumericVector calculateKmerScores(List kmers, NumericMatrix pwm) {
 //'
 //' @return numeric vector of \emph{k}-mer scores
 // [[Rcpp::export]]
-NumericVector lookupKmerScores(List kmers, Environment kmerScores) {
-    NumericVector scores(kmers.size());
+Rcpp::NumericVector lookupKmerScores(Rcpp::List kmers, Rcpp::Environment kmerScores) {
+    Rcpp::NumericVector scores(kmers.size());
     for(int i(0); i < kmers.size(); ++i) {
         std::string kmer = kmers[i];
         scores[i] = kmerScores[kmer];
@@ -159,23 +157,23 @@ NumericVector lookupKmerScores(List kmers, Environment kmerScores) {
 //' @return data frame with columns \code{score}, \code{top.kmer},
 //' and \code{top.kmer.enrichment}
 // [[Rcpp::export]]
-DataFrame computeMotifScore(List kmers) {
+Rcpp::DataFrame computeMotifScore(Rcpp::List kmers) {
     // kmers is a list of data frames (sorted desc(score), filtered score > 0)
-    NumericVector scores(kmers.size());
-    CharacterVector topKmers(kmers.size());
-    NumericVector topKmerEnrichments(kmers.size());
+    Rcpp::NumericVector scores(kmers.size());
+    Rcpp::CharacterVector topKmers(kmers.size());
+    Rcpp::NumericVector topKmerEnrichments(kmers.size());
 
     for(int i(0); i < kmers.size(); ++i) {
-        DataFrame df = kmers[i];
+        Rcpp::DataFrame df = kmers[i];
 
         if(df.nrows() == 0) {
             scores[i] = 0;
             topKmers[i] = "";
             topKmerEnrichments[i] = 1;
         } else {
-            NumericVector dfScore = df["score"];
-            CharacterVector dfKmer = df["kmer"];
-            NumericVector dfEnrichment = df["enrichment"];
+            Rcpp::NumericVector dfScore = df["score"];
+            Rcpp::CharacterVector dfKmer = df["kmer"];
+            Rcpp::NumericVector dfEnrichment = df["enrichment"];
             double enriched(0.0);
             double depleted(0.0);
             for(int j(0); j < dfScore.size(); ++j) {
@@ -192,12 +190,12 @@ DataFrame computeMotifScore(List kmers) {
             topKmerEnrichments[i] = dfEnrichment[0];
         }
     }
-    return DataFrame::create(_["score"] = scores,
-                             _["top.kmer"] = topKmers,
-                             _["top.kmer.enrichment"] = topKmerEnrichments);
+    return Rcpp::DataFrame::create(Rcpp::_["score"] = scores,
+                                   Rcpp::_["top.kmer"] = topKmers,
+                                   Rcpp::_["top.kmer.enrichment"] = topKmerEnrichments);
 }
 
-double calculateConsistencyScore(NumericVector x) {
+double calculateConsistencyScore(Rcpp::NumericVector x) {
     double score(0.0);
     for(int i(0); i < x.size() - 2; ++i) {
         score += std::abs(((x[i] + x[i + 2]) / 2) - x[i + 1]);
@@ -237,7 +235,7 @@ double calculateConsistencyScore(NumericVector x) {
 //'   1000000, 1000, 5)
 //' @export
 // [[Rcpp::export]]
-List calculateLocalConsistency(NumericVector x, int numPermutations,
+Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations,
                                int minPermutations, int e) {
     double score(calculateConsistencyScore(x));
     int k(0);
@@ -246,7 +244,7 @@ List calculateLocalConsistency(NumericVector x, int numPermutations,
 
     while(i <= numPermutations && (i < minPermutations || k < e)) {
         // shuffle spectrum
-        NumericVector shuffledSpectrum = clone(x);
+        Rcpp::NumericVector shuffledSpectrum = clone(x);
         std::shuffle(shuffledSpectrum.begin(), shuffledSpectrum.end(), gen);
 
         // calculate consistency score
@@ -261,8 +259,9 @@ List calculateLocalConsistency(NumericVector x, int numPermutations,
 
     double pValue(((double)k + 1.0) / ((double)i + 1.0));
 
-    return List::create(Named("score") = score, Named("p.value") = pValue,
-                        Named("n") = i);
+    return Rcpp::List::create(Rcpp::Named("score") = score,
+                              Rcpp::Named("p.value") = pValue,
+                              Rcpp::Named("n") = i);
 }
 
 //' @title Motif Enrichment calculation
@@ -310,7 +309,7 @@ List calculateLocalConsistency(NumericVector x, int numPermutations,
 //'  length(foreground.seqs), 1000, 500, 5)
 //' @export
 // [[Rcpp::export]]
-List calculateTranscriptMC(NumericVector absoluteHits, NumericVector totalSites,
+Rcpp::List calculateTranscriptMC(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites,
                            double relHitsForeground,
                            int n, int maxPermutations, int minPermutations, int e) {
     double relHitsBackground(sum(absoluteHits) / sum(totalSites));
@@ -356,6 +355,6 @@ List calculateTranscriptMC(NumericVector absoluteHits, NumericVector totalSites,
 
     double pValue(((double)k + 1.0) / ((double)i + 1.0));
 
-    return List::create(Named("p.value") = pValue, Named("n") = i);
+    return Rcpp::List::create(Rcpp::Named("p.value") = pValue, Rcpp::Named("n") = i);
 }
 

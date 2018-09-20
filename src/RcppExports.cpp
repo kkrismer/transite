@@ -6,59 +6,59 @@
 using namespace Rcpp;
 
 // scoreSequences
-SEXP scoreSequences(List sequences, NumericMatrix pwm);
+SEXP scoreSequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm);
 RcppExport SEXP _transite_scoreSequences(SEXP sequencesSEXP, SEXP pwmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type sequences(sequencesSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type pwm(pwmSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type sequences(sequencesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type pwm(pwmSEXP);
     rcpp_result_gen = Rcpp::wrap(scoreSequences(sequences, pwm));
     return rcpp_result_gen;
 END_RCPP
 }
 // calculateKmerScores
-NumericVector calculateKmerScores(List kmers, NumericMatrix pwm);
+Rcpp::NumericVector calculateKmerScores(Rcpp::List kmers, Rcpp::NumericMatrix pwm);
 RcppExport SEXP _transite_calculateKmerScores(SEXP kmersSEXP, SEXP pwmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type kmers(kmersSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type pwm(pwmSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type pwm(pwmSEXP);
     rcpp_result_gen = Rcpp::wrap(calculateKmerScores(kmers, pwm));
     return rcpp_result_gen;
 END_RCPP
 }
 // lookupKmerScores
-NumericVector lookupKmerScores(List kmers, Environment kmerScores);
+Rcpp::NumericVector lookupKmerScores(Rcpp::List kmers, Rcpp::Environment kmerScores);
 RcppExport SEXP _transite_lookupKmerScores(SEXP kmersSEXP, SEXP kmerScoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type kmers(kmersSEXP);
-    Rcpp::traits::input_parameter< Environment >::type kmerScores(kmerScoresSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Environment >::type kmerScores(kmerScoresSEXP);
     rcpp_result_gen = Rcpp::wrap(lookupKmerScores(kmers, kmerScores));
     return rcpp_result_gen;
 END_RCPP
 }
 // computeMotifScore
-DataFrame computeMotifScore(List kmers);
+Rcpp::DataFrame computeMotifScore(Rcpp::List kmers);
 RcppExport SEXP _transite_computeMotifScore(SEXP kmersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type kmers(kmersSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
     rcpp_result_gen = Rcpp::wrap(computeMotifScore(kmers));
     return rcpp_result_gen;
 END_RCPP
 }
 // calculateLocalConsistency
-List calculateLocalConsistency(NumericVector x, int numPermutations, int minPermutations, int e);
+Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations, int minPermutations, int e);
 RcppExport SEXP _transite_calculateLocalConsistency(SEXP xSEXP, SEXP numPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< int >::type numPermutations(numPermutationsSEXP);
     Rcpp::traits::input_parameter< int >::type minPermutations(minPermutationsSEXP);
     Rcpp::traits::input_parameter< int >::type e(eSEXP);
@@ -67,13 +67,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // calculateTranscriptMC
-List calculateTranscriptMC(NumericVector absoluteHits, NumericVector totalSites, double relHitsForeground, int n, int maxPermutations, int minPermutations, int e);
+Rcpp::List calculateTranscriptMC(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites, double relHitsForeground, int n, int maxPermutations, int minPermutations, int e);
 RcppExport SEXP _transite_calculateTranscriptMC(SEXP absoluteHitsSEXP, SEXP totalSitesSEXP, SEXP relHitsForegroundSEXP, SEXP nSEXP, SEXP maxPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type absoluteHits(absoluteHitsSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type totalSites(totalSitesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type absoluteHits(absoluteHitsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type totalSites(totalSitesSEXP);
     Rcpp::traits::input_parameter< double >::type relHitsForeground(relHitsForegroundSEXP);
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< int >::type maxPermutations(maxPermutationsSEXP);

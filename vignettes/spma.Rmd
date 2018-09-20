@@ -11,6 +11,8 @@ vignette: >
 
 In order to investigate how RBP targets are distributed across a spectrum of transcripts (e.g., all transcripts of a platform, ordered by fold change), Spectrum Motif Analysis visualizes the distribution of putative RBP binding sites across all transcripts.
 
+# Analysis
+
 ```{r}
 library(transite)
 ```
@@ -61,6 +63,8 @@ results <- runMatrixSPMA(background.set, motifs = motif.db, cache = FALSE)
 # results <- runMatrixSPMA(background.set)
 ```
 
+# Results
+
 Matrix-based SPMA returns a number of result objects, combined in a list with the following components:
 
 * `foreground.scores`
@@ -103,3 +107,13 @@ cat("number of significant bins | ", results$spectrum.info.df$n.significant, " |
 ```
 
 Visual inspection of the spectrum plot as well as the classification and the underlying properties suggest that the putative binding sites of this particular RNA-binding protein are distributed in a random fashion across the spectrum of transcripts. There is no evidence that this RNA-binding protein is involved in modulating gene expression changes between treatment and control group.
+
+# Additional information
+
+Most of the functionality of the Transite package is also offered through the Transite website at https://transite.mit.edu.
+
+For a more detailed discussion on Spectrum Motif Analysis and Transite in general, please have a look at this manuscript on bioRxiv:
+
+**Transite: A computational motif-based analysis platform that identifies RNA-binding proteins modulating changes in gene expression**  
+Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, Michael B. Yaffe  
+bioRxiv 416743; doi: https://doi.org/10.1101/416743

@@ -164,7 +164,7 @@ Rcpp::DataFrame computeMotifScore(Rcpp::List kmers) {
     Rcpp::NumericVector topKmerEnrichments(kmers.size());
 
     for(int i(0); i < kmers.size(); ++i) {
-        Rcpp::DataFrame df = kmers[i];
+        Rcpp::DataFrame df = Rcpp::as<Rcpp::DataFrame>(kmers[i]);
 
         if(df.nrows() == 0) {
             scores[i] = 0;

@@ -29,6 +29,7 @@ Description: transite is a computational method that allows
     expression data and current knowledge of binding preferences of
     RNA-binding proteins.
 License: MIT + file LICENSE
+URL: https://transite.mit.edu
 Depends:
     R (>= 3.5)
 Imports:

@@ -92,6 +92,7 @@
 #' @importFrom stats pt
 #' @export
 pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
+    method <- match.arg(method, choices = c("fisher", "SL", "MG", "tippett"))
     p <- p[!is.na(p)]
     n <- length(p)
     if (max(p) > 1) {
@@ -100,22 +101,22 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
 
     if (n == 0) {
         warning("vector of p-values is empty")
-        if (method[1] == "fisher") {
+        if (method == "fisher") {
             return(list(statistic = NA, p.value = NA, method = "Fisher (1932)",
                         statistic.name = "Xsq"))
-        } else if (method[1] == "SL") {
+        } else if (method == "SL") {
             return(list(
                 statistic = NA, p.value = NA,
                 method = "Stouffer (1949), Liptak (1958)",
                 statistic.name = "Z"
             ))
-        } else if (method[1] == "MG") {
+        } else if (method == "MG") {
             return(list(
                 statistic = NA, p.value = NA,
                 method = "Mudholkar and George (1979)",
                 statistic.name = "L"
             ))
-        } else if (method[1] == "tippett") {
+        } else if (method == "tippett") {
             return(list(
                 statistic = NA, p.value = NA,
                 method = "Tippett (1931)",
@@ -125,14 +126,14 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
             stop("method not supported")
         }
     } else {
-        if (method[1] == "fisher") {
+        if (method == "fisher") {
             Xsq <- -2 * sum(log(p))
             p.val <- stats::pchisq(Xsq, df = 2 * n, lower.tail = FALSE)
             return(list(
                 statistic = Xsq, p.value = p.val, method = "Fisher (1932)",
                 statistic.name = "Xsq"
             ))
-        } else if (method[1] == "SL") {
+        } else if (method == "SL") {
             if (is.null(w)) {
                 w <- rep(1, n) / n
             } else {
@@ -148,7 +149,7 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
                 method = "Stouffer (1949), Liptak (1958)",
                 statistic.name = "Z"
             ))
-        } else if (method[1] == "MG") {
+        } else if (method == "MG") {
             L <- sum((-1) * log(p / (1 - p)))
             p.value <- stats::pt(L * sqrt((15 * n + 12) / (pi^2 * n * (5 * n + 2))),
                                  df = 5 * n + 4, lower.tail = FALSE
@@ -158,7 +159,7 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
                 method = "Mudholkar and George (1979)",
                 statistic.name = "L"
             ))
-        } else if (method[1] == "tippett") {
+        } else if (method == "tippett") {
             return(list(
                 statistic = min(p), p.value = 1 - (1 - min(p))^n,
                 method = "Tippett (1931)",

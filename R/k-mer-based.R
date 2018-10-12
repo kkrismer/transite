@@ -454,10 +454,12 @@ empiricalEnrichmentMeanCDF <- function(random.means,
                                        alternative = c("two.sided",
                                                        "less", "greater"),
                                        conf.level = 0.95) {
-    if (alternative[1] == "greater") {
+    alternative <- match.arg(alternative,
+                             choices = c("two.sided", "less", "greater"))
+    if (alternative == "greater") {
         # upper tail probability
         k <- sum(random.means >= actual.mean)
-    } else if (alternative[1] == "less") {
+    } else if (alternative == "less") {
         # lower tail probability
         k <- sum(random.means <= actual.mean)
     } else {

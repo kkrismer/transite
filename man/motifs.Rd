@@ -3,7 +3,7 @@
 \docType{data}
 \name{motifs}
 \alias{motifs}
-\title{Transite motifs}
+\title{Transite Motif Database}
 \format{A list of lists with the following components:
 \tabular{rl}{
   \code{id} \tab motif id\cr
@@ -23,6 +23,13 @@
 motifs
 }
 \description{
-Transite motifs
+The Transite motif database contains sequence motifs and associated
+\emph{k}-mers of more than 100 different RNA-binding proteins, obtained from
+publicly available motif databases.
+}
+\references{
+\url{http://cisbp-rna.ccbr.utoronto.ca/}
+
+\url{http://rbpdb.ccbr.utoronto.ca/}
 }
 \keyword{datasets}

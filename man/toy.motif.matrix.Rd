@@ -3,13 +3,13 @@
 \docType{data}
 \name{toy.motif.matrix}
 \alias{toy.motif.matrix}
-\title{A toy motif matrix.}
+\title{Toy Motif Matrix}
 \format{A data frame with four columns (A, C, G, U) and seven
 rows (position 1 - 7)}
 \usage{
 toy.motif.matrix
 }
 \description{
-A toy motif matrix.
+This toy motif matrix is used in code examples for various functions.
 }
 \keyword{datasets}

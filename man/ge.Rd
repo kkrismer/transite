@@ -3,8 +3,7 @@
 \docType{data}
 \name{ge}
 \alias{ge}
-\title{A toy data set with gene expression measurements and 3'-UTR sequences
-of 1000 genes}
+\title{Toy Gene Expression Data Set}
 \format{A list with the following components:
 \tabular{rl}{
   \code{foreground1.df} \tab data frame that contains down-regulated
@@ -17,7 +16,12 @@ of 1000 genes}
 ge
 }
 \description{
-A toy data set with gene expression measurements and 3'-UTR sequences
-of 1000 genes
+This object contains a toy data set based on gene expression measurements
+and 3'-UTR sequences of 1000 genes. It comprises three data frames with
+RefSeq identifiers, log fold change values, and 3'-UTR sequences of genes,
+which are either upregulated or downregulated after some hypothetical
+treatment, as well as all measured genes. The actual values are not
+important. This data set merely serves as an example input for various
+functions.
 }
 \keyword{datasets}

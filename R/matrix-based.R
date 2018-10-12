@@ -677,7 +677,7 @@ readMotifCache <- function(cache.path, motif.id) {
         }, finally = {
             unlock(motif.cache.lock)
         })
-        Sys.sleep(0.1)
+        Sys.sleep(0.05)
     }
     return(motif.cache)
 }
@@ -699,6 +699,6 @@ writeMotifCache <- function(motif.cache, cache.path, motif.id) {
         }, finally = {
             unlock(motif.cache.lock)
         })
-        Sys.sleep(0.1)
+        Sys.sleep(0.05)
     }
 }

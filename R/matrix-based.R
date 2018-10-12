@@ -88,7 +88,7 @@
 scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
                              threshold.method = "p.value",
                              threshold.value = 0.25^6,
-                             n.cores = 1, cache = paste0(getwd(), "/sc/")) {
+                             n.cores = 1, cache = paste0(tempdir(), "/sc/")) {
     # if threshold.method == "p.value": default threshold.value == 0.25^6
     # (0.25^6: lowest p-value that can be achieved by hexamer motifs, the
     #shortest supported motifs)
@@ -104,7 +104,7 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
 
     if (is.logical(cache)) {
         if (cache) {
-            cache.path <- paste0(getwd(), "/sc/")
+            cache.path <- paste0(tempdir(), "/sc/")
         } else {
             cache.path <- NULL
         }
@@ -259,7 +259,7 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
 scoreTranscriptsSingleMotif <- function(motif, sequences, max.hits = 5,
                                         threshold.method = "p.value",
                                         threshold.value = 0.25^6,
-                                        cache.path = paste0(getwd(), "/sc/")) {
+                                        cache.path = paste0(tempdir(), "/sc/")) {
     # if threshold.method == "p.value": default threshold.value == 0.25^6
     # (0.25^6: lowest p-value that can be achieved by hexamer motifs,
     # the shortest supported motifs)

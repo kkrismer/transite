@@ -189,7 +189,7 @@ runMatrixTSMA <-
              e = 5,
              p.adjust.method = "BH",
              n.cores = 1,
-             cache = paste0(getwd(), "/sc/")) {
+             cache = paste0(tempdir(), "/sc/")) {
         # avoid CRAN note
         adj.p.value <- p.value <- NULL
 
@@ -352,7 +352,7 @@ runMatrixSPMA <-
              e = 5,
              p.adjust.method = "BH",
              n.cores = 1,
-             cache = paste0(getwd(), "/sc/")) {
+             cache = paste0(tempdir(), "/sc/")) {
         # avoid CRAN note
         motif.id <- motif.rbps <- adj.r.squared <- degree <-
             residuals <- slope <- NULL

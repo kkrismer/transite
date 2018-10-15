@@ -31,7 +31,7 @@ for consistency score}
 Monte Carlo test
 for consistency score}
 
-\item{e}{stop criterion for consistency score Monte Carlo test: aborting
+\item{e}{integer-valued stop criterion for consistency score Monte Carlo test: aborting
 permutation
 process after
 observing \code{e} random consistency values with more extreme values than

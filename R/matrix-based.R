@@ -562,7 +562,7 @@ cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix,
 #' @param min.fg.permutations minimum number of foreground permutations
 #' performed in
 #' Monte Carlo test for enrichment score
-#' @param e stop criterion for enrichment score Monte Carlo test: aborting
+#' @param e integer-valued stop criterion for enrichment score Monte Carlo test: aborting
 #' permutation process after
 #' observing \code{e} random enrichment values with more extreme values than
 #' the actual

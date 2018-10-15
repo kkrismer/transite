@@ -72,7 +72,7 @@
 #' (\code{'tippett'})
 #' @param w weights, only used in combination with Stouffer-Liptak.
 #' If \code{is.null(w)} then
-#' weights are set unbiased
+#' weights are set in an unbiased way
 #'
 #' @return A list with the following components:
 #' \tabular{rl}{

@@ -24,7 +24,11 @@ more extreme values
 than the actual consistency value}
 }
 \value{
-list with \code{score}, \code{p.value}, and \code{n} components
+list with \code{score}, \code{p.value}, and \code{n} components,
+where \code{score} is the raw local consistency score (usually not used),
+\code{p.value} is the associated p-value for that score, obtained by
+Monte Carlo testing, and \code{n} is the number of permutations performed
+in the Monte Carlo test (the higher, the more significant)
 }
 \description{
 C++ implementation of Local Consistency Score algorithm.

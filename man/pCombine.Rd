@@ -17,7 +17,7 @@ Liptak (1958) (\code{'SL'}), Mudholkar and George (1979)
 
 \item{w}{weights, only used in combination with Stouffer-Liptak.
 If \code{is.null(w)} then
-weights are set unbiased}
+weights are set in an unbiased way}
 }
 \value{
 A list with the following components:

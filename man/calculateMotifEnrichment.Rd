@@ -34,7 +34,7 @@ Monte Carlo test for enrichment score}
 performed in
 Monte Carlo test for enrichment score}
 
-\item{e}{stop criterion for enrichment score Monte Carlo test: aborting
+\item{e}{integer-valued stop criterion for enrichment score Monte Carlo test: aborting
 permutation process after
 observing \code{e} random enrichment values with more extreme values than
 the actual

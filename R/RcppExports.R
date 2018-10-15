@@ -89,7 +89,11 @@ computeMotifScore <- function(kmers) {
 #' process after observing \code{e} random consistency values with
 #' more extreme values
 #' than the actual consistency value
-#' @return list with \code{score}, \code{p.value}, and \code{n} components
+#' @return list with \code{score}, \code{p.value}, and \code{n} components,
+#' where \code{score} is the raw local consistency score (usually not used),
+#' \code{p.value} is the associated p-value for that score, obtained by
+#' Monte Carlo testing, and \code{n} is the number of permutations performed
+#' in the Monte Carlo test (the higher, the more significant)
 #'
 #' @examples
 #' poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4,

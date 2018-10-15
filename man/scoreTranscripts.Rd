@@ -6,7 +6,7 @@
 \usage{
 scoreTranscripts(sequences, motifs = NULL, max.hits = 5,
   threshold.method = "p.value", threshold.value = 0.25^6,
-  n.cores = 1, cache = paste0(getwd(), "/sc/"))
+  n.cores = 1, cache = paste0(tempdir(), "/sc/"))
 }
 \arguments{
 \item{sequences}{character vector of named sequences

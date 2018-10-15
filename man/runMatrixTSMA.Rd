@@ -8,7 +8,7 @@ runMatrixTSMA(foreground.sets, background.set, motifs = NULL,
   max.hits = 5, threshold.method = "p.value",
   threshold.value = 0.25^6, max.fg.permutations = 1e+06,
   min.fg.permutations = 1000, e = 5, p.adjust.method = "BH",
-  n.cores = 1, cache = paste0(getwd(), "/sc/"))
+  n.cores = 1, cache = paste0(tempdir(), "/sc/"))
 }
 \arguments{
 \item{foreground.sets}{a list of named character vectors of
@@ -51,7 +51,7 @@ Monte Carlo test for enrichment score}
 performed in
 Monte Carlo test for enrichment score}
 
-\item{e}{stop criterion for enrichment score Monte Carlo test: aborting
+\item{e}{integer-valued stop criterion for enrichment score Monte Carlo test: aborting
 permutation process after
 observing \code{e} random enrichment values with more extreme values than
 the actual

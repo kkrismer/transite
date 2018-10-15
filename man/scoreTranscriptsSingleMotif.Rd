@@ -6,7 +6,7 @@
 \usage{
 scoreTranscriptsSingleMotif(motif, sequences, max.hits = 5,
   threshold.method = "p.value", threshold.value = 0.25^6,
-  cache.path = paste0(getwd(), "/sc/"))
+  cache.path = paste0(tempdir(), "/sc/"))
 }
 \arguments{
 \item{motif}{a Transite motif that is used to score the specified sequences}

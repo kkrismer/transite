@@ -35,6 +35,24 @@ y-axis is \eqn{\log_10} significance, i.e., multiple testing
 corrected p-value from
 Fisher's exact test or Pearson's chi-squared test.
 }
+\examples{
+foreground.set <- c("UGUGGG", "GUGGGG", "GUGUGG", "UGUGGU")
+background.set <- unique(c(foreground.set, c(
+  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
+  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
+  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
+  "AUAGAC", "AGUUC", "CCAGUAA",
+  "CCACACAC", "CUCAUUGGAG", "ACUUUCCCACA", "CAGGUCAGCA",
+  "CCACACCAG", "CCACACAUCAGU", "CACACACUCC", "CAGCCCCCCACAGGCA"
+)))
+
+motif <- getMotifById("M178_0.6")
+results <- runKmerTSMA(list(foreground.set), background.set,
+                       motifs = motif)
+drawVolcanoPlot(results[[1]]$motif.kmers.dfs[[1]], hexamers(motif[[1]]), "test RBP")
+
+}
 \seealso{
 Other TSMA functions: \code{\link{runKmerTSMA}},
   \code{\link{runMatrixTSMA}}

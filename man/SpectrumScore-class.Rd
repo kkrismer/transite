@@ -120,3 +120,16 @@ stopping criterion reached)}
 \item{\code{plot}}{spectrum plot}
 }}
 
+\examples{
+new("SpectrumScore", adj.r.squared = 0,
+    degree = 0L,
+    residuals = 0,
+    slope = 0,
+    f.statistic = 0,
+    f.statistic.p.value = 1,
+    consistency.score = 1,
+    consistency.score.p.value = 1,
+    consistency.score.n = 1000L,
+    plot = NULL
+)
+}

@@ -101,15 +101,10 @@ foreground.set1 <- c(
 )
 foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
 foreground.sets <- list(foreground.set1, foreground.set2)
-background.set <- c(
-  "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-  "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-  "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-  "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-  "AUAGAC", "AGUUC", "CCAGUAA",
-  "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
-  "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
-)
+background.set <- unique(c(foreground.set1, foreground.set2, c(
+  "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA",
+  "CCACACCGG", "GUCAUCAGU", "GUCAGUCC", "CAGGUCAGGGGCA"
+)))
 
 # run k-mer based TSMA with all Transite motifs (recommended):
 # results <- runKmerTSMA(foreground.sets, background.set)

@@ -15,6 +15,18 @@
 #' p-value of local consistency score (permutations performed before early
 #' stopping criterion reached)
 #' @slot plot spectrum plot
+#' @examples
+#' new("SpectrumScore", adj.r.squared = 0,
+#'     degree = 0L,
+#'     residuals = 0,
+#'     slope = 0,
+#'     f.statistic = 0,
+#'     f.statistic.p.value = 1,
+#'     consistency.score = 1,
+#'     consistency.score.p.value = 1,
+#'     consistency.score.n = 1000L,
+#'     plot = NULL
+#' )
 #' @return Object of type SpectrumScore
 #' @importFrom methods setClass
 #' @name SpectrumScore-class

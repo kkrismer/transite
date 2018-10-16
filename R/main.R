@@ -319,7 +319,6 @@ runMatrixTSMA <-
 #' binding sites may play a similar role as clusters of transcription factors.
 #'
 #' @examples
-#' \dontrun{
 #' # example data set
 #' background.df <- transite:::ge$background
 #' # sort sequences by signal-to-noise ratio
@@ -329,8 +328,13 @@ runMatrixTSMA <-
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
 #'
-#' results <- runMatrixSPMA(background.set)
-#' }
+#' results <- runMatrixSPMA(background.set,
+#'                          motifs = getMotifById("M178_0.6"),
+#'                          n.bins = 20,
+#'                          max.fg.permutations = 10000)
+#'
+#' \dontrun{
+#' results <- runMatrixSPMA(background.set) }
 #'
 #' @family SPMA functions
 #' @family matrix functions
@@ -622,15 +626,10 @@ runMatrixSPMA <-
 #' )
 #' foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
 #' foreground.sets <- list(foreground.set1, foreground.set2)
-#' background.set <- c(
-#'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
-#'   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
-#'   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
-#'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
-#'   "AUAGAC", "AGUUC", "CCAGUAA",
-#'   "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
-#'   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
-#' )
+#' background.set <- unique(c(foreground.set1, foreground.set2, c(
+#'   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA",
+#'   "CCACACCGG", "GUCAUCAGU", "GUCAGUCC", "CAGGUCAGGGGCA"
+#' )))
 #'
 #' # run k-mer based TSMA with all Transite motifs (recommended):
 #' # results <- runKmerTSMA(foreground.sets, background.set)
@@ -931,7 +930,6 @@ runKmerTSMA <-
 #' target overrepresentation.
 #'
 #' @examples
-#' \dontrun{
 #' # example data set
 #' background.df <- transite:::ge$background
 #' # sort sequences by signal-to-noise ratio
@@ -941,8 +939,13 @@ runKmerTSMA <-
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
 #'
-#' results <- runKmerSPMA(background.set)
-#' }
+#' results <- runKmerSPMA(background.set,
+#'                        motifs = getMotifById("M178_0.6"),
+#'                        n.bins = 20,
+#'                        fg.permutations = 10)
+#'
+#' \dontrun{
+#' results <- runKmerSPMA(background.set)}
 #'
 #' @family SPMA functions
 #' @family \emph{k}-mer functions
@@ -1000,7 +1003,9 @@ runKmerSPMA <-
                                 method = p.adjust.method
                 )
 
-            motifs <- getMotifs()
+            if (is.null(motifs)) {
+                motifs <- getMotifs()
+            }
             spectrum.info <- lapply(motifs, function(motif) {
                 motif.data.df <- dplyr::filter(enrichment.df,
                                                motif.id == motif.id(motif))

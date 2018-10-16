@@ -81,7 +81,6 @@ calculate a score for each RNA-binding protein, which quantifies its
 target overrepresentation.
 }
 \examples{
-\dontrun{
 # example data set
 background.df <- transite:::ge$background
 # sort sequences by signal-to-noise ratio
@@ -91,8 +90,13 @@ background.set <- gsub("T", "U", background.df$seq)
 names(background.set) <- paste0(background.df$refseq, "|",
   background.df$seq.type)
 
-results <- runKmerSPMA(background.set)
-}
+results <- runKmerSPMA(background.set,
+                       motifs = getMotifById("M178_0.6"),
+                       n.bins = 20,
+                       fg.permutations = 10)
+
+\dontrun{
+results <- runKmerSPMA(background.set)}
 
 }
 \seealso{

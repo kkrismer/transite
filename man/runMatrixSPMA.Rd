@@ -140,7 +140,6 @@ clusters of RBP
 binding sites may play a similar role as clusters of transcription factors.
 }
 \examples{
-\dontrun{
 # example data set
 background.df <- transite:::ge$background
 # sort sequences by signal-to-noise ratio
@@ -150,8 +149,13 @@ background.set <- gsub("T", "U", background.df$seq)
 names(background.set) <- paste0(background.df$refseq, "|",
   background.df$seq.type)
 
-results <- runMatrixSPMA(background.set)
-}
+results <- runMatrixSPMA(background.set,
+                         motifs = getMotifById("M178_0.6"),
+                         n.bins = 20,
+                         max.fg.permutations = 10000)
+
+\dontrun{
+results <- runMatrixSPMA(background.set) }
 
 }
 \seealso{

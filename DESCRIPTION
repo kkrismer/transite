@@ -1,6 +1,6 @@
 Package: transite
 Title: RNA-binding protein motif analysis
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: 
     c(person(given = "Konstantin",
              family = "Krismer",

@@ -30,6 +30,7 @@
                                                       consistency.score.p.value = "numeric",
                                                       consistency.score.n = "integer",
                                                       plot = "ANY"))
+
 #' Getter Method adj.r.squared
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
@@ -155,6 +156,7 @@ setMethod("consistency.score.n", signature(object = "SpectrumScore"),
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
+#' @importFrom methods is
 #' @rdname SpectrumScore-class
 #' @aliases show,SpectrumScore-method
 setMethod("show", signature(object = "SpectrumScore"), function(object) {

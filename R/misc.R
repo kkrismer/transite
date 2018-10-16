@@ -1,48 +1,221 @@
 
-#' @title Creates Transite motif object
+setClassUnion("dfOrNULL", c("data.frame", "NULL"))
+
+#' An S4 class to represent a Motif
 #'
-#' @description
-#' Creates an object of class \code{Motif}.
-#'
-#' @param id motif id (character vector of length 1)
-#' @param rbps character vector of names of RNA-binding proteins associated
+#' @slot id motif id (character vector of length 1)
+#' @slot rbps character vector of names of RNA-binding proteins associated
 #' with this motif
-#' @param matrix data frame with four columns (A, C, G, U) and 6 - 15 rows
+#' @slot matrix data frame with four columns (A, C, G, U) and 6 - 15 rows
 #' (positions),
 #' where cell (i, j) contains weight of nucleotide j on position i
-#' @param hexamers character vector of hexamers associated with this motif
-#' @param heptamers character vector of heptamers associated with this motif
-#' @param length length of the motif (i.e., \code{nrow(matrix)})
-#' @param iupac IUPAC code for motif matrix
+#' @slot hexamers character vector of hexamers associated with this motif
+#' @slot heptamers character vector of heptamers associated with this motif
+#' @slot width width of the motif (i.e., \code{nrow(matrix)})
+#' @slot iupac IUPAC code for motif matrix
 #' (see \code{\link{generateIUPACByMatrix}})
-#' @param type type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
+#' @slot type type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
 #' \code{'SELEX'}, etc.)
-#' @param species species where motif was discovered (e.g.,
+#' @slot species species where motif was discovered (e.g.,
 #' \code{'Homo sapiens'})
-#' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
-#' @return object of class Motif
+#' @slot src source of motif (e.g., \code{'RBPDB v1.3.1'})
+#' @return Object of type Motif
 #' @examples
 #' kmers <- c("AAAAAAA", "CAAAAAA")
 #' iupac <- generateIUPACByKmers(kmers,
 #'   code = initIUPAClookupTable())
 #' hexamers <- generateKmersFromIUPAC(iupac, 6)
 #' heptamers <- generateKmersFromIUPAC(iupac, 7)
-#' Motif(
-#'   "custom.motif", "RBP1", NULL, hexamers, heptamers, 7,
-#'   iupac, "HITS-CLIP", "Homo sapiens", "user"
+#' new("Motif", id = "custom.motif", rbps = "RBP1",
+#'   matrix = NULL, hexamers = hexamers, heptamers = heptamers, width = 7L,
+#'   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
 #' )
-#' @export
-Motif <- function(id, rbps, matrix, hexamers, heptamers, length, iupac, type,
-                  species, src) {
-    object <- list(
-        id = id, rbps = rbps, matrix = matrix, hexamers = hexamers,
-        heptamers = heptamers,
-        length = length, iupac = iupac, type = type, species = species,
-        src = src
+#' @importFrom methods setClass
+#' @importFrom methods setClassUnion
+#' @importFrom methods new
+#' @name Motif-class
+#' @rdname Motif-class
+#' @exportClass Motif
+.Motif <- setClass("Motif", slots = c(id = "character",
+                                      rbps = "character",
+                                      matrix = "dfOrNULL",
+                                      hexamers = "character",
+                                      heptamers = "character",
+                                      width = "integer",
+                                      iupac = "character",
+                                      type = "character",
+                                      species = "character",
+                                      src = "character"))
+
+#' Getter Method motif.id
+#' @name Motif-class
+#' @rdname Motif-class
+#' @param object Motif object
+#' @importFrom methods setGeneric
+#' @exportMethod motif.id
+setGeneric("motif.id", function(object) standardGeneric("motif.id"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases motif.id
+#' @aliases motif.id,Motif-method
+setMethod("motif.id", signature(object = "Motif"),
+          function(object) object@id)
+
+#' Getter Method rbps
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod rbps
+setGeneric("rbps", function(object) standardGeneric("rbps"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases rbps
+#' @aliases rbps,Motif-method
+setMethod("rbps", signature(object = "Motif"), function(object) object@rbps)
+
+#' Getter Method motif.matrix
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod motif.matrix
+setGeneric("motif.matrix", function(object) standardGeneric("motif.matrix"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases motif.matrix
+#' @aliases motif.matrix,Motif-method
+setMethod("motif.matrix", signature(object = "Motif"),
+          function(object) object@matrix)
+
+#' Getter Method hexamers
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod hexamers
+setGeneric("hexamers", function(object) standardGeneric("hexamers"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases hexamers
+#' @aliases hexamers,Motif-method
+setMethod("hexamers", signature(object = "Motif"),
+          function(object) object@hexamers)
+
+#' Getter Method heptamers
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod heptamers
+setGeneric("heptamers",
+           function(object) standardGeneric("heptamers"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases heptamers
+#' @aliases heptamers,Motif-method
+setMethod("heptamers", signature(object = "Motif"),
+          function(object) object@heptamers)
+
+#' Getter Method iupac
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod iupac
+setGeneric("iupac", function(object) standardGeneric("iupac"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases iupac
+#' @aliases iupac,Motif-method
+setMethod("iupac", signature(object = "Motif"), function(object) object@iupac)
+
+#' Getter Method motif.type
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod motif.type
+setGeneric("motif.type", function(object) standardGeneric("motif.type"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases motif.type
+#' @aliases motif.type,Motif-method
+setMethod("motif.type", signature(object = "Motif"), function(object) object@type)
+
+#' Getter Method motif.species
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod motif.species
+setGeneric("motif.species", function(object) standardGeneric("motif.species"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases motif.species
+#' @aliases motif.species,Motif-method
+setMethod("motif.species", signature(object = "Motif"),
+          function(object) object@species)
+
+#' Getter Method motif.source
+#' @name Motif-class
+#' @rdname Motif-class
+#' @importFrom methods setGeneric
+#' @exportMethod motif.source
+setGeneric("motif.source", function(object) standardGeneric("motif.source"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases motif.source
+#' @aliases motif.source,Motif-method
+setMethod("motif.source", signature(object = "Motif"), function(object) object@src)
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @importFrom methods is
+#' @rdname Motif-class
+#' @aliases show,Motif-method
+setMethod("show", signature(object = "Motif"), function(object) {
+    cat(is(object)[[1]], "\n",
+        "  id: ", object@id, "\n",
+        "  RBPs:  ", paste(object@rbps, collapse = ", "), "\n",
+        "  width (in nt):  ", object@width, "\n",
+        "  IUPAC:  ", object@iupac, "\n",
+        "  type:  ", object@type, "\n",
+        "  species:  ", object@species, "\n",
+        "  source:  ", object@src, "\n",
+        sep = ""
     )
-    class(object) <- append(class(object), "Motif")
-    return(object)
-}
+})
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname Motif-class
+#' @aliases width,Motif-method
+#' @exportMethod width
+setMethod("width", signature(x = "Motif"), function(x) x@width)
+
+#' @param x Motif object
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @importFrom ggseqlogo ggseqlogo
+#' @rdname Motif-class
+#' @aliases plot,Motif-method
+#' @exportMethod plot
+setMethod("plot", signature(x = "Motif"), function(x) {
+    ppm <- t(getPPM(x))
+    return(ggseqlogo::ggseqlogo(ppm))
+})
 
 #' @title Creates Transite motif object from position weight matrix
 #'
@@ -71,13 +244,15 @@ Motif <- function(id, rbps, matrix, hexamers, heptamers, length, iupac, type,
 #' @export
 createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
     iupac <- generateIUPACByMatrix(matrix, code = initIUPAClookupTable())
-    motif.length <- nrow(matrix)
+    width <- nrow(matrix)
     hexamers <- generateKmersFromIUPAC(iupac, 6)
     heptamers <- generateKmersFromIUPAC(iupac, 7)
 
-    return(Motif(
-        id, rbps, matrix, hexamers, heptamers, motif.length, iupac, type,
-        species, src
+    return(.Motif(
+        id = id, rbps = rbps, matrix = matrix,
+        hexamers = hexamers, heptamers = heptamers,
+        width = as.integer(width),
+        iupac = iupac, type = type, species = species, src = src
     ))
 }
 
@@ -117,11 +292,11 @@ createKmerMotif <- function(id, rbps, kmers, type, species, src) {
         stop("invalid k-mers: (1) all k-mers must have the same length, (2) only hexamers or heptamers allowed, (3) allowed characters are A, C, G, U")
     }
 
-    motif.length <- unique(nchar(kmers))
-    if (motif.length == 6) {
+    width <- unique(nchar(kmers))
+    if (width == 6) {
         hexamers <- kmers
         heptamers <- ""
-    } else if (motif.length == 7) {
+    } else if (width == 7) {
         hexamers <- ""
         heptamers <- kmers
     }
@@ -130,57 +305,12 @@ createKmerMotif <- function(id, rbps, kmers, type, species, src) {
     hexamers <- generateKmersFromIUPAC(iupac, 6)
     heptamers <- generateKmersFromIUPAC(iupac, 7)
 
-    return(Motif(
-        id, rbps, NULL, hexamers, heptamers, motif.length, iupac, type,
-        species, src
+    return(.Motif(
+        id = id, rbps = rbps, matrix = NULL,
+        hexamers = hexamers, heptamers = heptamers,
+        width = as.integer(width), iupac = iupac, type = type,
+        species = species, src = src
     ))
-}
-
-#' @importFrom methods is
-#' @export
-summary.Motif <- function(object, ...) {
-    stopifnot(methods::is(object, "Motif"))
-    res <- list(
-        id = object$id, rbps = object$rbps, hexamers = object$hexamers,
-        heptamers = object$heptamers,
-        length = object$length, iupac = object$iupac, type = object$type,
-        species = object$species,
-        src = object$src
-    )
-    class(res) <- "summary.Motif"
-    return(res)
-}
-
-#' @importFrom methods is
-#' @export
-print.summary.Motif <- function(x, ...) {
-    stopifnot(methods::is(x, "summary.Motif"))
-    cat("motif id:\n")
-    print(x$id)
-    cat("\nRBPs:\n")
-    print(x$rbps)
-    cat("\nmotif length:\n")
-    print(x$length)
-    cat("\nassociated hexamers:\n")
-    print(x$hexamers)
-    cat("\nassociated heptamers:\n")
-    print(x$heptamers)
-    cat("\nIUPAC:\n")
-    print(x$iupac)
-    cat("\ntype:\n")
-    print(x$type)
-    cat("\nspecies:\n")
-    print(x$species)
-    cat("\nsource:\n")
-    print(x$src)
-}
-
-#' @importFrom methods is
-#' @export
-print.Motif <- function(x, ...) {
-    stopifnot(methods::is(x, "Motif"))
-    print(x$id)
-    print(x$matrix)
 }
 
 #' @title Displays motif meta information.
@@ -194,7 +324,7 @@ print.Motif <- function(x, ...) {
 #' \itemize{
 #'   \item \code{id}
 #'   \item \code{rbps}
-#'   \item \code{length}
+#'   \item \code{width}
 #'   \item \code{iupac}
 #'   \item \code{type}
 #'   \item \code{species}
@@ -206,28 +336,28 @@ print.Motif <- function(x, ...) {
 #' @export
 motifsMetaInfo <- function() {
     motifs <- getMotifs()
-    id <- unlist(lapply(motifs, function(motif) {
-        return(motif$id)
-    }))
-    rbps <- unlist(lapply(motifs, function(motif) {
-        return(paste0(motif$rbps, collapse = ", "))
-    }))
-    length <- unlist(lapply(motifs, function(motif) {
-        return(motif$length)
-    }))
-    iupac <- unlist(lapply(motifs, function(motif) {
-        return(motif$iupac)
-    }))
-    type <- unlist(lapply(motifs, function(motif) {
-        return(motif$type)
-    }))
-    species <- unlist(lapply(motifs, function(motif) {
-        return(motif$species)
-    }))
-    src <- unlist(lapply(motifs, function(motif) {
-        return(motif$src)
-    }))
-    return(data.frame(id, rbps, length, iupac, type, species, src))
+    id <- vapply(motifs, function(motif) {
+        return(motif.id(motif))
+    }, FUN.VALUE = character(1))
+    rbps <- vapply(motifs, function(motif) {
+        return(paste0(rbps(motif), collapse = ", "))
+    }, FUN.VALUE = character(1))
+    width <- vapply(motifs, function(motif) {
+        return(width(motif))
+    }, FUN.VALUE = integer(1))
+    iupac <- vapply(motifs, function(motif) {
+        return(iupac(motif))
+    }, FUN.VALUE = character(1))
+    type <- vapply(motifs, function(motif) {
+        return(motif.type(motif))
+    }, FUN.VALUE = character(1))
+    species <- vapply(motifs, function(motif) {
+        return(motif.species(motif))
+    }, FUN.VALUE = character(1))
+    src <- vapply(motifs, function(motif) {
+        return(motif.source(motif))
+    }, FUN.VALUE = character(1))
+    return(data.frame(id, rbps, width, iupac, type, species, src))
 }
 
 #' @title Retrieve motif objects by id
@@ -246,7 +376,7 @@ motifsMetaInfo <- function() {
 getMotifById <- function(id) {
     motifs <- getMotifs()
     idx <- unlist(lapply(motifs, function(motif) {
-        return(sum(tolower(motif$id) %in% tolower(id)) > 0)
+        return(sum(tolower(motif.id(motif)) %in% tolower(id)) > 0)
     }))
     return(motifs[idx])
 }
@@ -267,7 +397,7 @@ getMotifById <- function(id) {
 getMotifByRBP <- function(rbp) {
     motifs <- getMotifs()
     idx <- unlist(lapply(motifs, function(motif) {
-        return(sum(tolower(motif$rbps) %in% tolower(rbp)) > 0)
+        return(sum(tolower(rbps(motif)) %in% tolower(rbp)) > 0)
     }))
     return(motifs[idx])
 }
@@ -284,7 +414,7 @@ getMotifByRBP <- function(rbp) {
 #' @family motif functions
 #' @export
 getPPM <- function(motif) {
-    return(2^motif$matrix * 0.25)
+    return(2^motif.matrix(motif) * 0.25)
 }
 
 #' @title Generates IUPAC code for motif matrix
@@ -319,7 +449,7 @@ getPPM <- function(motif) {
 #' \code{\link{initIUPAClookupTable}}, it can be specified here
 #' @return the IUPAC string of the binding site
 #' @examples
-#' generateIUPACByMatrix(getMotifById("M178_0.6")[[1]]$matrix)
+#' generateIUPACByMatrix(motif.matrix(getMotifById("M178_0.6")[[1]]))
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
@@ -425,7 +555,7 @@ generateIUPACByKmers <- function(kmers, code = NULL) {
 #' }
 #' @return an environment, the IUPAC lookup hash table
 #' @examples
-#' generateIUPACByMatrix(getMotifById("M178_0.6")[[1]]$matrix,
+#' generateIUPACByMatrix(motif.matrix(getMotifById("M178_0.6")[[1]]),
 #'   code = initIUPAClookupTable())
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
@@ -479,25 +609,35 @@ initIUPAClookupTable <- function() {
 #' @param k length of \emph{k}-mer, \code{6} (hexamers) or \code{7} (heptamers)
 #' @return list of \emph{k}-mers
 #' @examples
-#' generateKmersFromIUPAC(getMotifById("M178_0.6")[[1]]$iupac, k = 6)
+#' generateKmersFromIUPAC(iupac(getMotifById("M178_0.6")[[1]]), k = 6)
 #' @family motif functions
 #' @importFrom Biostrings IUPAC_CODE_MAP
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
 generateKmersFromIUPAC <- function(iupac, k) {
-    iupac <- gsub(pattern = "U", replacement = "T", x = iupac, fixed = TRUE)
-    iupac.vector <- strsplit(iupac, "")[[1]]
-    expanded <- lapply(iupac.vector, function(letter) {
-        strsplit(Biostrings::IUPAC_CODE_MAP[letter], "")[[1]]
-    })
+    if (nchar(iupac) < k) {
+        diff <- k - nchar(iupac)
+        left.padding.iupac <- paste0(paste(rep("N", diff), collapse = ""), iupac)
+        right.padding.iupac <- paste0(iupac, paste(rep("N", diff), collapse = ""))
 
-    n <- nchar(iupac)
-    full.length <- do.call(paste0, expand.grid(expanded,
-                                               stringsAsFactors = FALSE))
-    kmers <- unique(as.vector(apply(as.matrix(full.length), 1, function(x) {
-        substring(x, seq_len(n - k + 1), k:n)
-    })))
-    return(gsub(pattern = "T", replacement = "U", x = kmers, fixed = TRUE))
+        kmers.left.padded <- generateKmersFromIUPAC(left.padding.iupac, k)
+        kmers.right.padded <- generateKmersFromIUPAC(right.padding.iupac, k)
+        return(unique(c(kmers.left.padded, kmers.right.padded)))
+    } else {
+        iupac <- gsub(pattern = "U", replacement = "T", x = iupac, fixed = TRUE)
+        iupac.vector <- strsplit(iupac, "")[[1]]
+        expanded <- lapply(iupac.vector, function(letter) {
+            strsplit(Biostrings::IUPAC_CODE_MAP[letter], "")[[1]]
+        })
+
+        n <- nchar(iupac)
+        full.length <- do.call(paste0, expand.grid(expanded,
+                                                   stringsAsFactors = FALSE))
+        kmers <- unique(as.vector(apply(as.matrix(full.length), 1, function(x) {
+            substring(x, seq_len(n - k + 1), k:n)
+        })))
+        return(gsub(pattern = "T", replacement = "U", x = kmers, fixed = TRUE))
+    }
 }
 
 lock <- function(lock.file) {

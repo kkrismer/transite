@@ -393,7 +393,7 @@ runMatrixSPMA <-
             }
             spectrum.info <- lapply(motifs, function(motif) {
                 motif.data.df <- dplyr::filter(enrichment.df,
-                                               motif.id == motif$id)
+                                               motif.id == motif.id(motif))
                 values <- motif.data.df$enrichment
                 values[values == 0] <-
                     0.01 # avoid -Inf after taking the log
@@ -421,8 +421,8 @@ runMatrixSPMA <-
                 return(
                     list(
                         info = list(
-                            motif.id = motif$id,
-                            motif.rbps = paste(motif$rbps, collapse = ", "),
+                            motif.id = motif.id(motif),
+                            motif.rbps = paste(rbps(motif), collapse = ", "),
                             adj.r.squared = adj.r.squared(score),
                             degree = degree(score),
                             residuals = residuals(score),
@@ -729,9 +729,9 @@ runKmerTSMA <-
                     foreground.result <-
                         lapply(motifs, function(motif) {
                             if (k == 6) {
-                                rbp.kmers <- motif$hexamers
+                                rbp.kmers <- hexamers(motif)
                             } else if (k == 7) {
-                                rbp.kmers <- motif$heptamers
+                                rbp.kmers <- heptamers(motif)
                             }
 
                             idx <-
@@ -781,7 +781,7 @@ runKmerTSMA <-
                                     drawVolcanoPlot(
                                         kmers.df,
                                         rbp.kmers,
-                                        paste(motif$rbps, collapse = ", "),
+                                        paste(rbps(motif), collapse = ", "),
                                         kmer.significance.threshold
                                     )
                             } else {
@@ -791,8 +791,8 @@ runKmerTSMA <-
                             return(
                                 list(
                                     df = list(
-                                        motif.id = motif$id,
-                                        motif.rbps = paste0(motif$rbps,
+                                        motif.id = motif.id(motif),
+                                        motif.rbps = paste0(rbps(motif),
                                                             collapse = ", "),
                                         geo.mean.enrichment = geo.mean,
                                         p.value.estimate = perm.test$p.value.estimate,
@@ -1003,7 +1003,7 @@ runKmerSPMA <-
             motifs <- getMotifs()
             spectrum.info <- lapply(motifs, function(motif) {
                 motif.data.df <- dplyr::filter(enrichment.df,
-                                               motif.id == motif$id)
+                                               motif.id == motif.id(motif))
                 values <- motif.data.df$geo.mean.enrichment
                 values[values == 0] <-
                     0.01 # avoid -Inf after taking the log
@@ -1031,8 +1031,8 @@ runKmerSPMA <-
                 return(
                     list(
                         info = list(
-                            motif.id = motif$id,
-                            motif.rbps = paste(motif$rbps, collapse = ", "),
+                            motif.id = motif.id(motif),
+                            motif.rbps = paste(rbps(motif), collapse = ", "),
                             adj.r.squared = adj.r.squared(score),
                             degree = degree(score),
                             residuals = residuals(score),

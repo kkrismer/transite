@@ -13,7 +13,7 @@ following columns:
 \itemize{
   \item \code{id}
   \item \code{rbps}
-  \item \code{width}
+  \item \code{length}
   \item \code{iupac}
   \item \code{type}
   \item \code{species}

@@ -38,7 +38,7 @@ IUPAC RNA nucleotide code:
 }
 }
 \examples{
-generateKmersFromIUPAC(iupac(getMotifById("M178_0.6")[[1]]), k = 6)
+generateKmersFromIUPAC(motifIUPAC(getMotifById("M178_0.6")[[1]]), k = 6)
 }
 \references{
 \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}

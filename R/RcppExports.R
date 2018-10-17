@@ -20,7 +20,7 @@
 #' seq.char.vectors <- lapply(sequences, function(seq) {
 #'   unlist(strsplit(seq, ""))
 #' })
-#' scoreSequences(seq.char.vectors, as.matrix(motif.matrix(motif)))
+#' scoreSequences(seq.char.vectors, as.matrix(motifMatrix(motif)))
 #'
 #' @export
 scoreSequences <- function(sequences, pwm) {
@@ -40,7 +40,7 @@ scoreSequences <- function(sequences, pwm) {
 #' @examples
 #' motif <- getMotifById("M178_0.6")[[1]]
 #' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-#' calculateKmerScores(kmers, as.matrix(motif.matrix(motif)))
+#' calculateKmerScores(kmers, as.matrix(motifMatrix(motif)))
 #'
 #' @export
 calculateKmerScores <- function(kmers, pwm) {

@@ -24,7 +24,7 @@
 //' seq.char.vectors <- lapply(sequences, function(seq) {
 //'   unlist(strsplit(seq, ""))
 //' })
-//' scoreSequences(seq.char.vectors, as.matrix(motif.matrix(motif)))
+//' scoreSequences(seq.char.vectors, as.matrix(motifMatrix(motif)))
 //'
 //' @export
 // [[Rcpp::export]]
@@ -77,7 +77,7 @@ SEXP scoreSequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm) {
 //' @examples
 //' motif <- getMotifById("M178_0.6")[[1]]
 //' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-//' calculateKmerScores(kmers, as.matrix(motif.matrix(motif)))
+//' calculateKmerScores(kmers, as.matrix(motifMatrix(motif)))
 //'
 //' @export
 // [[Rcpp::export]]

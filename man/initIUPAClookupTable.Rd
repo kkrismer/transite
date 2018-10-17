@@ -34,7 +34,7 @@ IUPAC RNA nucleotide code:
 }
 }
 \examples{
-generateIUPACByMatrix(motif.matrix(getMotifById("M178_0.6")[[1]]),
+generateIUPACByMatrix(motifMatrix(getMotifById("M178_0.6")[[1]]),
   code = initIUPAClookupTable())
 }
 \references{

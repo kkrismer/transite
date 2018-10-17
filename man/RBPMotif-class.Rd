@@ -4,69 +4,72 @@
 \name{RBPMotif-class}
 \alias{RBPMotif-class}
 \alias{.RBPMotif}
-\alias{motif.id,RBPMotif-method}
-\alias{motif.id}
-\alias{rbps,RBPMotif-method}
-\alias{rbps}
-\alias{motif.matrix,RBPMotif-method}
-\alias{motif.matrix}
-\alias{hexamers,RBPMotif-method}
-\alias{hexamers}
-\alias{heptamers,RBPMotif-method}
-\alias{heptamers}
-\alias{iupac,RBPMotif-method}
-\alias{iupac}
-\alias{motif.type,RBPMotif-method}
-\alias{motif.type}
-\alias{motif.species,RBPMotif-method}
-\alias{motif.species}
-\alias{motif.source,RBPMotif-method}
-\alias{motif.source}
+\alias{motifId,RBPMotif-method}
+\alias{motifId}
+\alias{motifRbps,RBPMotif-method}
+\alias{motifRbps}
+\alias{motifMatrix,RBPMotif-method}
+\alias{motifMatrix}
+\alias{motifHexamers,RBPMotif-method}
+\alias{motifHexamers}
+\alias{motifHeptamers,RBPMotif-method}
+\alias{motifHeptamers}
+\alias{motifLength,RBPMotif-method}
+\alias{motifLength}
+\alias{motifIUPAC,RBPMotif-method}
+\alias{motifIUPAC}
+\alias{motifType,RBPMotif-method}
+\alias{motifType}
+\alias{motifSpecies,RBPMotif-method}
+\alias{motifSpecies}
+\alias{motifSource,RBPMotif-method}
+\alias{motifSource}
 \alias{show,RBPMotif-method}
-\alias{width,RBPMotif-method}
 \alias{plot,RBPMotif,ANY-method}
 \alias{plot,RBPMotif-method}
 \title{An S4 class to represent a RBPMotif}
 \usage{
-motif.id(object)
+motifId(object)
 
-\S4method{motif.id}{RBPMotif}(object)
+\S4method{motifId}{RBPMotif}(object)
 
-rbps(object)
+motifRbps(object)
 
-\S4method{rbps}{RBPMotif}(object)
+\S4method{motifRbps}{RBPMotif}(object)
 
-motif.matrix(object)
+motifMatrix(object)
 
-\S4method{motif.matrix}{RBPMotif}(object)
+\S4method{motifMatrix}{RBPMotif}(object)
 
-hexamers(object)
+motifHexamers(object)
 
-\S4method{hexamers}{RBPMotif}(object)
+\S4method{motifHexamers}{RBPMotif}(object)
 
-heptamers(object)
+motifHeptamers(object)
 
-\S4method{heptamers}{RBPMotif}(object)
+\S4method{motifHeptamers}{RBPMotif}(object)
 
-iupac(object)
+motifLength(object)
 
-\S4method{iupac}{RBPMotif}(object)
+\S4method{motifLength}{RBPMotif}(object)
 
-motif.type(object)
+motifIUPAC(object)
 
-\S4method{motif.type}{RBPMotif}(object)
+\S4method{motifIUPAC}{RBPMotif}(object)
 
-motif.species(object)
+motifType(object)
 
-\S4method{motif.species}{RBPMotif}(object)
+\S4method{motifType}{RBPMotif}(object)
 
-motif.source(object)
+motifSpecies(object)
 
-\S4method{motif.source}{RBPMotif}(object)
+\S4method{motifSpecies}{RBPMotif}(object)
+
+motifSource(object)
+
+\S4method{motifSource}{RBPMotif}(object)
 
 \S4method{show}{RBPMotif}(object)
-
-\S4method{width}{RBPMotif}(x)
 
 \S4method{plot}{RBPMotif,ANY}(x)
 }
@@ -81,23 +84,25 @@ Object of type RBPMotif
 \description{
 An S4 class to represent a RBPMotif
 
-Getter Method motif.id
+Getter Method motifId
 
-Getter Method rbps
+Getter Method motifRbps
 
-Getter Method motif.matrix
+Getter Method motifMatrix
 
-Getter Method hexamers
+Getter Method motifHexamers
 
-Getter Method heptamers
+Getter Method motifHeptamers
 
-Getter Method iupac
+Getter Method motifLength
 
-Getter Method motif.type
+Getter Method motifIUPAC
 
-Getter Method motif.species
+Getter Method motifType
 
-Getter Method motif.source
+Getter Method motifSpecies
+
+Getter Method motifSource
 }
 \section{Slots}{
 
@@ -115,7 +120,7 @@ where cell (i, j) contains weight of nucleotide j on position i}
 
 \item{\code{heptamers}}{character vector of heptamers associated with this motif}
 
-\item{\code{width}}{width of the motif (i.e., \code{nrow(matrix)})}
+\item{\code{length}}{length of the motif (i.e., \code{nrow(matrix)})}
 
 \item{\code{iupac}}{IUPAC code for motif matrix
 (see \code{\link{generateIUPACByMatrix}})}
@@ -136,7 +141,7 @@ iupac <- generateIUPACByKmers(kmers,
 hexamers <- generateKmersFromIUPAC(iupac, 6)
 heptamers <- generateKmersFromIUPAC(iupac, 7)
 new("RBPMotif", id = "custom.motif", rbps = "RBP1",
-  matrix = NULL, hexamers = hexamers, heptamers = heptamers, width = 7L,
+  matrix = NULL, hexamers = hexamers, heptamers = heptamers, length = 7L,
   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
 )
 }

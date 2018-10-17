@@ -10,7 +10,7 @@ getMotifById(id)
 \item{id}{character vector of motif identifiers}
 }
 \value{
-A list of objects of class Motif
+A list of objects of class \code{RBPMotif}
 }
 \description{
 Retrieves one or more motif objects identified by motif id.

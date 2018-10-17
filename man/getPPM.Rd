@@ -7,7 +7,7 @@
 getPPM(motif)
 }
 \arguments{
-\item{motif}{object of class Motif}
+\item{motif}{object of class \code{RBPMotif}}
 }
 \value{
 The position probability matrix of the specified motif

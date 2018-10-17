@@ -10,7 +10,7 @@ getMotifByRBP(rbp)
 \item{rbp}{character vector of gene symbols of RNA-binding proteins}
 }
 \value{
-A list of objects of class Motif
+A list of objects of class \code{RBPMotif}
 }
 \description{
 Retrieves one or more motif objects identified by gene symbol.

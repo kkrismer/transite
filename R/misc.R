@@ -1,7 +1,7 @@
 
 setClassUnion("dfOrNULL", c("data.frame", "NULL"))
 
-#' An S4 class to represent a Motif
+#' An S4 class to represent a RBPMotif
 #'
 #' @slot id motif id (character vector of length 1)
 #' @slot rbps character vector of names of RNA-binding proteins associated
@@ -19,24 +19,24 @@ setClassUnion("dfOrNULL", c("data.frame", "NULL"))
 #' @slot species species where motif was discovered (e.g.,
 #' \code{'Homo sapiens'})
 #' @slot src source of motif (e.g., \code{'RBPDB v1.3.1'})
-#' @return Object of type Motif
+#' @return Object of type RBPMotif
 #' @examples
 #' kmers <- c("AAAAAAA", "CAAAAAA")
 #' iupac <- generateIUPACByKmers(kmers,
 #'   code = initIUPAClookupTable())
 #' hexamers <- generateKmersFromIUPAC(iupac, 6)
 #' heptamers <- generateKmersFromIUPAC(iupac, 7)
-#' new("Motif", id = "custom.motif", rbps = "RBP1",
+#' new("RBPMotif", id = "custom.motif", rbps = "RBP1",
 #'   matrix = NULL, hexamers = hexamers, heptamers = heptamers, width = 7L,
 #'   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
 #' )
 #' @importFrom methods setClass
 #' @importFrom methods setClassUnion
 #' @importFrom methods new
-#' @name Motif-class
-#' @rdname Motif-class
-#' @exportClass Motif
-.Motif <- setClass("Motif", slots = c(id = "character",
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
+#' @exportClass RBPMotif
+.RBPMotif <- setClass("RBPMotif", slots = c(id = "character",
                                       rbps = "character",
                                       matrix = "dfOrNULL",
                                       hexamers = "character",
@@ -48,68 +48,68 @@ setClassUnion("dfOrNULL", c("data.frame", "NULL"))
                                       src = "character"))
 
 #' Getter Method motif.id
-#' @name Motif-class
-#' @rdname Motif-class
-#' @param object Motif object
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
+#' @param object RBPMotif object
 #' @importFrom methods setGeneric
 #' @exportMethod motif.id
 setGeneric("motif.id", function(object) standardGeneric("motif.id"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases motif.id
-#' @aliases motif.id,Motif-method
-setMethod("motif.id", signature(object = "Motif"),
+#' @aliases motif.id,RBPMotif-method
+setMethod("motif.id", signature(object = "RBPMotif"),
           function(object) object@id)
 
 #' Getter Method rbps
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod rbps
 setGeneric("rbps", function(object) standardGeneric("rbps"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases rbps
-#' @aliases rbps,Motif-method
-setMethod("rbps", signature(object = "Motif"), function(object) object@rbps)
+#' @aliases rbps,RBPMotif-method
+setMethod("rbps", signature(object = "RBPMotif"), function(object) object@rbps)
 
 #' Getter Method motif.matrix
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod motif.matrix
 setGeneric("motif.matrix", function(object) standardGeneric("motif.matrix"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases motif.matrix
-#' @aliases motif.matrix,Motif-method
-setMethod("motif.matrix", signature(object = "Motif"),
+#' @aliases motif.matrix,RBPMotif-method
+setMethod("motif.matrix", signature(object = "RBPMotif"),
           function(object) object@matrix)
 
 #' Getter Method hexamers
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod hexamers
 setGeneric("hexamers", function(object) standardGeneric("hexamers"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases hexamers
-#' @aliases hexamers,Motif-method
-setMethod("hexamers", signature(object = "Motif"),
+#' @aliases hexamers,RBPMotif-method
+setMethod("hexamers", signature(object = "RBPMotif"),
           function(object) object@hexamers)
 
 #' Getter Method heptamers
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod heptamers
 setGeneric("heptamers",
@@ -117,75 +117,75 @@ setGeneric("heptamers",
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases heptamers
-#' @aliases heptamers,Motif-method
-setMethod("heptamers", signature(object = "Motif"),
+#' @aliases heptamers,RBPMotif-method
+setMethod("heptamers", signature(object = "RBPMotif"),
           function(object) object@heptamers)
 
 #' Getter Method iupac
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod iupac
 setGeneric("iupac", function(object) standardGeneric("iupac"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases iupac
-#' @aliases iupac,Motif-method
-setMethod("iupac", signature(object = "Motif"), function(object) object@iupac)
+#' @aliases iupac,RBPMotif-method
+setMethod("iupac", signature(object = "RBPMotif"), function(object) object@iupac)
 
 #' Getter Method motif.type
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod motif.type
 setGeneric("motif.type", function(object) standardGeneric("motif.type"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases motif.type
-#' @aliases motif.type,Motif-method
-setMethod("motif.type", signature(object = "Motif"), function(object) object@type)
+#' @aliases motif.type,RBPMotif-method
+setMethod("motif.type", signature(object = "RBPMotif"), function(object) object@type)
 
 #' Getter Method motif.species
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod motif.species
 setGeneric("motif.species", function(object) standardGeneric("motif.species"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases motif.species
-#' @aliases motif.species,Motif-method
-setMethod("motif.species", signature(object = "Motif"),
+#' @aliases motif.species,RBPMotif-method
+setMethod("motif.species", signature(object = "RBPMotif"),
           function(object) object@species)
 
 #' Getter Method motif.source
-#' @name Motif-class
-#' @rdname Motif-class
+#' @name RBPMotif-class
+#' @rdname RBPMotif-class
 #' @importFrom methods setGeneric
 #' @exportMethod motif.source
 setGeneric("motif.source", function(object) standardGeneric("motif.source"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
+#' @rdname RBPMotif-class
 #' @aliases motif.source
-#' @aliases motif.source,Motif-method
-setMethod("motif.source", signature(object = "Motif"), function(object) object@src)
+#' @aliases motif.source,RBPMotif-method
+setMethod("motif.source", signature(object = "RBPMotif"), function(object) object@src)
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @importFrom methods is
-#' @rdname Motif-class
-#' @aliases show,Motif-method
-setMethod("show", signature(object = "Motif"), function(object) {
+#' @rdname RBPMotif-class
+#' @aliases show,RBPMotif-method
+setMethod("show", signature(object = "RBPMotif"), function(object) {
     cat(is(object)[[1]], "\n",
         "  id: ", object@id, "\n",
         "  RBPs:  ", paste(object@rbps, collapse = ", "), "\n",
@@ -200,19 +200,19 @@ setMethod("show", signature(object = "Motif"), function(object) {
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
-#' @rdname Motif-class
-#' @aliases width,Motif-method
+#' @rdname RBPMotif-class
+#' @aliases width,RBPMotif-method
 #' @exportMethod width
-setMethod("width", signature(x = "Motif"), function(x) x@width)
+setMethod("width", signature(x = "RBPMotif"), function(x) x@width)
 
-#' @param x Motif object
+#' @param x RBPMotif object
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @importFrom ggseqlogo ggseqlogo
-#' @rdname Motif-class
-#' @aliases plot,Motif-method
+#' @rdname RBPMotif-class
+#' @aliases plot,RBPMotif-method
 #' @exportMethod plot
-setMethod("plot", signature(x = "Motif"), function(x) {
+setMethod("plot", signature(x = "RBPMotif"), function(x) {
     ppm <- t(getPPM(x))
     return(ggseqlogo::ggseqlogo(ppm))
 })
@@ -221,7 +221,7 @@ setMethod("plot", signature(x = "Motif"), function(x) {
 #'
 #' @description
 #' Takes a position weight matrix (PWM) and meta info and returns an object of
-#' class \code{Motif}.
+#' class \code{RBPMotif}.
 #'
 #' @param id motif id (character vector of length 1)
 #' @param rbps character vector of names of RNA-binding proteins associated
@@ -234,7 +234,7 @@ setMethod("plot", signature(x = "Motif"), function(x) {
 #' @param species species where motif was discovered (e.g.,
 #' \code{'Homo sapiens'})
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
-#' @return object of class Motif
+#' @return object of class \code{RBPMotif}
 #' @examples
 #' custom.motif <- createMatrixMotif(
 #'   "custom.motif", "RBP1",
@@ -248,7 +248,7 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
     hexamers <- generateKmersFromIUPAC(iupac, 6)
     heptamers <- generateKmersFromIUPAC(iupac, 7)
 
-    return(.Motif(
+    return(.RBPMotif(
         id = id, rbps = rbps, matrix = matrix,
         hexamers = hexamers, heptamers = heptamers,
         width = as.integer(width),
@@ -260,7 +260,7 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
 #'
 #' @description
 #' Takes a position weight matrix (PWM) and meta info and returns an object of
-#' class \code{Motif}.
+#' class \code{RBPMotif}.
 #'
 #' @param id motif id (character vector of length 1)
 #' @param rbps character vector of names of RNA-binding proteins associated
@@ -277,7 +277,7 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
 #' @param species species where motif was discovered (e.g.,
 #' \code{'Homo sapiens'})
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
-#' @return object of class Motif
+#' @return object of class \code{RBPMotif}
 #' @examples
 #' custom.motif <- createKmerMotif(
 #'   "custom.motif", "RBP1",
@@ -305,7 +305,7 @@ createKmerMotif <- function(id, rbps, kmers, type, species, src) {
     hexamers <- generateKmersFromIUPAC(iupac, 6)
     heptamers <- generateKmersFromIUPAC(iupac, 7)
 
-    return(.Motif(
+    return(.RBPMotif(
         id = id, rbps = rbps, matrix = NULL,
         hexamers = hexamers, heptamers = heptamers,
         width = as.integer(width), iupac = iupac, type = type,
@@ -366,7 +366,7 @@ motifsMetaInfo <- function() {
 #' Retrieves one or more motif objects identified by motif id.
 #'
 #' @param id character vector of motif identifiers
-#' @return A list of objects of class Motif
+#' @return A list of objects of class \code{RBPMotif}
 #' @examples
 #' getMotifById("M178_0.6")
 #'
@@ -387,7 +387,7 @@ getMotifById <- function(id) {
 #' Retrieves one or more motif objects identified by gene symbol.
 #'
 #' @param rbp character vector of gene symbols of RNA-binding proteins
-#' @return A list of objects of class Motif
+#' @return A list of objects of class \code{RBPMotif}
 #' @examples
 #' getMotifByRBP("ELAVL1")
 #'
@@ -407,7 +407,7 @@ getMotifByRBP <- function(rbp) {
 #' @description
 #' Return the position probability matrix of the specified motif.
 #'
-#' @param motif object of class Motif
+#' @param motif object of class \code{RBPMotif}
 #' @return The position probability matrix of the specified motif
 #' @examples
 #' getPPM(getMotifById("M178_0.6")[[1]])

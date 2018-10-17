@@ -4,63 +4,66 @@
 \name{SpectrumScore-class}
 \alias{SpectrumScore-class}
 \alias{.SpectrumScore}
-\alias{adj.r.squared,SpectrumScore-method}
-\alias{adj.r.squared}
-\alias{degree,SpectrumScore-method}
-\alias{degree}
-\alias{slope,SpectrumScore-method}
-\alias{slope}
-\alias{f.statistic,SpectrumScore-method}
-\alias{f.statistic}
-\alias{f.statistic.p.value,SpectrumScore-method}
-\alias{f.statistic.p.value}
-\alias{consistency.score,SpectrumScore-method}
-\alias{consistency.score}
-\alias{consistency.score.p.value,SpectrumScore-method}
-\alias{consistency.score.p.value}
-\alias{consistency.score.n,SpectrumScore-method}
-\alias{consistency.score.n}
+\alias{spectrumAdjRSquared,SpectrumScore-method}
+\alias{spectrumAdjRSquared}
+\alias{spectrumDegree,SpectrumScore-method}
+\alias{spectrumDegree}
+\alias{spectrumResiduals,SpectrumScore-method}
+\alias{spectrumResiduals}
+\alias{spectrumSlope,SpectrumScore-method}
+\alias{spectrumSlope}
+\alias{spectrumFStatistic,SpectrumScore-method}
+\alias{spectrumFStatistic}
+\alias{spectrumFStatisticPValue,SpectrumScore-method}
+\alias{spectrumFStatisticPValue}
+\alias{spectrumConsistencyScore,SpectrumScore-method}
+\alias{spectrumConsistencyScore}
+\alias{spectrumConsistencyScorePValue,SpectrumScore-method}
+\alias{spectrumConsistencyScorePValue}
+\alias{spectrumConsistencyScoreN,SpectrumScore-method}
+\alias{spectrumConsistencyScoreN}
 \alias{show,SpectrumScore-method}
-\alias{residuals,SpectrumScore-method}
 \alias{plot,SpectrumScore,ANY-method}
 \alias{plot,SpectrumScore-method}
 \title{An S4 class to represent a scored spectrum}
 \usage{
-adj.r.squared(object)
+spectrumAdjRSquared(object)
 
-\S4method{adj.r.squared}{SpectrumScore}(object)
+\S4method{spectrumAdjRSquared}{SpectrumScore}(object)
 
-degree(object)
+spectrumDegree(object)
 
-\S4method{degree}{SpectrumScore}(object)
+\S4method{spectrumDegree}{SpectrumScore}(object)
 
-slope(object)
+spectrumResiduals(object)
 
-\S4method{slope}{SpectrumScore}(object)
+\S4method{spectrumResiduals}{SpectrumScore}(object)
 
-f.statistic(object)
+spectrumSlope(object)
 
-\S4method{f.statistic}{SpectrumScore}(object)
+\S4method{spectrumSlope}{SpectrumScore}(object)
 
-f.statistic.p.value(object)
+spectrumFStatistic(object)
 
-\S4method{f.statistic.p.value}{SpectrumScore}(object)
+\S4method{spectrumFStatistic}{SpectrumScore}(object)
 
-consistency.score(object)
+spectrumFStatisticPValue(object)
 
-\S4method{consistency.score}{SpectrumScore}(object)
+\S4method{spectrumFStatisticPValue}{SpectrumScore}(object)
 
-consistency.score.p.value(object)
+spectrumConsistencyScore(object)
 
-\S4method{consistency.score.p.value}{SpectrumScore}(object)
+\S4method{spectrumConsistencyScore}{SpectrumScore}(object)
 
-consistency.score.n(object)
+spectrumConsistencyScorePValue(object)
 
-\S4method{consistency.score.n}{SpectrumScore}(object)
+\S4method{spectrumConsistencyScorePValue}{SpectrumScore}(object)
+
+spectrumConsistencyScoreN(object)
+
+\S4method{spectrumConsistencyScoreN}{SpectrumScore}(object)
 
 \S4method{show}{SpectrumScore}(object)
-
-\S4method{residuals}{SpectrumScore}(object)
 
 \S4method{plot}{SpectrumScore,ANY}(x)
 }
@@ -75,21 +78,23 @@ Object of type SpectrumScore
 \description{
 An S4 class to represent a scored spectrum
 
-Getter Method adj.r.squared
+Getter Method spectrumAdjRSquared
 
-Getter Method degree
+Getter Method spectrumDegree
 
-Getter Method slope
+Getter Method spectrumResiduals
 
-Getter Method f.statistic
+Getter Method spectrumSlope
 
-Getter Method f.statistic.p.value
+Getter Method spectrumFStatistic
 
-Getter Method consistency.score
+Getter Method spectrumFStatisticPValue
 
-Getter Method consistency.score.p.value
+Getter Method spectrumConsistencyScore
 
-Getter Method consistency.score.n
+Getter Method spectrumConsistencyScorePValue
+
+Getter Method spectrumConsistencyScoreN
 }
 \section{Slots}{
 

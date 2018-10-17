@@ -414,10 +414,10 @@ runMatrixSPMA <-
                     sum(motif.data.df$adj.p.value <= 0.05)
                 classifier.score <-
                     spectrumClassifier(
-                        adj.r.squared(score),
-                        degree(score),
-                        slope(score),
-                        consistency.score.n(score),
+                        spectrumAdjRSquared(score),
+                        spectrumDegree(score),
+                        spectrumSlope(score),
+                        spectrumConsistencyScoreN(score),
                         n.significant,
                         n.bins
                     )
@@ -427,15 +427,15 @@ runMatrixSPMA <-
                         info = list(
                             motif.id = motif.id(motif),
                             motif.rbps = paste(rbps(motif), collapse = ", "),
-                            adj.r.squared = adj.r.squared(score),
-                            degree = degree(score),
-                            residuals = residuals(score),
-                            slope = slope(score),
-                            f.statistic = f.statistic(score),
-                            f.statistic.p.value = f.statistic.p.value(score),
-                            consistency.score = consistency.score(score),
-                            consistency.score.p.value = consistency.score(score),
-                            consistency.score.n = consistency.score.n(score),
+                            adj.r.squared = spectrumAdjRSquared(score),
+                            degree = spectrumDegree(score),
+                            residuals = spectrumResiduals(score),
+                            slope = spectrumSlope(score),
+                            f.statistic = spectrumFStatistic(score),
+                            f.statistic.p.value = spectrumFStatisticPValue(score),
+                            consistency.score = spectrumConsistencyScore(score),
+                            consistency.score.p.value = spectrumConsistencyScorePValue(score),
+                            consistency.score.n = spectrumConsistencyScoreN(score),
                             n.significant = n.significant,
                             n.very.significant = sum(motif.data.df$adj.p.value <= 0.01),
                             n.extremely.significant = sum(motif.data.df$adj.p.value <= 0.001),
@@ -1025,10 +1025,10 @@ runKmerSPMA <-
                     sum(motif.data.df$adj.p.value.estimate <= 0.05)
                 classifier.score <-
                     spectrumClassifier(
-                        adj.r.squared(score),
-                        degree(score),
-                        slope(score),
-                        consistency.score.n(score),
+                        spectrumAdjRSquared(score),
+                        spectrumDegree(score),
+                        spectrumSlope(score),
+                        spectrumConsistencyScoreN(score),
                         n.significant,
                         n.bins
                     )
@@ -1038,15 +1038,15 @@ runKmerSPMA <-
                         info = list(
                             motif.id = motif.id(motif),
                             motif.rbps = paste(rbps(motif), collapse = ", "),
-                            adj.r.squared = adj.r.squared(score),
-                            degree = degree(score),
-                            residuals = residuals(score),
-                            slope = slope(score),
-                            f.statistic = f.statistic(score),
-                            f.statistic.p.value = f.statistic.p.value(score),
-                            consistency.score = consistency.score(score),
-                            consistency.score.p.value = consistency.score.p.value(score),
-                            consistency.score.n = consistency.score.n(score),
+                            adj.r.squared = spectrumAdjRSquared(score),
+                            degree = spectrumDegree(score),
+                            residuals = spectrumResiduals(score),
+                            slope = spectrumSlope(score),
+                            f.statistic = spectrumFStatistic(score),
+                            f.statistic.p.value = spectrumFStatisticPValue(score),
+                            consistency.score = spectrumConsistencyScore(score),
+                            consistency.score.p.value = spectrumConsistencyScorePValue(score),
+                            consistency.score.n = spectrumConsistencyScoreN(score),
                             n.significant = n.significant,
                             n.very.significant = sum(motif.data.df$adj.p.value <= 0.01),
                             n.extremely.significant = sum(motif.data.df$adj.p.value <= 0.001),

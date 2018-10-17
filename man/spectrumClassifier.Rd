@@ -45,8 +45,8 @@ n.bins <- 40
 random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1),
   max.model.degree = 1)
 score <- spectrumClassifier(
-  adj.r.squared(random.sp), degree(random.sp),
-  slope(random.sp), consistency.score.n(random.sp), 0, n.bins
+  spectrumAdjRSquared(random.sp), spectrumDegree(random.sp),
+  spectrumSlope(random.sp), spectrumConsistencyScoreN(random.sp), 0, n.bins
 )
 sum(score)
 
@@ -56,8 +56,8 @@ noise <- rnorm(n = 40, mean = 0, sd = 0.5)
 linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
   max.cs.permutations = 100000)
 score <- spectrumClassifier(
-  adj.r.squared(linear.sp), degree(linear.sp),
-  slope(linear.sp), consistency.score.n(linear.sp), 10, n.bins
+  spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
+  spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
 )
 sum(score)
 \dontrun{
@@ -67,8 +67,8 @@ noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
   max.cs.permutations = 100000)
 score <- spectrumClassifier(
-  adj.r.squared(linear.sp), degree(linear.sp),
-  slope(linear.sp), consistency.score.n(linear.sp), 10, n.bins
+  spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
+  spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
 )
 sum(score)
 }
@@ -79,8 +79,8 @@ noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2,
   max.cs.permutations = 100000)
 score <- spectrumClassifier(
-  adj.r.squared(quadratic.sp), degree(quadratic.sp),
-  slope(quadratic.sp), consistency.score.n(quadratic.sp), 10, n.bins
+  spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
+  spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
 )
 sum(score)
 \dontrun{
@@ -89,8 +89,8 @@ signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.1)
 quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2)
 score <- spectrumClassifier(
-  adj.r.squared(quadratic.sp), degree(quadratic.sp),
-  slope(quadratic.sp), consistency.score.n(quadratic.sp), 10, n.bins
+  spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
+  spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
 )
 sum(score)
 }

@@ -43,127 +43,144 @@
                                                       consistency.score.n = "integer",
                                                       plot = "ANY"))
 
-#' Getter Method adj.r.squared
+#' Getter Method spectrumAdjRSquared
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @param object SpectrumScore object
 #' @importFrom methods setGeneric
-#' @exportMethod adj.r.squared
-setGeneric("adj.r.squared", function(object) standardGeneric("adj.r.squared"))
+#' @exportMethod spectrumAdjRSquared
+setGeneric("spectrumAdjRSquared", function(object) standardGeneric("spectrumAdjRSquared"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases adj.r.squared
-#' @aliases adj.r.squared,SpectrumScore-method
-setMethod("adj.r.squared", signature(object = "SpectrumScore"),
+#' @aliases spectrumAdjRSquared
+#' @aliases spectrumAdjRSquared,SpectrumScore-method
+setMethod("spectrumAdjRSquared", signature(object = "SpectrumScore"),
           function(object) object@adj.r.squared)
 
-#' Getter Method degree
+#' Getter Method spectrumDegree
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod degree
-setGeneric("degree", function(object) standardGeneric("degree"))
+#' @exportMethod spectrumDegree
+setGeneric("spectrumDegree", function(object) standardGeneric("spectrumDegree"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases degree
-#' @aliases degree,SpectrumScore-method
-setMethod("degree", signature(object = "SpectrumScore"), function(object) object@degree)
+#' @aliases spectrumDegree
+#' @aliases spectrumDegree,SpectrumScore-method
+setMethod("spectrumDegree", signature(object = "SpectrumScore"),
+          function(object) object@degree)
 
-#' Getter Method slope
+#' Getter Method spectrumResiduals
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod slope
-setGeneric("slope", function(object) standardGeneric("slope"))
+#' @exportMethod spectrumResiduals
+setGeneric("spectrumResiduals",
+           function(object) standardGeneric("spectrumResiduals"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases slope
-#' @aliases slope,SpectrumScore-method
-setMethod("slope", signature(object = "SpectrumScore"), function(object) object@slope)
+#' @aliases spectrumResiduals
+#' @aliases spectrumResiduals,SpectrumScore-method
+setMethod("spectrumResiduals", signature(object = "SpectrumScore"),
+          function(object) object@residuals)
 
-#' Getter Method f.statistic
+#' Getter Method spectrumSlope
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod f.statistic
-setGeneric("f.statistic", function(object) standardGeneric("f.statistic"))
+#' @exportMethod spectrumSlope
+setGeneric("spectrumSlope", function(object) standardGeneric("spectrumSlope"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases f.statistic
-#' @aliases f.statistic,SpectrumScore-method
-setMethod("f.statistic", signature(object = "SpectrumScore"),
+#' @aliases spectrumSlope
+#' @aliases spectrumSlope,SpectrumScore-method
+setMethod("spectrumSlope", signature(object = "SpectrumScore"), function(object) object@slope)
+
+#' Getter Method spectrumFStatistic
+#' @name SpectrumScore-class
+#' @rdname SpectrumScore-class
+#' @importFrom methods setGeneric
+#' @exportMethod spectrumFStatistic
+setGeneric("spectrumFStatistic", function(object) standardGeneric("spectrumFStatistic"))
+
+#' @importFrom methods setMethod
+#' @importFrom methods signature
+#' @rdname SpectrumScore-class
+#' @aliases spectrumFStatistic
+#' @aliases spectrumFStatistic,SpectrumScore-method
+setMethod("spectrumFStatistic", signature(object = "SpectrumScore"),
           function(object) object@f.statistic)
 
-#' Getter Method f.statistic.p.value
+#' Getter Method spectrumFStatisticPValue
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod f.statistic.p.value
-setGeneric("f.statistic.p.value",
-           function(object) standardGeneric("f.statistic.p.value"))
+#' @exportMethod spectrumFStatisticPValue
+setGeneric("spectrumFStatisticPValue",
+           function(object) standardGeneric("spectrumFStatisticPValue"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases f.statistic.p.value
-#' @aliases f.statistic.p.value,SpectrumScore-method
-setMethod("f.statistic.p.value", signature(object = "SpectrumScore"),
+#' @aliases spectrumFStatisticPValue
+#' @aliases spectrumFStatisticPValue,SpectrumScore-method
+setMethod("spectrumFStatisticPValue", signature(object = "SpectrumScore"),
           function(object) object@f.statistic.p.value)
 
-#' Getter Method consistency.score
+#' Getter Method spectrumConsistencyScore
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod consistency.score
-setGeneric("consistency.score",
-           function(object) standardGeneric("consistency.score"))
+#' @exportMethod spectrumConsistencyScore
+setGeneric("spectrumConsistencyScore",
+           function(object) standardGeneric("spectrumConsistencyScore"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases consistency.score
-#' @aliases consistency.score,SpectrumScore-method
-setMethod("consistency.score", signature(object = "SpectrumScore"),
+#' @aliases spectrumConsistencyScore
+#' @aliases spectrumConsistencyScore,SpectrumScore-method
+setMethod("spectrumConsistencyScore", signature(object = "SpectrumScore"),
           function(object) object@consistency.score)
 
-#' Getter Method consistency.score.p.value
+#' Getter Method spectrumConsistencyScorePValue
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod consistency.score.p.value
-setGeneric("consistency.score.p.value",
-           function(object) standardGeneric("consistency.score.p.value"))
+#' @exportMethod spectrumConsistencyScorePValue
+setGeneric("spectrumConsistencyScorePValue",
+           function(object) standardGeneric("spectrumConsistencyScorePValue"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases consistency.score.p.value
-#' @aliases consistency.score.p.value,SpectrumScore-method
-setMethod("consistency.score.p.value", signature(object = "SpectrumScore"),
+#' @aliases spectrumConsistencyScorePValue
+#' @aliases spectrumConsistencyScorePValue,SpectrumScore-method
+setMethod("spectrumConsistencyScorePValue", signature(object = "SpectrumScore"),
           function(object) object@consistency.score.p.value)
 
-#' Getter Method consistency.score.n
+#' Getter Method spectrumConsistencyScoreN
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @importFrom methods setGeneric
-#' @exportMethod consistency.score.n
-setGeneric("consistency.score.n",
-           function(object) standardGeneric("consistency.score.n"))
+#' @exportMethod spectrumConsistencyScoreN
+setGeneric("spectrumConsistencyScoreN",
+           function(object) standardGeneric("spectrumConsistencyScoreN"))
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
 #' @rdname SpectrumScore-class
-#' @aliases consistency.score.n
-#' @aliases consistency.score.n,SpectrumScore-method
-setMethod("consistency.score.n", signature(object = "SpectrumScore"),
+#' @aliases spectrumConsistencyScoreN
+#' @aliases spectrumConsistencyScoreN,SpectrumScore-method
+setMethod("spectrumConsistencyScoreN", signature(object = "SpectrumScore"),
           function(object) object@consistency.score.n)
 
 #' @importFrom methods setMethod
@@ -184,15 +201,6 @@ setMethod("show", signature(object = "SpectrumScore"), function(object) {
         "  local consistency score (number of permutations):  ", object@consistency.score.n, "\n",
         sep = ""
     )
-})
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases residuals,SpectrumScore-method
-#' @exportMethod residuals
-setMethod("residuals", signature(object = "SpectrumScore"), function(object) {
-    object@residuals
 })
 
 #' @param x SpectrumScore object
@@ -666,8 +674,8 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1),
 #'   max.model.degree = 1)
 #' score <- spectrumClassifier(
-#'   adj.r.squared(random.sp), degree(random.sp),
-#'   slope(random.sp), consistency.score.n(random.sp), 0, n.bins
+#'   spectrumAdjRSquared(random.sp), spectrumDegree(random.sp),
+#'   spectrumSlope(random.sp), spectrumConsistencyScoreN(random.sp), 0, n.bins
 #' )
 #' sum(score)
 #'
@@ -677,8 +685,8 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
 #'   max.cs.permutations = 100000)
 #' score <- spectrumClassifier(
-#'   adj.r.squared(linear.sp), degree(linear.sp),
-#'   slope(linear.sp), consistency.score.n(linear.sp), 10, n.bins
+#'   spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
+#'   spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
 #' )
 #' sum(score)
 #' \dontrun{
@@ -688,8 +696,8 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
 #'   max.cs.permutations = 100000)
 #' score <- spectrumClassifier(
-#'   adj.r.squared(linear.sp), degree(linear.sp),
-#'   slope(linear.sp), consistency.score.n(linear.sp), 10, n.bins
+#'   spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
+#'   spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
 #' )
 #' sum(score)
 #' }
@@ -700,8 +708,8 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2,
 #'   max.cs.permutations = 100000)
 #' score <- spectrumClassifier(
-#'   adj.r.squared(quadratic.sp), degree(quadratic.sp),
-#'   slope(quadratic.sp), consistency.score.n(quadratic.sp), 10, n.bins
+#'   spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
+#'   spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
 #' )
 #' sum(score)
 #' \dontrun{
@@ -710,8 +718,8 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.1)
 #' quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2)
 #' score <- spectrumClassifier(
-#'   adj.r.squared(quadratic.sp), degree(quadratic.sp),
-#'   slope(quadratic.sp), consistency.score.n(quadratic.sp), 10, n.bins
+#'   spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
+#'   spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
 #' )
 #' sum(score)
 #' }

@@ -46,7 +46,6 @@
 #' }
 "ge"
 
-
 #' Toy Motif Matrix
 #'
 #' This toy motif matrix is used in code examples for various functions.
@@ -54,3 +53,23 @@
 #' @format A data frame with four columns (A, C, G, U) and seven
 #' rows (position 1 - 7)
 "toy.motif.matrix"
+
+#' Example \emph{k}-mer Enrichment Data
+#'
+#' This data frame with \emph{k}-mer enrichment data (as produced by
+#' \code{\link{runKmerTSMA}}) is used in a code example for k-mer volcano plot
+#' function \code{\link{drawVolcanoPlot}}.
+#'
+#' @format A data frame with the following columns:
+#' \tabular{rl}{
+#'   \code{kmer} \tab contains all hexamers (AAAAAA to UUUUUU)\cr
+#'   \code{foreground.count} \tab absolute \emph{k}-mer frequency in
+#'   foreground set\cr
+#'   \code{background.count} \tab absolute \emph{k}-mer frequency in
+#'   background set\cr
+#'   \code{enrichment} \tab enrichment of \emph{k}-mer in foreground
+#'   relative to background\cr
+#'   \code{p.value} \tab associated p-value of enrichment\cr
+#'   \code{adj.p.value} \tab multiple testing corrected p-value\cr
+#' }
+"kmers.enrichment"

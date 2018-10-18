@@ -36,6 +36,11 @@ corrected p-value from
 Fisher's exact test or Pearson's chi-squared test.
 }
 \examples{
+motif <- getMotifById("951_12324455")
+drawVolcanoPlot(transite:::kmers.enrichment, motifHexamers(motif[[1]]),
+  motifRbps(motif[[1]]))
+
+\dontrun{
 foreground.set <- c("UGUGGG", "GUGGGG", "GUGUGG", "UGUGGU")
 background.set <- unique(c(foreground.set, c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
@@ -50,7 +55,8 @@ background.set <- unique(c(foreground.set, c(
 motif <- getMotifById("M178_0.6")
 results <- runKmerTSMA(list(foreground.set), background.set,
                        motifs = motif)
-drawVolcanoPlot(results[[1]]$motif.kmers.dfs[[1]], motifHexamers(motif[[1]]), "test RBP")
+drawVolcanoPlot(results[[1]]$motif.kmers.dfs[[1]],
+    motifHexamers(motif[[1]]), "test RBP")}
 
 }
 \seealso{

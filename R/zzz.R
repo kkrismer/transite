@@ -61,8 +61,5 @@ setMotifs <- function(value) {
     envir <- parent.env(environment())
     utils::data("ge", package = pkgname, envir = envir)
     utils::data("toy.motif.matrix", package = pkgname, envir = envir)
+    utils::data("kmers.enrichment", package = pkgname, envir = envir)
 }
-
-# .onUnload <- function(libpath) {
-#  library.dynam.unload("transite", libpath)
-# }

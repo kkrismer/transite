@@ -1,10 +1,10 @@
 ---
-title: "Spectrum Motif Motif Analysis"
+title: "Spectrum Motif Analysis (SPMA)"
 author: "Konstantin Krismer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Spectrum Motif Motif Analysis}
+  %\VignetteIndexEntry{Spectrum Motif Analysis (SPMA)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

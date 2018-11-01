@@ -18,7 +18,6 @@ citEntry(entry="article",
 	doi = "10.1101/416743",
 	publisher = "Cold Spring Harbor Laboratory",
 	URL = "https://www.biorxiv.org/content/early/2018/09/14/416743",
-	eprint = "https://www.biorxiv.org/content/early/2018/09/14/416743.full.pdf",
 	journal = "bioRxiv",
   textVersion =
     paste("Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger,

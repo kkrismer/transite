@@ -1,3 +1,10 @@
-CHANGES IN VERSION 0.99.0
+CHANGES IN VERSION 1.0.0
 -------------------------
     o initial release
+
+CHANGES IN VERSION 1.0.1
+-------------------------
+    o fixed typo in vignette
+    o added code example for drawVolcanoPlot function
+    o increased size of circles for motif-associated k-mers in drawVolcanoPlot
+    function

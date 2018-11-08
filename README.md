@@ -34,4 +34,4 @@ bioRxiv 416743; doi: https://doi.org/10.1101/416743
 
 ## Funding
 
-The development of this package was supported by scholarships of the Marshall Plan Foundation and the Austrian Federal Ministry for Education, National Institutes of Health (NIH) grants R01-ES015339, R35-ES028374, U54-CA112967, the Charles and Marjorie Holloway Foundation, and a Starr Cancer Consortium Award I9-A9-077.
+The development of this package was supported by scholarships of the Marshall Plan Foundation and the Austrian Federal Ministry for Education, National Institutes of Health (NIH) grants R01-ES015339, R35-ES028374, U54-CA112967, the Charles and Marjorie Holloway Foundation, the MIT Center for Precision Cancer Medicine, and a Starr Cancer Consortium Award I9-A9-077.

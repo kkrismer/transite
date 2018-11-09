@@ -135,7 +135,11 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
             cl = cluster,
             varlist = c(
                 "scoreTranscriptsSingleMotif", "sequences", "max.hits",
-                "threshold.method", "threshold.value", "cache.path"
+                "threshold.method", "threshold.value", "cache.path",
+                "motifId", "motifRbps", "motifMatrix", "motifLength",
+                "readMotifCache", "writeMotifCache", "lock", "unlock",
+                "getLockObject", "scoreSequences",
+                "cachedScoreSequencesHelper", "scoreSequencesHelper"
             ),
             envir = environment()
         )

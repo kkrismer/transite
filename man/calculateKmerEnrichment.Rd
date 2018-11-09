@@ -62,10 +62,10 @@ background.set <- c(foreground.set1, foreground.set2,
 # single-threaded
 kmer.enrichment.values.st <- calculateKmerEnrichment(foreground.sets,
   background.set, 6, n.cores = 1)
-
+\dontrun{
 # multi-threaded
 kmer.enrichment.values.mt <- calculateKmerEnrichment(foreground.sets,
-  background.set, 6)
+  background.set, 6)}
 }
 \seealso{
 Other \emph{k}-mer functions: \code{\link{checkKmers}},

@@ -117,8 +117,13 @@ homopolymerCorrection <-
 #' background.set <- c(foreground.set1, foreground.set2,
 #'                     "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
 #'
+#' # single-threaded
 #' kmer.enrichment.values.st <- calculateKmerEnrichment(foreground.sets,
 #'   background.set, 6, n.cores = 1)
+#' \dontrun{
+#' # multi-threaded
+#' kmer.enrichment.values.mt <- calculateKmerEnrichment(foreground.sets,
+#'   background.set, 6)}
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply

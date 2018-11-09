@@ -59,7 +59,12 @@ foreground.sets <- list(foreground.set1, foreground.set2)
 background.set <- c(foreground.set1, foreground.set2,
                     "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
 
-kmer.enrichment.values <- calculateKmerEnrichment(foreground.sets,
+# single-threaded
+kmer.enrichment.values.st <- calculateKmerEnrichment(foreground.sets,
+  background.set, 6, n.cores = 1)
+
+# multi-threaded
+kmer.enrichment.values.mt <- calculateKmerEnrichment(foreground.sets,
   background.set, 6)
 }
 \seealso{

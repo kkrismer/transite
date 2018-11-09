@@ -1,6 +1,6 @@
 # Transite
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.0.0-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.8/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.0.1-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.8/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives)
 
 RNA-binding protein motif analysis
 
@@ -8,7 +8,7 @@ https://transite.mit.edu
 
 Transite is a computational method that allows comprehensive analysis of the regulatory role of RNA-binding proteins in various cellular processes by leveraging preexisting gene expression data and current knowledge of binding preferences of RNA-binding proteins.
 
-Transite and the Transite website were developed in R and C++, using *devtools* to streamline package development, *roxygen2* for documentation, *ggplot2* for visualization, *Rcpp* for C++ integration, *Shiny* as a web framework, *rmarkdown* to generate analysis reports, and *dplyr* for data wrangling.
+Transite and the Transite website were developed in R and C++, using *devtools* to streamline package development, *Travis CI* as continuous integration service, *Git* for version control, *roxygen2* for documentation, *ggplot2* for visualization, *Rcpp* for C++ integration, *Shiny* as web framework, *rmarkdown* and *knitr* to generate analysis reports, and *dplyr* for data wrangling.
 
 ## About
 

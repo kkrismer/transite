@@ -10,9 +10,12 @@ runKmerSPMA(background.set, motifs = NULL, k = 6, n.bins = 40,
   p.adjust.method = "BH", p.combining.method = "fisher", n.cores = 1)
 }
 \arguments{
-\item{background.set}{character vector of DNA or RNA sequences that
-constitute the
-background set}
+\item{background.set}{character vector of ranked sequences, either DNA
+(only containing upper case characters A, C, G, T) or RNA (A, C, G, U).
+The sequences in \code{background.set} must be ranked (i.e., sorted).
+Commonly used sorting criteria are measures of differential expression, such
+as fold change or signal-to-noise ratio (e.g., between treatment and control
+samples in gene expression profiling experiments).}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
@@ -85,7 +88,7 @@ target overrepresentation.
 background.df <- transite:::ge$background
 # sort sequences by signal-to-noise ratio
 background.df <- dplyr::arrange(background.df, value)
-# character vector of named sequences
+# character vector of named and ranked (by signal-to-noise ratio) sequences
 background.set <- gsub("T", "U", background.df$seq)
 names(background.set) <- paste0(background.df$refseq, "|",
   background.df$seq.type)

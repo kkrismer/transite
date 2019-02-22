@@ -17,7 +17,7 @@ foreground sequences
 names are RefSeq identifiers
 and sequence
 type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
-\code{"NM_010356|3UTR"}}
+\code{"NM_010356|3UTR"}. Names are only used to cache results.}
 
 \item{background.set}{a named character vector of background
 sequences (naming follows same

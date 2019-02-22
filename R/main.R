@@ -11,7 +11,7 @@
 #' names are RefSeq identifiers
 #' and sequence
 #' type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
-#' \code{"NM_010356|3UTR"}
+#' \code{"NM_010356|3UTR"}. Names are only used to cache results.
 #' @param background.set a named character vector of background
 #' sequences (naming follows same
 #' rules as foreground set sequences)
@@ -260,6 +260,17 @@ runMatrixTSMA <-
 #' evidence and the transcript
 #' sorting criterion, e.g., fold change between treatment and control samples.
 #'
+#' @param background.set named character vector of ranked sequences
+#' (only containing upper case characters A, C, G, T), where the
+#' names are RefSeq identifiers
+#' and sequence
+#' type qualifiers (\code{"3UTR"}, \code{"5UTR"} or \code{"mRNA"}), separated by
+#' \code{"|"}, e.g.
+#' \code{"NM_010356|3UTR"}. Names are only used to cache results.
+#' The sequences in \code{background.set} must be ranked (i.e., sorted).
+#' Commonly used sorting criteria are measures of differential expression, such
+#' as fold change or signal-to-noise ratio (e.g., between treatment and control
+#' samples in gene expression profiling experiments).
 #' @inheritParams runMatrixTSMA
 #' @inheritParams subdivideData
 #' @inheritParams scoreSpectrum
@@ -323,7 +334,7 @@ runMatrixTSMA <-
 #' background.df <- transite:::ge$background
 #' # sort sequences by signal-to-noise ratio
 #' background.df <- dplyr::arrange(background.df, value)
-#' # character vector of named sequences
+#' # character vector of named and ranked (by signal-to-noise ratio) sequences
 #' background.set <- gsub("T", "U", background.df$seq)
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)
@@ -897,6 +908,13 @@ runKmerTSMA <-
 #' and the transcript
 #' sorting criterion, e.g., fold change between treatment and control samples.
 #'
+#' @param background.set character vector of ranked sequences, either DNA
+#' (only containing upper case characters A, C, G, T) or RNA (A, C, G, U).
+#' The sequences in \code{background.set} must be ranked (i.e., sorted).
+#' Commonly used sorting criteria are measures of differential expression, such
+#' as fold change or signal-to-noise ratio (e.g., between treatment and control
+#' samples in gene expression profiling experiments).
+#'
 #' @inheritParams runKmerTSMA
 #' @inheritParams subdivideData
 #' @inheritParams scoreSpectrum
@@ -934,7 +952,7 @@ runKmerTSMA <-
 #' background.df <- transite:::ge$background
 #' # sort sequences by signal-to-noise ratio
 #' background.df <- dplyr::arrange(background.df, value)
-#' # character vector of named sequences
+#' # character vector of named and ranked (by signal-to-noise ratio) sequences
 #' background.set <- gsub("T", "U", background.df$seq)
 #' names(background.set) <- paste0(background.df$refseq, "|",
 #'   background.df$seq.type)

@@ -14,3 +14,4 @@ CHANGES IN VERSION 1.0.2
     o updated roxygen2
     o updated license
     o clarified argument description of SPMA
+    o fixed issue with multi-threaded cluster environment

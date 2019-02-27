@@ -586,13 +586,17 @@ runMatrixSPMA <-
 #' (\code{"tippett"}) (see \code{\link{pCombine}})
 #' @inheritParams calculateKmerEnrichment
 #'
-#' @return A list of lists with the following components:
+#' @return A list of lists (one for each transcript set) with the
+#' following components:
 #' \tabular{rl}{
-#'   \code{enrichment.df} \tab \cr
+#'   \code{enrichment.df} \tab the result of
+#'   \code{\link{computeKmerEnrichment}} \cr
 #'   \code{motif.df} \tab \cr
 #'   \code{motif.kmers.dfs} \tab \cr
-#'   \code{volcano.plots} \tab \cr
-#'   \code{perm.test.plots} \tab \cr
+#'   \code{volcano.plots} \tab volcano plots for each
+#'   motif (see \code{\link{drawVolcanoPlot}}) \cr
+#'   \code{perm.test.plots} \tab plots of the empirical distribution of
+#'   \emph{k}-mer enrichment values for each motif \cr
 #'   \code{enriched.kmers.combined.p.values} \tab \cr
 #'   \code{depleted.kmers.combined.p.values} \tab
 #' }

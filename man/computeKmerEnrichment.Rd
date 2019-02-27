@@ -32,7 +32,7 @@ A data frame with the following columns is returned:
   \code{background.count} \tab background counts for each \emph{k}-mer\cr
   \code{enrichment} \tab \emph{k}-mer enrichment\cr
   \code{p.value} \tab p-value of \emph{k}-mer enrichment (either from
-  Fisher's exact test or Pearson's chi-squared test.\cr
+  Fisher's exact test or Pearson's chi-squared test)\cr
   \code{adj.p.value} \tab multiple testing corrected p-value\cr
 }
 }

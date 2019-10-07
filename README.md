@@ -1,6 +1,6 @@
 # Transite
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.0.2-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.8/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.2.0-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.8/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives)
 
 RNA-binding protein motif analysis
 
@@ -21,8 +21,8 @@ Transite, a novel computational method that allows cost-effective, time-effectiv
 | Platform | Status |
 |------|------|
 | Travis CI | [![Travis build status](https://travis-ci.org/kkrismer/transite.svg?branch=master)](https://travis-ci.org/kkrismer/transite) |
-| Bioconductor 3.8 (release) | [![BioC release](https://bioconductor.org/shields/build/release/bioc/transite.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/transite/) |
-| Bioconductor 3.9 (devel) | [![BioC devel](https://bioconductor.org/shields/build/devel/bioc/transite.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/transite/) |
+| Bioconductor 3.9 (release) | [![BioC release](https://bioconductor.org/shields/build/release/bioc/transite.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/transite/) |
+| Bioconductor 3.10 (devel) | [![BioC devel](https://bioconductor.org/shields/build/devel/bioc/transite.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/transite/) |
 
 ## Citation
 

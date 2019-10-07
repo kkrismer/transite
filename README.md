@@ -1,6 +1,6 @@
 # Transite
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.2.0-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.8/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.2.1-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.8/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives)
 
 RNA-binding protein motif analysis
 
@@ -29,7 +29,7 @@ Transite, a novel computational method that allows cost-effective, time-effectiv
 If you use Transite in your research (R package or website), please cite:
 
 **Transite: A computational motif-based analysis platform that identifies RNA-binding proteins modulating changes in gene expression**  
-Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and Michael B. Yaffe  
+Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Erika D. Handly, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and Michael B. Yaffe  
 bioRxiv 416743; doi: https://doi.org/10.1101/416743
 
 ## Funding

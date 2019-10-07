@@ -115,5 +115,5 @@ Most of the functionality of the Transite package is also offered through the Tr
 For a more detailed discussion on Spectrum Motif Analysis and Transite in general, please have a look at this preprint on bioRxiv:
 
 **Transite: A computational motif-based analysis platform that identifies RNA-binding proteins modulating changes in gene expression**  
-Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, Michael B. Yaffe  
+Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Erika D. Handly, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, Michael B. Yaffe  
 bioRxiv 416743; doi: https://doi.org/10.1101/416743

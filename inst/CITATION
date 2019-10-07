@@ -5,6 +5,7 @@ citEntry(entry="article",
                        as.person("Molly A. Bird"),
                        as.person("Anna Gattinger"),
                        as.person("Yi Wen Kong"),
+                       as.person("Erika D. Handly"),
                        as.person("Thomas Bernwinkler"),
                        as.person("Daniel A. Anderson"),
                        as.person("Andreas Heinzel"),
@@ -21,7 +22,7 @@ citEntry(entry="article",
 	journal = "bioRxiv",
   textVersion =
     paste("Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger,
-           Yi Wen Kong, Thomas Bernwinkler, Daniel A. Anderson,
+           Yi Wen Kong, Erika D. Handly, Thomas Bernwinkler, Daniel A. Anderson,
            Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and
            Michael B. Yaffe",
           "Transite: A computational motif-based analysis platform that

@@ -16,6 +16,42 @@ Transite is a tool to investigate global changes of RNA-binding protein targets.
 
 Transite, a novel computational method that allows cost-effective, time-effective and comprehensive analysis of the regulatory role of RBPs in various cellular processes by leveraging a wealth of preexisting gene expression data and current knowledge of RBP binding preferences. To gain insights into vastly complex processes including the DNA damage response or the immune response, the preliminary step is to calculate the change of mRNA expression levels after stimulus, i.e., the administration of DNA-damaging agents or an immune stimulus, respectively. Based on these results, Transite provides two approaches to investigate inferred mRNA stability changes due to differences in transcript abundance, Transcript Set Motif Analysis and Spectrum Motif Analysis. The former focuses on significantly upregulated and downregulated sets of transcripts and identifies RBPs whose binding sites are overrepresented among those transcripts, whereas the latter approach examines the distribution of RBP binding sites across the entire spectrum of transcripts, sorted according to their fold change, signal-to-noise ratio or any other meaningful measure of differential expression.
 
+## Installation
+
+The *transite* package is part of Bioconductor since release 3.8. To install it on your system, enter:
+
+```
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
+BiocManager::install("transite")
+```
+
+The above method is recommended for most users, as it is the most recent stable version.
+
+The development version can be installed directly from this repository (most recent, least stable):
+
+```
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+
+remotes::install_github("kkrismer/transite")
+```
+
+Alternatively, the development version can be installed using the development branch of Bioconductor:
+
+```
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+
+BiocManager::install(version = "devel"")
+BiocManager::install("transite")
+```
+Note: For most use cases it is not necessary to install the transite package locally, as a substantial part of its functionality is offered as an online service at https://transite.mit.edu. 
+
 ## Build status
 
 | Platform | Status |

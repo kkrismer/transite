@@ -213,9 +213,9 @@ score_spectrum(signal + noise, max_model_degree = 2,
 }
 \seealso{
 Other SPMA functions: 
+\code{\link{classify_spectrum}()},
 \code{\link{run_kmer_spma}()},
 \code{\link{run_matrix_spma}()},
-\code{\link{spectrum_classifier}()},
 \code{\link{subdivide_data}()}
 }
 \concept{SPMA functions}

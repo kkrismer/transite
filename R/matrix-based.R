@@ -136,7 +136,7 @@ score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
             varlist = c(
                 "score_transcripts_single_motif", "sequences", "max_hits",
                 "threshold_method", "threshold_value", "cache_path",
-                "motifId", "motifRbps", "motifMatrix", "motifLength",
+                "get_id", "get_rbps", "get_motif_matrix", "get_width",
                 "read_motif_cache", "write_motif_cache", "lock", "unlock",
                 "get_lock_object", "score_sequences",
                 "cached_score_sequences_helper", "score_sequences_helper"
@@ -270,7 +270,7 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     # if threshold_method == "relative": default threshold_value == 0.9
     # (0.9: 90% of the maximum PWM score)
 
-    pwm <- t(motifMatrix(motif))
+    pwm <- t(get_motif_matrix(motif))
     rownames(pwm)[4] <- "T"
     if (threshold_method == "p_value") {
         threshold_score <- TFMPvalue::TFMpv2sc(
@@ -285,23 +285,23 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
 
     if (threshold_score < 0) {
         warning(paste0(
-            motifId(motif), ": threshold score below zero (",
+            get_id(motif), ": threshold score below zero (",
             threshold_score, "), set to 0.1"
         ))
         threshold_score <- 0.1
     }
 
     total_sites <- unlist(lapply(sequences, function(sequence) {
-        if (nchar(sequence) < motifLength(motif)) {
+        if (nchar(sequence) < get_width(motif)) {
             return(0)
         } else {
-            return(nchar(sequence) - motifLength(motif) + 1)
+            return(nchar(sequence) - get_width(motif) + 1)
         }
     }))
     sum_total_sites <- sum(total_sites)
 
     if (!is.null(cache_path)) {
-        motif_id_file <- gsub("[^[:alnum:]]", "_", motifId(motif))
+        motif_id_file <- gsub("[^[:alnum:]]", "_", get_id(motif))
         motif_cache_file <- paste0(cache_path, motif_id_file, ".rds")
         if (file.exists(motif_cache_file)) {
             motif_cache <- read_motif_cache(cache_path, motif_id_file)
@@ -325,7 +325,7 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
                 uncached_sequences <- sequences[!cached]
                 uncached_absolute_hits <- cached_score_sequences_helper(
                     uncached_sequences, uncached_ids,
-                    as.matrix(motifMatrix(motif)),
+                    as.matrix(get_motif_matrix(motif)),
                     threshold_score, motif_cache,
                     cache_path, motif_id_file
                 )
@@ -339,15 +339,14 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
                                    size = length(sequences))
             absolute_hits <- cached_score_sequences_helper(
                 sequences, names(sequences),
-                as.matrix(motifMatrix(motif)),
+                as.matrix(get_motif_matrix(motif)),
                 threshold_score, motif_cache,
                 cache_path, motif_id_file
             )
         }
     } else {
-        absolute_hits <- score_sequences_helper(sequences,
-                                              as.matrix(motifMatrix(motif)),
-                                              threshold_score)
+        absolute_hits <- score_sequences_helper(
+            sequences, as.matrix(get_motif_matrix(motif)), threshold_score)
     }
 
     if (max_hits > 9) {
@@ -376,8 +375,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     if (max_hits_col == 2) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -389,8 +388,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 3) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -403,8 +402,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 4) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -417,8 +416,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 5) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -432,8 +431,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 6) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -447,8 +446,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 7) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -463,8 +462,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 8) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -479,8 +478,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 9) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,
@@ -496,8 +495,8 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
     } else if (max_hits_col == 10) {
         return(list(
             df = list(
-                motif_id = motifId(motif),
-                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                motif_id = get_id(motif),
+                motif_rbps = paste0(get_rbps(motif), collapse = ", "),
                 absolute_hits = sum_absolute_hits,
                 relative_hits = relative_hits,
                 total_sites = sum_total_sites,

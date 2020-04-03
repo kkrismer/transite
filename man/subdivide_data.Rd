@@ -59,9 +59,9 @@ foreground_sets <- subdivide_data(background_set)
 }
 \seealso{
 Other SPMA functions: 
+\code{\link{classify_spectrum}()},
 \code{\link{run_kmer_spma}()},
 \code{\link{run_matrix_spma}()},
-\code{\link{score_spectrum}()},
-\code{\link{spectrum_classifier}()}
+\code{\link{score_spectrum}()}
 }
 \concept{SPMA functions}

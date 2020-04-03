@@ -20,6 +20,6 @@ C++ implementation of \emph{k}-mer score calculation
 \examples{
 motif <- get_motif_by_id("M178_0.6")[[1]]
 kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-calculate_kmer_scores(kmers, as.matrix(motifMatrix(motif)))
+calculate_kmer_scores(kmers, as.matrix(get_motif_matrix(motif)))
 
 }

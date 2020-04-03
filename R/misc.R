@@ -1,235 +1,3 @@
-
-setClassUnion("dfOrNULL", c("data.frame", "NULL"))
-
-#' An S4 class to represent a RBPMotif
-#'
-#' @slot id motif id (character vector of length 1)
-#' @slot rbps character vector of names of RNA-binding proteins associated
-#' with this motif
-#' @slot matrix data frame with four columns (A, C, G, U) and 6 - 15 rows
-#' (positions),
-#' where cell (i, j) contains weight of nucleotide j on position i
-#' @slot hexamers character vector of hexamers associated with this motif
-#' @slot heptamers character vector of heptamers associated with this motif
-#' @slot length length of the motif (i.e., \code{nrow(matrix)})
-#' @slot iupac IUPAC code for motif matrix
-#' (see \code{\link{generate_iupac_by_matrix}})
-#' @slot type type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
-#' \code{'SELEX'}, etc.)
-#' @slot species species where motif was discovered (e.g.,
-#' \code{'Homo sapiens'})
-#' @slot src source of motif (e.g., \code{'RBPDB v1.3.1'})
-#' @return Object of type RBPMotif
-#' @examples
-#' kmers <- c("AAAAAAA", "CAAAAAA")
-#' iupac <- generate_iupac_by_kmers(kmers,
-#'   code = init_iupac_lookup_table())
-#' hexamers <- generate_kmers_from_iupac(iupac, 6)
-#' heptamers <- generate_kmers_from_iupac(iupac, 7)
-#' new("RBPMotif", id = "custom_motif", rbps = "RBP1",
-#'   matrix = NULL, hexamers = hexamers, heptamers = heptamers, length = 7L,
-#'   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
-#' )
-#' @importFrom methods setClass
-#' @importFrom methods setClassUnion
-#' @importFrom methods new
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @exportClass RBPMotif
-.RBPMotif <- setClass("RBPMotif", slots = c(id = "character",
-                                            rbps = "character",
-                                            matrix = "dfOrNULL",
-                                            hexamers = "character",
-                                            heptamers = "character",
-                                            length = "integer",
-                                            iupac = "character",
-                                            type = "character",
-                                            species = "character",
-                                            src = "character"))
-
-#' Getter Method motifId
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @param object RBPMotif object
-#' @importFrom methods setGeneric
-#' @exportMethod motifId
-setGeneric("motifId", function(object) standardGeneric("motifId"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifId
-#' @aliases motifId,RBPMotif-method
-setMethod("motifId", signature(object = "RBPMotif"),
-          function(object) object@id)
-
-#' Getter Method motifRbps
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifRbps
-setGeneric("motifRbps", function(object) standardGeneric("motifRbps"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifRbps
-#' @aliases motifRbps,RBPMotif-method
-setMethod("motifRbps", signature(object = "RBPMotif"),
-          function(object) object@rbps)
-
-#' Getter Method motifMatrix
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifMatrix
-setGeneric("motifMatrix", function(object) standardGeneric("motifMatrix"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifMatrix
-#' @aliases motifMatrix,RBPMotif-method
-setMethod("motifMatrix", signature(object = "RBPMotif"),
-          function(object) object@matrix)
-
-#' Getter Method motifHexamers
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifHexamers
-setGeneric("motifHexamers", function(object) standardGeneric("motifHexamers"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifHexamers
-#' @aliases motifHexamers,RBPMotif-method
-setMethod("motifHexamers", signature(object = "RBPMotif"),
-          function(object) object@hexamers)
-
-#' Getter Method motifHeptamers
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifHeptamers
-setGeneric("motifHeptamers",
-           function(object) standardGeneric("motifHeptamers"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifHeptamers
-#' @aliases motifHeptamers,RBPMotif-method
-setMethod("motifHeptamers", signature(object = "RBPMotif"),
-          function(object) object@heptamers)
-
-#' Getter Method motifLength
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifLength
-setGeneric("motifLength",
-           function(object) standardGeneric("motifLength"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifLength
-#' @aliases motifLength,RBPMotif-method
-setMethod("motifLength", signature(object = "RBPMotif"),
-          function(object) object@length)
-
-#' Getter Method motifIUPAC
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifIUPAC
-setGeneric("motifIUPAC", function(object) standardGeneric("motifIUPAC"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifIUPAC
-#' @aliases motifIUPAC,RBPMotif-method
-setMethod("motifIUPAC", signature(object = "RBPMotif"),
-          function(object) object@iupac)
-
-#' Getter Method motifType
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifType
-setGeneric("motifType", function(object) standardGeneric("motifType"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifType
-#' @aliases motifType,RBPMotif-method
-setMethod("motifType", signature(object = "RBPMotif"),
-          function(object) object@type)
-
-#' Getter Method motifSpecies
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifSpecies
-setGeneric("motifSpecies", function(object) standardGeneric("motifSpecies"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifSpecies
-#' @aliases motifSpecies,RBPMotif-method
-setMethod("motifSpecies", signature(object = "RBPMotif"),
-          function(object) object@species)
-
-#' Getter Method motifSource
-#' @name RBPMotif-class
-#' @rdname RBPMotif-class
-#' @importFrom methods setGeneric
-#' @exportMethod motifSource
-setGeneric("motifSource", function(object) standardGeneric("motifSource"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname RBPMotif-class
-#' @aliases motifSource
-#' @aliases motifSource,RBPMotif-method
-setMethod("motifSource", signature(object = "RBPMotif"),
-          function(object) object@src)
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @importFrom methods is
-#' @rdname RBPMotif-class
-#' @aliases show,RBPMotif-method
-setMethod("show", signature(object = "RBPMotif"), function(object) {
-    cat(is(object)[[1]], "\n",
-        "  id: ", object@id, "\n",
-        "  RBPs:  ", paste(object@rbps, collapse = ", "), "\n",
-        "  length (in nt):  ", object@length, "\n",
-        "  IUPAC:  ", object@iupac, "\n",
-        "  type:  ", object@type, "\n",
-        "  species:  ", object@species, "\n",
-        "  source:  ", object@src, "\n",
-        sep = ""
-    )
-})
-
-#' @param x RBPMotif object
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @importFrom ggseqlogo ggseqlogo
-#' @rdname RBPMotif-class
-#' @aliases plot,RBPMotif-method
-#' @exportMethod plot
-setMethod("plot", signature(x = "RBPMotif"), function(x) {
-    ppm <- t(get_ppm(x))
-    return(ggseqlogo::ggseqlogo(ppm))
-})
-
 #' @title Creates Transite motif object from position weight matrix
 #'
 #' @description
@@ -344,31 +112,31 @@ create_kmer_motif <- function(id, rbps, kmers, type, species, src) {
 #'   \item \code{src}
 #' }
 #' @examples
-#' motifs_meta_info()
+#' get_motifs_meta_info()
 #' @family motif functions
 #' @export
-motifs_meta_info <- function() {
+get_motifs_meta_info <- function() {
     motifs <- get_motifs()
     id <- vapply(motifs, function(motif) {
-        return(motifId(motif))
+        return(get_id(motif))
     }, FUN.VALUE = character(1))
     rbps <- vapply(motifs, function(motif) {
-        return(paste0(motifRbps(motif), collapse = ", "))
+        return(paste0(get_rbps(motif), collapse = ", "))
     }, FUN.VALUE = character(1))
     length <- vapply(motifs, function(motif) {
-        return(motifLength(motif))
+        return(get_width(motif))
     }, FUN.VALUE = integer(1))
     iupac <- vapply(motifs, function(motif) {
-        return(motifIUPAC(motif))
+        return(get_iupac(motif))
     }, FUN.VALUE = character(1))
     type <- vapply(motifs, function(motif) {
-        return(motifType(motif))
+        return(get_type(motif))
     }, FUN.VALUE = character(1))
     species <- vapply(motifs, function(motif) {
-        return(motifSpecies(motif))
+        return(get_species(motif))
     }, FUN.VALUE = character(1))
     src <- vapply(motifs, function(motif) {
-        return(motifSource(motif))
+        return(get_source(motif))
     }, FUN.VALUE = character(1))
     return(data.frame(id, rbps, length, iupac, type, species, src))
 }
@@ -389,7 +157,7 @@ motifs_meta_info <- function() {
 get_motif_by_id <- function(id) {
     motifs <- get_motifs()
     idx <- unlist(lapply(motifs, function(motif) {
-        return(sum(tolower(motifId(motif)) %in% tolower(id)) > 0)
+        return(sum(tolower(get_id(motif)) %in% tolower(id)) > 0)
     }))
     return(motifs[idx])
 }
@@ -410,7 +178,7 @@ get_motif_by_id <- function(id) {
 get_motif_by_rbp <- function(rbp) {
     motifs <- get_motifs()
     idx <- unlist(lapply(motifs, function(motif) {
-        return(sum(tolower(motifRbps(motif)) %in% tolower(rbp)) > 0)
+        return(sum(tolower(get_rbps(motif)) %in% tolower(rbp)) > 0)
     }))
     return(motifs[idx])
 }
@@ -427,7 +195,7 @@ get_motif_by_rbp <- function(rbp) {
 #' @family motif functions
 #' @export
 get_ppm <- function(motif) {
-    return(2^motifMatrix(motif) * 0.25)
+    return(2^get_motif_matrix(motif) * 0.25)
 }
 
 #' @title Generates IUPAC code for motif matrix
@@ -462,7 +230,7 @@ get_ppm <- function(motif) {
 #' \code{\link{init_iupac_lookup_table}}, it can be specified here
 #' @return the IUPAC string of the binding site
 #' @examples
-#' generate_iupac_by_matrix(motifMatrix(get_motif_by_id("M178_0.6")[[1]]))
+#' generate_iupac_by_matrix(get_motif_matrix(get_motif_by_id("M178_0.6")[[1]]))
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
@@ -568,7 +336,7 @@ generate_iupac_by_kmers <- function(kmers, code = NULL) {
 #' }
 #' @return an environment, the IUPAC lookup hash table
 #' @examples
-#' generate_iupac_by_matrix(motifMatrix(get_motif_by_id("M178_0.6")[[1]]),
+#' generate_iupac_by_matrix(get_motif_matrix(get_motif_by_id("M178_0.6")[[1]]),
 #'   code = init_iupac_lookup_table())
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
@@ -622,7 +390,7 @@ init_iupac_lookup_table <- function() {
 #' @param k length of \emph{k}-mer, \code{6} (hexamers) or \code{7} (heptamers)
 #' @return list of \emph{k}-mers
 #' @examples
-#' generate_kmers_from_iupac(motifIUPAC(get_motif_by_id("M178_0.6")[[1]]), k = 6)
+#' generate_kmers_from_iupac(get_iupac(get_motif_by_id("M178_0.6")[[1]]), k = 6)
 #' @family motif functions
 #' @importFrom Biostrings IUPAC_CODE_MAP
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}

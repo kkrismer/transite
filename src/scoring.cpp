@@ -24,7 +24,7 @@
 //' seq_char_vectors <- lapply(sequences, function(seq) {
 //'   unlist(strsplit(seq, ""))
 //' })
-//' score_sequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
+//' score_sequences(seq_char_vectors, as.matrix(get_motif_matrix(motif)))
 //'
 //' @export
 // [[Rcpp::export]]
@@ -77,7 +77,7 @@ SEXP score_sequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm) {
 //' @examples
 //' motif <- get_motif_by_id("M178_0.6")[[1]]
 //' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-//' calculate_kmer_scores(kmers, as.matrix(motifMatrix(motif)))
+//' calculate_kmer_scores(kmers, as.matrix(get_motif_matrix(motif)))
 //'
 //' @export
 // [[Rcpp::export]]

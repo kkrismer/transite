@@ -34,7 +34,7 @@ IUPAC RNA nucleotide code:
 }
 }
 \examples{
-generate_iupac_by_matrix(motifMatrix(get_motif_by_id("M178_0.6")[[1]]),
+generate_iupac_by_matrix(get_motif_matrix(get_motif_by_id("M178_0.6")[[1]]),
   code = init_iupac_lookup_table())
 }
 \references{
@@ -47,9 +47,9 @@ Other motif functions:
 \code{\link{generate_kmers_from_iupac}()},
 \code{\link{get_motif_by_id}()},
 \code{\link{get_motif_by_rbp}()},
+\code{\link{get_motifs_meta_info}()},
 \code{\link{get_motifs}()},
 \code{\link{get_ppm}()},
-\code{\link{motifs_meta_info}()},
 \code{\link{set_motifs}()}
 }
 \concept{motif functions}

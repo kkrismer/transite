@@ -27,6 +27,6 @@ sequences <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
 seq_char_vectors <- lapply(sequences, function(seq) {
   unlist(strsplit(seq, ""))
 })
-score_sequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
+score_sequences(seq_char_vectors, as.matrix(get_motif_matrix(motif)))
 
 }

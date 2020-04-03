@@ -1,219 +1,3 @@
-#' An S4 class to represent a scored spectrum
-#'
-#' @slot adj_r_squared adjusted \eqn{R^2} of polynomial model
-#' @slot degree degree of polynomial (integer between 0 and 5)
-#' @slot residuals residuals of the polynomial model
-#' @slot slope coefficient of the linear term of the polynomial model
-#' (spectrum "direction")
-#' @slot f_statistic F statistic from the F test used to determine the
-#' degree of the polynomial model
-#' @slot f_statistic_p_value p-value associated with the F statistic
-#' @slot consistency_score raw local consistency score of the spectrum
-#' @slot consistency_score_p_value p-value associated with the local consistency
-#' score
-#' @slot consistency_score_n number of permutations performed to calculate
-#' p-value of local consistency score (permutations performed before early
-#' stopping criterion reached)
-#' @slot plot spectrum plot
-#' @examples
-#' new("SpectrumScore",
-#'     adj_r_squared = 0,
-#'     degree = 0L,
-#'     residuals = 0,
-#'     slope = 0,
-#'     f_statistic = 0,
-#'     f_statistic_p_value = 1,
-#'     consistency_score = 1,
-#'     consistency_score_p_value = 1,
-#'     consistency_score_n = 1000L,
-#'     plot = NULL
-#' )
-#' @return Object of type SpectrumScore
-#' @importFrom methods setClass
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @exportClass SpectrumScore
-.SpectrumScore <- setClass("SpectrumScore", slots = c(adj_r_squared = "numeric",
-                                                      degree = "integer",
-                                                      residuals = "numeric",
-                                                      slope = "numeric",
-                                                      f_statistic = "numeric",
-                                                      f_statistic_p_value = "numeric",
-                                                      consistency_score = "numeric",
-                                                      consistency_score_p_value = "numeric",
-                                                      consistency_score_n = "integer",
-                                                      plot = "ANY"))
-
-#' Getter Method spectrumAdjRSquared
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @param object SpectrumScore object
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumAdjRSquared
-setGeneric("spectrumAdjRSquared", function(object) standardGeneric("spectrumAdjRSquared"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumAdjRSquared
-#' @aliases spectrumAdjRSquared,SpectrumScore-method
-setMethod("spectrumAdjRSquared", signature(object = "SpectrumScore"),
-          function(object) object@adj_r_squared)
-
-#' Getter Method spectrumDegree
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumDegree
-setGeneric("spectrumDegree", function(object) standardGeneric("spectrumDegree"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumDegree
-#' @aliases spectrumDegree,SpectrumScore-method
-setMethod("spectrumDegree", signature(object = "SpectrumScore"),
-          function(object) object@degree)
-
-#' Getter Method spectrumResiduals
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumResiduals
-setGeneric("spectrumResiduals",
-           function(object) standardGeneric("spectrumResiduals"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumResiduals
-#' @aliases spectrumResiduals,SpectrumScore-method
-setMethod("spectrumResiduals", signature(object = "SpectrumScore"),
-          function(object) object@residuals)
-
-#' Getter Method spectrumSlope
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumSlope
-setGeneric("spectrumSlope", function(object) standardGeneric("spectrumSlope"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumSlope
-#' @aliases spectrumSlope,SpectrumScore-method
-setMethod("spectrumSlope", signature(object = "SpectrumScore"), function(object) object@slope)
-
-#' Getter Method spectrumFStatistic
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumFStatistic
-setGeneric("spectrumFStatistic", function(object) standardGeneric("spectrumFStatistic"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumFStatistic
-#' @aliases spectrumFStatistic,SpectrumScore-method
-setMethod("spectrumFStatistic", signature(object = "SpectrumScore"),
-          function(object) object@f_statistic)
-
-#' Getter Method spectrumFStatisticPValue
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumFStatisticPValue
-setGeneric("spectrumFStatisticPValue",
-           function(object) standardGeneric("spectrumFStatisticPValue"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumFStatisticPValue
-#' @aliases spectrumFStatisticPValue,SpectrumScore-method
-setMethod("spectrumFStatisticPValue", signature(object = "SpectrumScore"),
-          function(object) object@f_statistic_p_value)
-
-#' Getter Method spectrumConsistencyScore
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumConsistencyScore
-setGeneric("spectrumConsistencyScore",
-           function(object) standardGeneric("spectrumConsistencyScore"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumConsistencyScore
-#' @aliases spectrumConsistencyScore,SpectrumScore-method
-setMethod("spectrumConsistencyScore", signature(object = "SpectrumScore"),
-          function(object) object@consistency_score)
-
-#' Getter Method spectrumConsistencyScorePValue
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumConsistencyScorePValue
-setGeneric("spectrumConsistencyScorePValue",
-           function(object) standardGeneric("spectrumConsistencyScorePValue"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumConsistencyScorePValue
-#' @aliases spectrumConsistencyScorePValue,SpectrumScore-method
-setMethod("spectrumConsistencyScorePValue", signature(object = "SpectrumScore"),
-          function(object) object@consistency_score_p_value)
-
-#' Getter Method spectrumConsistencyScoreN
-#' @name SpectrumScore-class
-#' @rdname SpectrumScore-class
-#' @importFrom methods setGeneric
-#' @exportMethod spectrumConsistencyScoreN
-setGeneric("spectrumConsistencyScoreN",
-           function(object) standardGeneric("spectrumConsistencyScoreN"))
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases spectrumConsistencyScoreN
-#' @aliases spectrumConsistencyScoreN,SpectrumScore-method
-setMethod("spectrumConsistencyScoreN", signature(object = "SpectrumScore"),
-          function(object) object@consistency_score_n)
-
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @importFrom methods is
-#' @rdname SpectrumScore-class
-#' @aliases show,SpectrumScore-method
-setMethod("show", signature(object = "SpectrumScore"), function(object) {
-    cat(is(object)[[1]], "\n",
-        "  adjusted R squared: ", object@adj_r_squared, "\n",
-        "  degree:  ", object@degree, "\n",
-        "  residuals:  ", object@residuals, "\n",
-        "  slope (linear coefficient):  ", object@slope, "\n",
-        "  F statistic:  ", object@f_statistic, "\n",
-        "  F statistic (p-value):  ", object@f_statistic_p_value, "\n",
-        "  local consistency score:  ", object@consistency_score, "\n",
-        "  local consistency score (p-value):  ", object@consistency_score_p_value, "\n",
-        "  local consistency score (number of permutations):  ", object@consistency_score_n, "\n",
-        sep = ""
-    )
-})
-
-#' @param x SpectrumScore object
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @rdname SpectrumScore-class
-#' @aliases plot,SpectrumScore-method
-#' @exportMethod plot
-setMethod("plot", signature(x = "SpectrumScore"), function(x) {
-    grid::grid.draw(x@plot)
-})
-
 #' @title Subdivides Sequences into \emph{n} Bins
 #'
 #' @description
@@ -674,9 +458,9 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
 #' # random spectrum
 #' random_sp <- score_spectrum(runif(n = n_bins, min = -1, max = 1),
 #'   max_model_degree = 1)
-#' score <- spectrum_classifier(
-#'   spectrumAdjRSquared(random_sp), spectrumDegree(random_sp),
-#'   spectrumSlope(random_sp), spectrumConsistencyScoreN(random_sp), 0, n_bins
+#' score <- classify_spectrum(
+#'   get_adj_r_squared(random_sp), get_model_degree(random_sp),
+#'   get_model_slope(random_sp), get_consistency_score_n(random_sp), 0, n_bins
 #' )
 #' sum(score)
 #'
@@ -685,9 +469,9 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
 #' linear_sp <- score_spectrum(signal + noise, max_model_degree = 1,
 #'   max_cs_permutations = 100000)
-#' score <- spectrum_classifier(
-#'   spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
-#'   spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
+#' score <- classify_spectrum(
+#'   get_adj_r_squared(linear_sp), get_model_degree(linear_sp),
+#'   get_model_slope(linear_sp), get_consistency_score_n(linear_sp), 10, n_bins
 #' )
 #' sum(score)
 #' \dontrun{
@@ -696,9 +480,9 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 #' linear_sp <- score_spectrum(signal + noise, max_model_degree = 1,
 #'   max_cs_permutations = 100000)
-#' score <- spectrum_classifier(
-#'   spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
-#'   spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
+#' score <- classify_spectrum(
+#'   get_adj_r_squared(linear_sp), get_model_degree(linear_sp),
+#'   get_model_slope(linear_sp), get_consistency_score_n(linear_sp), 10, n_bins
 #' )
 #' sum(score)
 #' }
@@ -708,9 +492,9 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 #' quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2,
 #'   max_cs_permutations = 100000)
-#' score <- spectrum_classifier(
-#'   spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
-#'   spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
+#' score <- classify_spectrum(
+#'   get_adj_r_squared(quadratic_sp), get_model_degree(quadratic_sp),
+#'   get_model_slope(quadratic_sp), get_consistency_score_n(quadratic_sp), 10, n_bins
 #' )
 #' sum(score)
 #' \dontrun{
@@ -718,15 +502,15 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.1)
 #' quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2)
-#' score <- spectrum_classifier(
-#'   spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
-#'   spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
+#' score <- classify_spectrum(
+#'   get_adj_r_squared(quadratic_sp), get_model_degree(quadratic_sp),
+#'   get_model_slope(quadratic_sp), get_consistency_score_n(quadratic_sp), 10, n_bins
 #' )
 #' sum(score)
 #' }
 #' @family SPMA functions
 #' @export
-spectrum_classifier <- function(adj_r_squared, degree, slope,
+classify_spectrum <- function(adj_r_squared, degree, slope,
                                consistency_score_n,
                                n_significant, n_bins) {
     return(c(

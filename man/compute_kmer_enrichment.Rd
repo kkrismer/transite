@@ -85,12 +85,12 @@ kmer_enrichment_values <- compute_kmer_enrichment(foreground_kmers,
 Other \emph{k}-mer functions: 
 \code{\link{calculate_kmer_enrichment}()},
 \code{\link{check_kmers}()},
+\code{\link{count_homopolymer_corrected_kmers}()},
 \code{\link{draw_volcano_plot}()},
-\code{\link{empirical_enrichment_mean_cdf}()},
+\code{\link{estimate_significance_core}()},
+\code{\link{estimate_significance}()},
 \code{\link{generate_kmers}()},
 \code{\link{generate_permuted_enrichments}()},
-\code{\link{homopolymer_correction}()},
-\code{\link{perm_test_geometric_mean}()},
 \code{\link{run_kmer_spma}()},
 \code{\link{run_kmer_tsma}()}
 }

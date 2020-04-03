@@ -42,8 +42,8 @@ Fisher's exact test or Pearson's chi-squared test.
 }
 \examples{
 motif <- get_motif_by_id("951_12324455")
-draw_volcano_plot(transite:::kmers_enrichment, motifHexamers(motif[[1]]),
-  motifRbps(motif[[1]]))
+draw_volcano_plot(transite:::kmers_enrichment, get_hexamers(motif[[1]]),
+  get_rbps(motif[[1]]))
 
 \dontrun{
 foreground_set <- c("UGUGGG", "GUGGGG", "GUGUGG", "UGUGGU")
@@ -61,7 +61,7 @@ motif <- get_motif_by_id("M178_0.6")
 results <- run_kmer_tsma(list(foreground_set), background_set,
                        motifs = motif)
 draw_volcano_plot(results[[1]]$motif_kmers_dfs[[1]],
-    motifHexamers(motif[[1]]), "test RBP")}
+    get_hexamers(motif[[1]]), "test RBP")}
 
 }
 \seealso{
@@ -73,11 +73,11 @@ Other \emph{k}-mer functions:
 \code{\link{calculate_kmer_enrichment}()},
 \code{\link{check_kmers}()},
 \code{\link{compute_kmer_enrichment}()},
-\code{\link{empirical_enrichment_mean_cdf}()},
+\code{\link{count_homopolymer_corrected_kmers}()},
+\code{\link{estimate_significance_core}()},
+\code{\link{estimate_significance}()},
 \code{\link{generate_kmers}()},
 \code{\link{generate_permuted_enrichments}()},
-\code{\link{homopolymer_correction}()},
-\code{\link{perm_test_geometric_mean}()},
 \code{\link{run_kmer_spma}()},
 \code{\link{run_kmer_tsma}()}
 }

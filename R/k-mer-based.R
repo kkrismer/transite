@@ -21,7 +21,7 @@
 #' @importFrom GenomicRanges gaps
 #' @importFrom Biostrings BString
 #' @family \emph{k}-mer functions
-homopolymer_correction <-
+count_homopolymer_corrected_kmers <-
     function(sequences, k, kmers, is_rna = FALSE) {
         seq <- Biostrings::BString(toString(sequences))
 
@@ -169,7 +169,7 @@ calculate_kmer_enrichment <-
                         "p_adjust_method",
                         "compute_kmer_enrichment",
                         "generate_kmers",
-                        "homopolymer_correction"
+                        "count_homopolymer_corrected_kmers"
                     ),
                     envir = environment()
                 )
@@ -207,7 +207,7 @@ calculate_kmer_enrichment <-
 #' Counts occurrences of \emph{k}-mers of length \code{k} in the given set of
 #' sequences. Corrects for homopolymeric stretches.
 #'
-#' @inheritParams homopolymer_correction
+#' @inheritParams count_homopolymer_corrected_kmers
 #'
 #' @return Returns a named numeric vector, where the elements are
 #' \emph{k}-mer counts and the
@@ -254,12 +254,12 @@ generate_kmers <- function(sequences, k) {
     kmers <- tryCatch({
         kmer_counts <-
             Biostrings::oligonucleotideFrequency(Biostrings::DNAStringSet(sequences), k)
-        homopolymer_correction(sequences, k, colSums(kmer_counts))
+        count_homopolymer_corrected_kmers(sequences, k, colSums(kmer_counts))
     }, error = function(e) {
         kmer_counts <-
             Biostrings::oligonucleotideFrequency(Biostrings::RNAStringSet(sequences), k)
         rna_kmers <-
-            homopolymer_correction(sequences, k, colSums(kmer_counts), is_rna = TRUE)
+            count_homopolymer_corrected_kmers(sequences, k, colSums(kmer_counts), is_rna = TRUE)
         names(rna_kmers) <- gsub("U", "T", names(rna_kmers))
         return(rna_kmers)
     })
@@ -428,7 +428,7 @@ compute_kmer_enrichment <-
 #' @title Significance of Observed Mean
 #'
 #' @description
-#' \code{empirical_enrichment_mean_cdf} returns an estimate of the significance
+#' \code{estimate_significance_core} returns an estimate of the significance
 #' of the observed
 #' mean, given a vector of means based on random permutations of the data.
 #'
@@ -451,11 +451,11 @@ compute_kmer_enrichment <-
 #' test_sd <- 1.0
 #' test_null_distribution <- rnorm(n = 10000, mean = 1.0, sd = test_sd)
 #'
-#' empirical_enrichment_mean_cdf(test_null_distribution, test_sd * 2, "greater")
+#' estimate_significance_core(test_null_distribution, test_sd * 2, "greater")
 #' @importFrom stats binom.test
 #' @family \emph{k}-mer functions
 #' @export
-empirical_enrichment_mean_cdf <- function(random_means,
+estimate_significance_core <- function(random_means,
                                        actual_mean,
                                        alternative = c("two_sided",
                                                        "less", "greater"),
@@ -545,7 +545,7 @@ generate_permuted_enrichments <-
 #' @title Permutation Test Based Significance of Observed Mean
 #'
 #' @description
-#' \code{perm_test_geometric_mean} returns an estimate of the significance
+#' \code{estimate_significance} returns an estimate of the significance
 #' of the observed
 #' mean, given a set of random permutations of the data.
 #'
@@ -557,7 +557,7 @@ generate_permuted_enrichments <-
 #' to generate an empirical null distribution.
 #' @param produce_plot if distribution plot should be part of the
 #' returned list
-#' @inheritParams empirical_enrichment_mean_cdf
+#' @inheritParams estimate_significance_core
 #'
 #' @return A list with the following components:
 #' \tabular{rl}{
@@ -582,7 +582,7 @@ generate_permuted_enrichments <-
 #' @importFrom ggplot2 ggtitle
 #' @family \emph{k}-mer functions
 #' @export
-perm_test_geometric_mean <-
+estimate_significance <-
     function(actual_mean,
              motif_kmers,
              random_permutations,
@@ -639,7 +639,7 @@ perm_test_geometric_mean <-
         }
 
         empirical_p_value <-
-            empirical_enrichment_mean_cdf(random_means, actual_mean,
+            estimate_significance_core(random_means, actual_mean,
                                        alternative = alternative, conf_level
             )
         return(
@@ -677,8 +677,8 @@ perm_test_geometric_mean <-
 #'
 #' @examples
 #' motif <- get_motif_by_id("951_12324455")
-#' draw_volcano_plot(transite:::kmers_enrichment, motifHexamers(motif[[1]]),
-#'   motifRbps(motif[[1]]))
+#' draw_volcano_plot(transite:::kmers_enrichment, get_hexamers(motif[[1]]),
+#'   get_rbps(motif[[1]]))
 #'
 #' \dontrun{
 #' foreground_set <- c("UGUGGG", "GUGGGG", "GUGUGG", "UGUGGU")
@@ -696,7 +696,7 @@ perm_test_geometric_mean <-
 #' results <- run_kmer_tsma(list(foreground_set), background_set,
 #'                        motifs = motif)
 #' draw_volcano_plot(results[[1]]$motif_kmers_dfs[[1]],
-#'     motifHexamers(motif[[1]]), "test RBP")}
+#'     get_hexamers(motif[[1]]), "test RBP")}
 #'
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_point

@@ -26,10 +26,10 @@ Other motif functions:
 \code{\link{generate_iupac_by_matrix}()},
 \code{\link{generate_kmers_from_iupac}()},
 \code{\link{get_motif_by_rbp}()},
+\code{\link{get_motifs_meta_info}()},
 \code{\link{get_motifs}()},
 \code{\link{get_ppm}()},
 \code{\link{init_iupac_lookup_table}()},
-\code{\link{motifs_meta_info}()},
 \code{\link{set_motifs}()}
 }
 \concept{motif functions}

@@ -27,12 +27,15 @@ Generates a data frame with meta information about all Transite motifs.
 motifsMetaInfo()
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifById}}, \code{\link{getMotifByRBP}},
-  \code{\link{getMotifs}}, \code{\link{getPPM}},
-  \code{\link{initIUPAClookupTable}},
-  \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getMotifs}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

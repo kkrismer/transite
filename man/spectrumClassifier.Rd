@@ -4,11 +4,17 @@
 \alias{spectrumClassifier}
 \title{Simple spectrum classifier based on empirical thresholds}
 \usage{
-spectrumClassifier(adj.r.squared, degree, slope, consistency.score.n,
-  n.significant, n.bins)
+spectrumClassifier(
+  adj_r_squared,
+  degree,
+  slope,
+  consistency_score_n,
+  n_significant,
+  n_bins
+)
 }
 \arguments{
-\item{adj.r.squared}{adjusted \eqn{R^2} of polynomial model, returned by
+\item{adj_r_squared}{adjusted \eqn{R^2} of polynomial model, returned by
 \link{scoreSpectrum}}
 
 \item{degree}{degree of polynomial, returned by \link{scoreSpectrum}}
@@ -17,21 +23,21 @@ spectrumClassifier(adj.r.squared, degree, slope, consistency.score.n,
 (spectrum "direction"),
 returned by \link{scoreSpectrum}}
 
-\item{consistency.score.n}{number of performed permutations before
+\item{consistency_score_n}{number of performed permutations before
 early stopping,
 returned by \link{scoreSpectrum}}
 
-\item{n.significant}{number of bins with statistically significant
+\item{n_significant}{number of bins with statistically significant
 enrichment}
 
-\item{n.bins}{number of bins}
+\item{n_bins}{number of bins}
 }
 \value{
 a three-dimensional binary vector with the following components:
 \tabular{rl}{
-  \code{coordinate 1} \tab \code{adj.r.squared >= 0.4}\cr
-  \code{coordinate 2} \tab \code{consistency.score.n > 1000000}\cr
-  \code{coordinate 3} \tab \code{n.significant >= floor(n.bins / 10)}
+  \code{coordinate 1} \tab \code{adj_r_squared >= 0.4}\cr
+  \code{coordinate 2} \tab \code{consistency_score_n > 1000000}\cr
+  \code{coordinate 3} \tab \code{n_significant >= floor(n_bins / 10)}
 }
 }
 \description{
@@ -39,36 +45,36 @@ Spectra can be classified based on the aggregate spectrum classifier score.
 If \code{sum(score) == 3} spectrum considered non-random, random otherwise.
 }
 \examples{
-n.bins <- 40
+n_bins <- 40
 
 # random spectrum
-random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1),
-  max.model.degree = 1)
+random_sp <- scoreSpectrum(runif(n = n_bins, min = -1, max = 1),
+  max_model_degree = 1)
 score <- spectrumClassifier(
-  spectrumAdjRSquared(random.sp), spectrumDegree(random.sp),
-  spectrumSlope(random.sp), spectrumConsistencyScoreN(random.sp), 0, n.bins
+  spectrumAdjRSquared(random_sp), spectrumDegree(random_sp),
+  spectrumSlope(random_sp), spectrumConsistencyScoreN(random_sp), 0, n_bins
 )
 sum(score)
 
 # non-random linear spectrum with strong noise component
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
-  max.cs.permutations = 100000)
+linear_sp <- scoreSpectrum(signal + noise, max_model_degree = 1,
+  max_cs_permutations = 100000)
 score <- spectrumClassifier(
-  spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
-  spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
+  spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
+  spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
 )
 sum(score)
 \dontrun{
 # non-random linear spectrum with weak noise component
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
-  max.cs.permutations = 100000)
+linear_sp <- scoreSpectrum(signal + noise, max_model_degree = 1,
+  max_cs_permutations = 100000)
 score <- spectrumClassifier(
-  spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
-  spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
+  spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
+  spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
 )
 sum(score)
 }
@@ -76,28 +82,30 @@ sum(score)
 # non-random quadratic spectrum with strong noise component
 signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2,
-  max.cs.permutations = 100000)
+quadratic_sp <- scoreSpectrum(signal + noise, max_model_degree = 2,
+  max_cs_permutations = 100000)
 score <- spectrumClassifier(
-  spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
-  spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
+  spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
+  spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
 )
 sum(score)
 \dontrun{
 # non-random quadratic spectrum with weak noise component
 signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.1)
-quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2)
+quadratic_sp <- scoreSpectrum(signal + noise, max_model_degree = 2)
 score <- spectrumClassifier(
-  spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
-  spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
+  spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
+  spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
 )
 sum(score)
 }
 }
 \seealso{
-Other SPMA functions: \code{\link{runKmerSPMA}},
-  \code{\link{runMatrixSPMA}}, \code{\link{scoreSpectrum}},
-  \code{\link{subdivideData}}
+Other SPMA functions: 
+\code{\link{runKmerSPMA}()},
+\code{\link{runMatrixSPMA}()},
+\code{\link{scoreSpectrum}()},
+\code{\link{subdivideData}()}
 }
 \concept{SPMA functions}

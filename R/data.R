@@ -38,11 +38,11 @@
 #'
 #' @format A list with the following components:
 #' \tabular{rl}{
-#'   \code{foreground1.df} \tab data frame that contains down-regulated
+#'   \code{foreground1_df} \tab data frame that contains down-regulated
 #'   genes after treatment\cr
-#'   \code{foreground2.df} \tab data frame that contains up-regulated
+#'   \code{foreground2_df} \tab data frame that contains up-regulated
 #'   genes after treatment\cr
-#'   \code{background.df} \tab data frame that contains all genes measured
+#'   \code{background_df} \tab data frame that contains all genes measured
 #' }
 "ge"
 
@@ -52,7 +52,7 @@
 #'
 #' @format A data frame with four columns (A, C, G, U) and seven
 #' rows (position 1 - 7)
-"toy.motif.matrix"
+"toy_motif_matrix"
 
 #' Example \emph{k}-mer Enrichment Data
 #'
@@ -63,13 +63,13 @@
 #' @format A data frame with the following columns:
 #' \tabular{rl}{
 #'   \code{kmer} \tab contains all hexamers (AAAAAA to UUUUUU)\cr
-#'   \code{foreground.count} \tab absolute \emph{k}-mer frequency in
+#'   \code{foreground_count} \tab absolute \emph{k}-mer frequency in
 #'   foreground set\cr
-#'   \code{background.count} \tab absolute \emph{k}-mer frequency in
+#'   \code{background_count} \tab absolute \emph{k}-mer frequency in
 #'   background set\cr
 #'   \code{enrichment} \tab enrichment of \emph{k}-mer in foreground
 #'   relative to background\cr
-#'   \code{p.value} \tab associated p-value of enrichment\cr
-#'   \code{adj.p.value} \tab multiple testing corrected p-value\cr
+#'   \code{p_value} \tab associated p-value of enrichment\cr
+#'   \code{adj_p_value} \tab multiple testing corrected p-value\cr
 #' }
-"kmers.enrichment"
+"kmers_enrichment"

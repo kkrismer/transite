@@ -4,33 +4,40 @@
 \alias{calculateMotifEnrichment}
 \title{Binding Site Enrichment Value Calculation}
 \usage{
-calculateMotifEnrichment(foreground.scores.df, background.scores.df,
-  background.total.sites, background.absolute.hits,
-  n.transcripts.foreground, max.fg.permutations = 1e+06,
-  min.fg.permutations = 1000, e = 5, p.adjust.method = "BH")
+calculateMotifEnrichment(
+  foreground_scores_df,
+  background_scores_df,
+  background_total_sites,
+  background_absolute_hits,
+  n_transcripts_foreground,
+  max_fg_permutations = 1e+06,
+  min_fg_permutations = 1000,
+  e = 5,
+  p_adjust_method = "BH"
+)
 }
 \arguments{
-\item{foreground.scores.df}{result of \code{\link{scoreTranscripts}} on
+\item{foreground_scores_df}{result of \code{\link{scoreTranscripts}} on
 foreground sequence
 set (foreground sequence sets must be a subset of the background
 sequence set)}
 
-\item{background.scores.df}{result of \code{\link{scoreTranscripts}}
+\item{background_scores_df}{result of \code{\link{scoreTranscripts}}
 on background sequence set}
 
-\item{background.total.sites}{number of potential binding sites per sequence
+\item{background_total_sites}{number of potential binding sites per sequence
 (returned by \code{\link{scoreTranscripts}})}
 
-\item{background.absolute.hits}{number of putative binding sites per sequence
+\item{background_absolute_hits}{number of putative binding sites per sequence
 (returned by \code{\link{scoreTranscripts}})}
 
-\item{n.transcripts.foreground}{number of sequences in the foreground set}
+\item{n_transcripts_foreground}{number of sequences in the foreground set}
 
-\item{max.fg.permutations}{maximum number of foreground permutations
+\item{max_fg_permutations}{maximum number of foreground permutations
 performed in
 Monte Carlo test for enrichment score}
 
-\item{min.fg.permutations}{minimum number of foreground permutations
+\item{min_fg_permutations}{minimum number of foreground permutations
 performed in
 Monte Carlo test for enrichment score}
 
@@ -40,21 +47,21 @@ observing \code{e} random enrichment values with more extreme values than
 the actual
 enrichment value}
 
-\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to
+\item{p_adjust_method}{adjustment of p-values from Monte Carlo tests to
 avoid alpha error
  accumulation, see \code{\link[stats]{p.adjust}}}
 }
 \value{
 A data frame with the following columns:
 \tabular{rl}{
-  \code{motif.id} \tab the motif identifier that is used in the original
+  \code{motif_id} \tab the motif identifier that is used in the original
   motif library\cr
-  \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
+  \code{motif_rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
   \code{enrichment} \tab binding site enrichment between foreground
   and background sequences \cr
-  \code{p.value} \tab unadjusted p-value from Monte Carlo test \cr
-  \code{p.value.n} \tab number of Monte Carlo test permutations \cr
-  \code{adj.p.value} \tab adjusted p-value from Monte Carlo test
+  \code{p_value} \tab unadjusted p-value from Monte Carlo test \cr
+  \code{p_value_n} \tab number of Monte Carlo test permutations \cr
+  \code{adj_p_value} \tab adjusted p-value from Monte Carlo test
   (usually FDR)
 }
 }
@@ -65,25 +72,26 @@ levels of
 enrichment values are obtained by Monte Carlo tests.
 }
 \examples{
-foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+foreground_seqs <- c("CAGUCAAGACUCC", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AGAU", "CCAGUAA")
-background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+background_seqs <- c(foreground_seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
                      "AUAGAC", "AGUUC")
-foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
-background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
-enrichments.df <- calculateMotifEnrichment(foreground.scores$df,
-  background.scores$df,
-  background.scores$total.sites, background.scores$absolute.hits,
-  length(foreground.seqs),
-  max.fg.permutations = 1000
+foreground_scores <- scoreTranscripts(foreground_seqs, cache = FALSE)
+background_scores <- scoreTranscripts(background_seqs, cache = FALSE)
+enrichments_df <- calculateMotifEnrichment(foreground_scores$df,
+  background_scores$df,
+  background_scores$total_sites, background_scores$absolute_hits,
+  length(foreground_seqs),
+  max_fg_permutations = 1000
 )
 }
 \seealso{
-Other matrix functions: \code{\link{runMatrixSPMA}},
-  \code{\link{runMatrixTSMA}},
-  \code{\link{scoreTranscriptsSingleMotif}},
-  \code{\link{scoreTranscripts}}
+Other matrix functions: 
+\code{\link{runMatrixSPMA}()},
+\code{\link{runMatrixTSMA}()},
+\code{\link{scoreTranscriptsSingleMotif}()},
+\code{\link{scoreTranscripts}()}
 }
 \concept{matrix functions}

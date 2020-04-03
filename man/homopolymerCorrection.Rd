@@ -4,7 +4,7 @@
 \alias{homopolymerCorrection}
 \title{Correction for Homopolymeric Stretches}
 \usage{
-homopolymerCorrection(sequences, k, kmers, is.rna = FALSE)
+homopolymerCorrection(sequences, k, kmers, is_rna = FALSE)
 }
 \arguments{
 \item{sequences}{character vector of DNA or RNA sequences}
@@ -15,7 +15,7 @@ homopolymerCorrection(sequences, k, kmers, is.rna = FALSE)
 \item{kmers}{column sums of return value of
 \code{Biostrings::oligonucleotideFrequency(sequences)}}
 
-\item{is.rna}{if \code{sequences} are RNA sequences, this
+\item{is_rna}{if \code{sequences} are RNA sequences, this
 flag needs to be set}
 }
 \value{
@@ -27,14 +27,16 @@ Counts all non-overlapping instances of \emph{k}-mers in a given set
 of sequences.
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

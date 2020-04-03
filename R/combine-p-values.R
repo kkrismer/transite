@@ -77,9 +77,9 @@
 #' @return A list with the following components:
 #' \tabular{rl}{
 #'   \code{statistic} \tab the test statistic\cr
-#'   \code{p.value} \tab the corresponding p-value\cr
+#'   \code{p_value} \tab the corresponding p-value\cr
 #'   \code{method} \tab the method used\cr
-#'   \code{statistic.name} \tab the name of the test statistic
+#'   \code{statistic_name} \tab the name of the test statistic
 #' }
 #'
 #' @examples
@@ -102,25 +102,25 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
     if (n == 0) {
         warning("vector of p-values is empty")
         if (method == "fisher") {
-            return(list(statistic = NA, p.value = NA, method = "Fisher (1932)",
-                        statistic.name = "Xsq"))
+            return(list(statistic = NA, p_value = NA, method = "Fisher (1932)",
+                        statistic_name = "Xsq"))
         } else if (method == "SL") {
             return(list(
-                statistic = NA, p.value = NA,
+                statistic = NA, p_value = NA,
                 method = "Stouffer (1949), Liptak (1958)",
-                statistic.name = "Z"
+                statistic_name = "Z"
             ))
         } else if (method == "MG") {
             return(list(
-                statistic = NA, p.value = NA,
+                statistic = NA, p_value = NA,
                 method = "Mudholkar and George (1979)",
-                statistic.name = "L"
+                statistic_name = "L"
             ))
         } else if (method == "tippett") {
             return(list(
-                statistic = NA, p.value = NA,
+                statistic = NA, p_value = NA,
                 method = "Tippett (1931)",
-                statistic.name = "p.min"
+                statistic_name = "p_min"
             ))
         } else {
             stop("method not supported")
@@ -128,10 +128,10 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
     } else {
         if (method == "fisher") {
             Xsq <- -2 * sum(log(p))
-            p.val <- stats::pchisq(Xsq, df = 2 * n, lower.tail = FALSE)
+            p_val <- stats::pchisq(Xsq, df = 2 * n, lower.tail = FALSE)
             return(list(
-                statistic = Xsq, p.value = p.val, method = "Fisher (1932)",
-                statistic.name = "Xsq"
+                statistic = Xsq, p_value = p_val, method = "Fisher (1932)",
+                statistic_name = "Xsq"
             ))
         } else if (method == "SL") {
             if (is.null(w)) {
@@ -143,27 +143,27 @@ pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
             }
             Zi <- stats::qnorm(1 - p)
             Z <- sum(w * Zi) / sqrt(sum(w^2))
-            p.value <- 1 - stats::pnorm(Z)
+            p_value <- 1 - stats::pnorm(Z)
             return(list(
-                statistic = Z, p.value = p.value,
+                statistic = Z, p_value = p_value,
                 method = "Stouffer (1949), Liptak (1958)",
-                statistic.name = "Z"
+                statistic_name = "Z"
             ))
         } else if (method == "MG") {
             L <- sum((-1) * log(p / (1 - p)))
-            p.value <- stats::pt(L * sqrt((15 * n + 12) / (pi^2 * n * (5 * n + 2))),
+            p_value <- stats::pt(L * sqrt((15 * n + 12) / (pi^2 * n * (5 * n + 2))),
                                  df = 5 * n + 4, lower.tail = FALSE
             )
             return(list(
-                statistic = L, p.value = p.value,
+                statistic = L, p_value = p_value,
                 method = "Mudholkar and George (1979)",
-                statistic.name = "L"
+                statistic_name = "L"
             ))
         } else if (method == "tippett") {
             return(list(
-                statistic = min(p), p.value = 1 - (1 - min(p))^n,
+                statistic = min(p), p_value = 1 - (1 - min(p))^n,
                 method = "Tippett (1931)",
-                statistic.name = "p.min"
+                statistic_name = "p_min"
             ))
         } else {
             stop("method not supported")

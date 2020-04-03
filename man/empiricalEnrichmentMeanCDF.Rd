@@ -4,28 +4,31 @@
 \alias{empiricalEnrichmentMeanCDF}
 \title{Significance of Observed Mean}
 \usage{
-empiricalEnrichmentMeanCDF(random.means, actual.mean,
-  alternative = c("two.sided", "less", "greater"), conf.level = 0.95)
+empiricalEnrichmentMeanCDF(
+  random_means,
+  actual_mean,
+  alternative = c("two_sided", "less", "greater"),
+  conf_level = 0.95
+)
 }
 \arguments{
-\item{random.means}{numeric vector of means based on random permutations
+\item{random_means}{numeric vector of means based on random permutations
 of the data
 (empirical null distribution)}
 
-\item{actual.mean}{observed mean}
+\item{actual_mean}{observed mean}
 
 \item{alternative}{side of the test, one of the following:
-\code{"two.sided"},
+\code{"two_sided"},
 \code{"less"}, \code{"greater"}}
 
-\item{conf.level}{confidence level for the returned confidence
-    interval.}
+\item{conf_level}{confidence level for the returned confidence interval}
 }
 \value{
 A list with the following components:
 \tabular{rl}{
-  \code{p.value.estimate} \tab the estimated p-value of the observed mean\cr
-  \code{conf.int} \tab the confidence interval around that estimate
+  \code{p_value_estimate} \tab the estimated p-value of the observed mean\cr
+  \code{conf_int} \tab the confidence interval around that estimate
 }
 }
 \description{
@@ -34,20 +37,22 @@ of the observed
 mean, given a vector of means based on random permutations of the data.
 }
 \examples{
-test.sd <- 1.0
-test.null.distribution <- rnorm(n = 10000, mean = 1.0, sd = test.sd)
+test_sd <- 1.0
+test_null_distribution <- rnorm(n = 10000, mean = 1.0, sd = test_sd)
 
-empiricalEnrichmentMeanCDF(test.null.distribution, test.sd * 2, "greater")
+empiricalEnrichmentMeanCDF(test_null_distribution, test_sd * 2, "greater")
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

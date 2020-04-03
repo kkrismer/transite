@@ -4,30 +4,37 @@
 \alias{scoreSpectrum}
 \title{Calculates spectrum scores and creates spectrum plots}
 \usage{
-scoreSpectrum(x, p.value = array(1, length(x)),
-  x.label = "log enrichment", midpoint = 0, max.model.degree = 3,
-  max.cs.permutations = 1e+07, min.cs.permutations = 5000, e = 5)
+scoreSpectrum(
+  x,
+  p_value = array(1, length(x)),
+  x_label = "log enrichment",
+  midpoint = 0,
+  max_model_degree = 3,
+  max_cs_permutations = 1e+07,
+  min_cs_permutations = 5000,
+  e = 5
+)
 }
 \arguments{
 \item{x}{vector of values (e.g., enrichment values, normalized RBP
 scores) per bin}
 
-\item{p.value}{vector of p-values (e.g., significance of enrichment
+\item{p_value}{vector of p-values (e.g., significance of enrichment
 values) per bin}
 
-\item{x.label}{label of values (e.g., \code{"enrichment value"})}
+\item{x_label}{label of values (e.g., \code{"enrichment value"})}
 
 \item{midpoint}{for enrichment values the midpoint should be \code{1},
 for log enrichment
 values \code{0})}
 
-\item{max.model.degree}{maximum degree of polynomial}
+\item{max_model_degree}{maximum degree of polynomial}
 
-\item{max.cs.permutations}{maximum number of permutations performed in
+\item{max_cs_permutations}{maximum number of permutations performed in
 Monte Carlo test
 for consistency score}
 
-\item{min.cs.permutations}{minimum number of permutations performed in
+\item{min_cs_permutations}{minimum number of permutations performed in
 Monte Carlo test
 for consistency score}
 
@@ -42,21 +49,21 @@ consistency value}
 A list object of class \code{SpectrumScore} with the following
 components:
 \tabular{rl}{
-  \code{adj.r.squared} \tab adjusted \eqn{R^2} of polynomial model\cr
+  \code{adj_r_squared} \tab adjusted \eqn{R^2} of polynomial model\cr
   \code{degree} \tab maximum degree of polynomial\cr
   \code{residuals} \tab residuals  of polynomial model\cr
   \code{slope} \tab coefficient of the linear term of the polynomial model
    (spectrum "direction")\cr
-  \code{f.statistic} \tab statistic of the F-test \cr
-  \code{f.statistic.p.value} \tab p-value of F-test\cr
-  \code{consistency.score} \tab normalized sum of deviance between the linear
+  \code{f_statistic} \tab statistic of the F-test \cr
+  \code{f_statistic_p_value} \tab p-value of F-test\cr
+  \code{consistency_score} \tab normalized sum of deviance between the linear
   interpolation of the scores
    of two adjoining bins and the score of the middle bin, for each position
    in the spectrum \cr
-  \code{consistency.score.p.value} \tab obtained by Monte Carlo sampling
+  \code{consistency_score_p_value} \tab obtained by Monte Carlo sampling
   (randomly permuting
   the coordinates of the scores vector) \cr
-  \code{consistency.score.n} \tab number of permutations\cr
+  \code{consistency_score_n} \tab number of permutations\cr
   \code{plot} \tab
 }
 }
@@ -190,24 +197,25 @@ with \eqn{df_1 = p_2 - p_1} and \eqn{df_2 = n - p_2}.
 }
 \examples{
 # random spectrum
-scoreSpectrum(runif(n = 40, min = -1, max = 1), max.model.degree = 1)
+scoreSpectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
 
 # non-random linear spectrum
 signal <- seq(-1, 0.99, 2 / 40)
 noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-scoreSpectrum(signal + noise, max.model.degree = 1,
-  max.cs.permutations = 100000)
+scoreSpectrum(signal + noise, max_model_degree = 1,
+  max_cs_permutations = 100000)
 
 # non-random quadratic spectrum
 signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-scoreSpectrum(signal + noise, max.model.degree = 2,
-  max.cs.permutations = 100000)
+scoreSpectrum(signal + noise, max_model_degree = 2,
+  max_cs_permutations = 100000)
 }
 \seealso{
-Other SPMA functions: \code{\link{runKmerSPMA}},
-  \code{\link{runMatrixSPMA}},
-  \code{\link{spectrumClassifier}},
-  \code{\link{subdivideData}}
+Other SPMA functions: 
+\code{\link{runKmerSPMA}()},
+\code{\link{runMatrixSPMA}()},
+\code{\link{spectrumClassifier}()},
+\code{\link{subdivideData}()}
 }
 \concept{SPMA functions}

@@ -36,8 +36,8 @@ Takes a position weight matrix (PWM) and meta info and returns an object of
 class \code{RBPMotif}.
 }
 \examples{
-custom.motif <- createKmerMotif(
-  "custom.motif", "RBP1",
+custom_motif <- createKmerMotif(
+  "custom_motif", "RBP1",
   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
   "Homo sapiens", "user"
 )

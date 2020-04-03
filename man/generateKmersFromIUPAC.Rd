@@ -44,11 +44,15 @@ generateKmersFromIUPAC(motifIUPAC(getMotifById("M178_0.6")[[1]]), k = 6)
 \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{getMotifById}}, \code{\link{getMotifByRBP}},
-  \code{\link{getMotifs}}, \code{\link{getPPM}},
-  \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}, \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getMotifs}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

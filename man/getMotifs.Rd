@@ -13,14 +13,18 @@ A list of objects of class Motif
 Retrieves all Transite motifs
 }
 \examples{
-transite.motifs <- getMotifs()
+transite_motifs <- getMotifs()
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifById}}, \code{\link{getMotifByRBP}},
-  \code{\link{getPPM}}, \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}, \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

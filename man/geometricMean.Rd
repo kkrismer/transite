@@ -4,14 +4,13 @@
 \alias{geometricMean}
 \title{Geometric Mean}
 \usage{
-geometricMean(x, na.rm = TRUE)
+geometricMean(x, na_rm = TRUE)
 }
 \arguments{
 \item{x}{numeric vector of values for which the geometric mean
 will be computed}
 
-\item{na.rm}{logical.  Should missing values (including \code{NaN}) be
-    removed?}
+\item{na_rm}{logical. Should missing values (including NaN) be removed?}
 }
 \value{
 Geometric mean of \code{x} or \code{1} if length of \code{x} is 0

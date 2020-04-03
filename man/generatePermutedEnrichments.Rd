@@ -4,23 +4,28 @@
 \alias{generatePermutedEnrichments}
 \title{Generate Random Permutations of the Enrichment Data}
 \usage{
-generatePermutedEnrichments(n.transcripts.foreground, background.set, k,
-  n.permutations = 1000, n.cores = 4)
+generatePermutedEnrichments(
+  n_transcripts_foreground,
+  background_set,
+  k,
+  n_permutations = 1000,
+  n_cores = 4
+)
 }
 \arguments{
-\item{n.transcripts.foreground}{number of transcripts in the original
+\item{n_transcripts_foreground}{number of transcripts in the original
 foreground set}
 
-\item{background.set}{character vector of DNA or RNA sequences that
+\item{background_set}{character vector of DNA or RNA sequences that
 constitute the
 background set}
 
 \item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
 \code{7} for heptamers}
 
-\item{n.permutations}{number of permutations to perform}
+\item{n_permutations}{number of permutations to perform}
 
-\item{n.cores}{number of computing cores to use}
+\item{n_cores}{number of computing cores to use}
 }
 \value{
 The result of \code{\link{calculateKmerEnrichment}} for the
@@ -31,14 +36,16 @@ Calculates \emph{k}-mer enrichment values for randomly sampled (without
 replacement) foreground sets.
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

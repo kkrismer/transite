@@ -32,7 +32,7 @@ RNA sequences.
 
 \examples{
 # count hexamers in set of RNA sequences
-rna.sequences <- c(
+rna_sequences <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
@@ -41,11 +41,11 @@ rna.sequences <- c(
   "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 )
-hexamer.counts <- generateKmers(rna.sequences, 6)
+hexamer_counts <- generateKmers(rna_sequences, 6)
 
 
 # count heptamers in set of DNA sequences
-dna.sequences <- c(
+dna_sequences <- c(
   "CAACAGCCTTAATT", "CAGTCAAGACTCC", "CTTTGGGGAAT",
   "TCATTTTATTAAA", "AATTGGTGTCTGGATACTTCCCTGTACAT",
   "ATCAAATTA", "AGAT", "GACACTTAAAGATCCT",
@@ -54,17 +54,19 @@ dna.sequences <- c(
   "TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT",
   "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA"
 )
-hexamer.counts <- generateKmers(dna.sequences, 7)
+hexamer_counts <- generateKmers(dna_sequences, 7)
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

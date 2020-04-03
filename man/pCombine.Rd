@@ -23,9 +23,9 @@ weights are set in an unbiased way}
 A list with the following components:
 \tabular{rl}{
   \code{statistic} \tab the test statistic\cr
-  \code{p.value} \tab the corresponding p-value\cr
+  \code{p_value} \tab the corresponding p-value\cr
   \code{method} \tab the method used\cr
-  \code{statistic.name} \tab the name of the test statistic
+  \code{statistic_name} \tab the name of the test statistic
 }
 }
 \description{

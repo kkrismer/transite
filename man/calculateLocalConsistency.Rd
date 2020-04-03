@@ -24,9 +24,9 @@ more extreme values
 than the actual consistency value}
 }
 \value{
-list with \code{score}, \code{p.value}, and \code{n} components,
+list with \code{score}, \code{p_value}, and \code{n} components,
 where \code{score} is the raw local consistency score (usually not used),
-\code{p.value} is the associated p-value for that score, obtained by
+\code{p_value} is the associated p-value for that score, obtained by
 Monte Carlo testing, and \code{n} is the number of permutations performed
 in the Monte Carlo test (the higher, the more significant)
 }
@@ -34,13 +34,13 @@ in the Monte Carlo test (the higher, the more significant)
 C++ implementation of Local Consistency Score algorithm.
 }
 \examples{
-poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4,
+poor_enrichment_spectrum <- c(0.1, 0.5, 0.6, 0.4,
   0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
-local.consistency <- calculateLocalConsistency(poor.enrichment.spectrum,
+local_consistency <- calculateLocalConsistency(poor_enrichment_spectrum,
   1000000, 1000, 5)
 
-enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
+enrichment_spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
   0.9, 1.2, 1.4, 1.6, 1.4)
-local.consistency <- calculateLocalConsistency(enrichment.spectrum,
+local_consistency <- calculateLocalConsistency(enrichment_spectrum,
   1000000, 1000, 5)
 }

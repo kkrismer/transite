@@ -21,11 +21,15 @@ getMotifByRBP("ELAVL1")
 getMotifByRBP(c("ELAVL1", "ELAVL2"))
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifById}}, \code{\link{getMotifs}},
-  \code{\link{getPPM}}, \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}, \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifs}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

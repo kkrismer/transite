@@ -4,7 +4,8 @@
 \name{motifs}
 \alias{motifs}
 \title{Transite Motif Database}
-\format{A list of lists with the following components:
+\format{
+A list of lists with the following components:
 \tabular{rl}{
   \code{id} \tab motif id\cr
   \code{rbps} \tab gene symbols of RNA-binding proteins
@@ -18,7 +19,8 @@
   \code{type} \tab type of motif, e.g., RNAcompete\cr
   \code{species} \tab usually human\cr
   \code{src} \tab source of motif, e.g., RNA Zoo
-}}
+}
+}
 \usage{
 motifs
 }

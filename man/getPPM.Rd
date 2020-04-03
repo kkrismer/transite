@@ -19,12 +19,15 @@ Return the position probability matrix of the specified motif.
 getPPM(getMotifById("M178_0.6")[[1]])
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifById}}, \code{\link{getMotifByRBP}},
-  \code{\link{getMotifs}},
-  \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}, \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getMotifs}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

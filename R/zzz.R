@@ -1,4 +1,4 @@
-motif.db <- new.env(parent = emptyenv())
+motif_db <- new.env(parent = emptyenv())
 
 #' transite
 #'
@@ -23,12 +23,12 @@ NULL
 #'
 #' @return A list of objects of class Motif
 #' @examples
-#' transite.motifs <- getMotifs()
+#' transite_motifs <- getMotifs()
 #' @family motif functions
 #' @importFrom utils data
 #' @export
 getMotifs <- function() {
-    return(motif.db$motifs)
+    return(motif_db$motifs)
 }
 
 #' @title Set Transite motif database
@@ -41,25 +41,25 @@ getMotifs <- function() {
 #' @return void
 #'
 #' @examples
-#' custom.motif <- createKmerMotif(
-#'   "custom.motif", "RBP1",
+#' custom_motif <- createKmerMotif(
+#'   "custom_motif", "RBP1",
 #'   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
-#' setMotifs(list(custom.motif))
+#' setMotifs(list(custom_motif))
 #' @family motif functions
 #' @importFrom utils data
 #' @export
 setMotifs <- function(value) {
-    old <- motif.db$motifs
-    motif.db$motifs <- value
+    old <- motif_db$motifs
+    motif_db$motifs <- value
     invisible(old)
 }
 
 .onLoad <- function(libname = find.package("transite"), pkgname = "transite") {
-    utils::data("motifs", package = pkgname, envir = motif.db)
+    utils::data("motifs", package = pkgname, envir = motif_db)
     envir <- parent.env(environment())
     utils::data("ge", package = pkgname, envir = envir)
-    utils::data("toy.motif.matrix", package = pkgname, envir = envir)
-    utils::data("kmers.enrichment", package = pkgname, envir = envir)
+    utils::data("toy_motif_matrix", package = pkgname, envir = envir)
+    utils::data("kmers_enrichment", package = pkgname, envir = envir)
 }

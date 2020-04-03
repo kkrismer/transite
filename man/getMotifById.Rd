@@ -21,11 +21,15 @@ getMotifById("M178_0.6")
 getMotifById(c("M178_0.6", "M188_0.6"))
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifByRBP}}, \code{\link{getMotifs}},
-  \code{\link{getPPM}}, \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}, \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getMotifs}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

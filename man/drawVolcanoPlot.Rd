@@ -4,26 +4,31 @@
 \alias{drawVolcanoPlot}
 \title{\emph{k}-mer Enrichment Volcano Plot}
 \usage{
-drawVolcanoPlot(kmers, motif.kmers, motif.rbps,
-  significance.threshold = 0.01, show.legend = TRUE)
+drawVolcanoPlot(
+  kmers,
+  motif_kmers,
+  motif_rbps,
+  significance_threshold = 0.01,
+  show_legend = TRUE
+)
 }
 \arguments{
 \item{kmers}{data frame with the following columns: kmer,
-adj.p.value, enrichment}
+adj_p_value, enrichment}
 
-\item{motif.kmers}{set of \emph{k}-mers that are associated with
+\item{motif_kmers}{set of \emph{k}-mers that are associated with
 a certain motif,
 will be highlighted in volcano plot}
 
-\item{motif.rbps}{name of RNA-binding proteins associated with
+\item{motif_rbps}{name of RNA-binding proteins associated with
 highlighted \emph{k}-mers
 (character vector of length 1)}
 
-\item{significance.threshold}{p-value threshold for significance,
+\item{significance_threshold}{p-value threshold for significance,
 e.g., \code{0.05} or
 \code{0.01}}
 
-\item{show.legend}{whether or not a legend should be shown}
+\item{show_legend}{whether or not a legend should be shown}
 }
 \value{
 volcano plot
@@ -37,12 +42,12 @@ Fisher's exact test or Pearson's chi-squared test.
 }
 \examples{
 motif <- getMotifById("951_12324455")
-drawVolcanoPlot(transite:::kmers.enrichment, motifHexamers(motif[[1]]),
+drawVolcanoPlot(transite:::kmers_enrichment, motifHexamers(motif[[1]]),
   motifRbps(motif[[1]]))
 
 \dontrun{
-foreground.set <- c("UGUGGG", "GUGGGG", "GUGUGG", "UGUGGU")
-background.set <- unique(c(foreground.set, c(
+foreground_set <- c("UGUGGG", "GUGGGG", "GUGUGG", "UGUGGU")
+background_set <- unique(c(foreground_set, c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
@@ -53,25 +58,28 @@ background.set <- unique(c(foreground.set, c(
 )))
 
 motif <- getMotifById("M178_0.6")
-results <- runKmerTSMA(list(foreground.set), background.set,
+results <- runKmerTSMA(list(foreground_set), background_set,
                        motifs = motif)
-drawVolcanoPlot(results[[1]]$motif.kmers.dfs[[1]],
+drawVolcanoPlot(results[[1]]$motif_kmers_dfs[[1]],
     motifHexamers(motif[[1]]), "test RBP")}
 
 }
 \seealso{
-Other TSMA functions: \code{\link{runKmerTSMA}},
-  \code{\link{runMatrixTSMA}}
+Other TSMA functions: 
+\code{\link{runKmerTSMA}()},
+\code{\link{runMatrixTSMA}()}
 
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{TSMA functions}
 \concept{\emph{k}-mer functions}

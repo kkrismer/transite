@@ -4,9 +4,15 @@
 \alias{scoreTranscripts}
 \title{Scores transcripts with position weight matrices}
 \usage{
-scoreTranscripts(sequences, motifs = NULL, max.hits = 5,
-  threshold.method = "p.value", threshold.value = 0.25^6,
-  n.cores = 1, cache = paste0(tempdir(), "/sc/"))
+scoreTranscripts(
+  sequences,
+  motifs = NULL,
+  max_hits = 5,
+  threshold_method = "p_value",
+  threshold_value = 0.25^6,
+  n_cores = 1,
+  cache = paste0(tempdir(), "/sc/")
+)
 }
 \arguments{
 \item{sequences}{character vector of named sequences
@@ -19,24 +25,24 @@ type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
 
-\item{max.hits}{maximum number of putative binding sites per mRNA
+\item{max_hits}{maximum number of putative binding sites per mRNA
 that are counted}
 
-\item{threshold.method}{either \code{"p.value"} (default) or
+\item{threshold_method}{either \code{"p_value"} (default) or
 \code{"relative"}.
-If \code{threshold.method} equals \code{"p.value"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"p_value"}, the default
+\code{threshold_value}
  is \code{0.25^6}, which is
 lowest p-value that can be achieved by hexamer motifs, the shortest
 supported motifs.
-If \code{threshold.method} equals \code{"relative"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"relative"}, the default
+\code{threshold_value}
 is \code{0.9}, which is 90\% of the maximum PWM score.}
 
-\item{threshold.value}{semantics of the \code{threshold.value} depend on
-\code{threshold.method} (default is 0.25^6)}
+\item{threshold_value}{semantics of the \code{threshold_value} depend on
+\code{threshold_method} (default is 0.25^6)}
 
-\item{n.cores}{the number of cores that are used}
+\item{n_cores}{the number of cores that are used}
 
 \item{cache}{either logical or path to a directory where scores are cached.
 The scores of each
@@ -51,25 +57,25 @@ A list with three entries:
 
 (1) df: a data frame with the following columns:
 \tabular{rl}{
-  \code{motif.id} \tab the motif identifier that is used in the original
+  \code{motif_id} \tab the motif identifier that is used in the original
   motif library\cr
-  \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
-  \code{absolute.hits} \tab the absolute frequency of putative binding
+  \code{motif_rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
+  \code{absolute_hits} \tab the absolute frequency of putative binding
   sites per motif in all
   transcripts \cr
-  \code{relative.hits} \tab  the relative, i.e., absolute divided by total,
+  \code{relative_hits} \tab  the relative, i.e., absolute divided by total,
   frequency of
   binding sites per motif in all transcripts \cr
-  \code{total.sites} \tab the total number of potential binding sites \cr
-  \code{one.hit}, \code{two.hits}, ... \tab number of transcripts with one,
+  \code{total_sites} \tab the total number of potential binding sites \cr
+  \code{one_hit}, \code{two_hits}, ... \tab number of transcripts with one,
   two,
   three, ... putative binding sites
 }
-(2) total.sites: a numeric vector with the total number of potential
+(2) total_sites: a numeric vector with the total number of potential
 binding sites
 per transcript
 
-(3) absolute.hits: a numeric vector with the absolute (not relative)
+(3) absolute_hits: a numeric vector with the absolute (not relative)
 number of putative
 binding sites per transcript
 }
@@ -82,7 +88,7 @@ motifs and returns the result in a data frame, which is subsequently used by
 obtain binding site enrichment scores.
 }
 \examples{
-foreground.set <- c(
+foreground_set <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
@@ -92,7 +98,7 @@ foreground.set <- c(
 # names are used as keys in the hash table (cached version only)
 # ideally sequence identifiers (e.g., RefSeq ids) and region labels
 # (e.g., 3UTR for 3'-UTR)
-names(foreground.set) <- c(
+names(foreground_set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
   "NM_7_DUMMY|3UTR", "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR",
@@ -102,24 +108,26 @@ names(foreground.set) <- c(
 
 # specific motifs, uncached
 motifs <- getMotifByRBP("ELAVL1")
-scores <- scoreTranscripts(foreground.set, motifs = motifs, cache = FALSE)
+scores <- scoreTranscripts(foreground_set, motifs = motifs, cache = FALSE)
 \dontrun{
 # all Transite motifs, cached (writes scores to disk)
-scores <- scoreTranscripts(foreground.set)
+scores <- scoreTranscripts(foreground_set)
 
 # all Transite motifs, uncached
-scores <- scoreTranscripts(foreground.set, cache = FALSE)
+scores <- scoreTranscripts(foreground_set, cache = FALSE)
 
-foreground.df <- transite:::ge$foreground1
-foreground.set <- foreground.df$seq
-names(foreground.set) <- paste0(foreground.df$refseq, "|",
-   foreground.df$seq.type)
-scores <- scoreTranscripts(foreground.set)
+foreground_df <- transite:::ge$foreground1_df
+foreground_set <- foreground_df$seq
+names(foreground_set) <- paste0(foreground_df$refseq, "|",
+   foreground_df$seq_type)
+scores <- scoreTranscripts(foreground_set)
 }
 }
 \seealso{
-Other matrix functions: \code{\link{calculateMotifEnrichment}},
-  \code{\link{runMatrixSPMA}}, \code{\link{runMatrixTSMA}},
-  \code{\link{scoreTranscriptsSingleMotif}}
+Other matrix functions: 
+\code{\link{calculateMotifEnrichment}()},
+\code{\link{runMatrixSPMA}()},
+\code{\link{runMatrixTSMA}()},
+\code{\link{scoreTranscriptsSingleMotif}()}
 }
 \concept{matrix functions}

@@ -47,11 +47,15 @@ generateIUPACByKmers(c("AACCAA", "AACCGG", "CACCGA"))
 \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifById}}, \code{\link{getMotifByRBP}},
-  \code{\link{getMotifs}}, \code{\link{getPPM}},
-  \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}, \code{\link{setMotifs}}
+Other motif functions: 
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getMotifs}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()},
+\code{\link{setMotifs}()}
 }
 \concept{motif functions}

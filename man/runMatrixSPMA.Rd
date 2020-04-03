@@ -4,23 +4,33 @@
 \alias{runMatrixSPMA}
 \title{Matrix-based Spectrum Motif Analysis}
 \usage{
-runMatrixSPMA(background.set, motifs = NULL, n.bins = 40,
-  max.model.degree = 1, max.cs.permutations = 1e+07,
-  min.cs.permutations = 5000, max.hits = 5,
-  threshold.method = "p.value", threshold.value = 0.25^6,
-  max.fg.permutations = 1e+06, min.fg.permutations = 1000, e = 5,
-  p.adjust.method = "BH", n.cores = 1, cache = paste0(tempdir(),
-  "/sc/"))
+runMatrixSPMA(
+  background_set,
+  motifs = NULL,
+  n_bins = 40,
+  max_model_degree = 1,
+  max_cs_permutations = 1e+07,
+  min_cs_permutations = 5000,
+  max_hits = 5,
+  threshold_method = "p_value",
+  threshold_value = 0.25^6,
+  max_fg_permutations = 1e+06,
+  min_fg_permutations = 1000,
+  e = 5,
+  p_adjust_method = "BH",
+  n_cores = 1,
+  cache = paste0(tempdir(), "/sc/")
+)
 }
 \arguments{
-\item{background.set}{named character vector of ranked sequences
+\item{background_set}{named character vector of ranked sequences
 (only containing upper case characters A, C, G, T), where the
 names are RefSeq identifiers
 and sequence
 type qualifiers (\code{"3UTR"}, \code{"5UTR"} or \code{"mRNA"}), separated by
 \code{"|"}, e.g.
 \code{"NM_010356|3UTR"}. Names are only used to cache results.
-The sequences in \code{background.set} must be ranked (i.e., sorted).
+The sequences in \code{background_set} must be ranked (i.e., sorted).
 Commonly used sorting criteria are measures of differential expression, such
 as fold change or signal-to-noise ratio (e.g., between treatment and control
 samples in gene expression profiling experiments).}
@@ -28,42 +38,42 @@ samples in gene expression profiling experiments).}
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
 
-\item{n.bins}{specifies the number of bins in which the sequences
+\item{n_bins}{specifies the number of bins in which the sequences
 will be divided,
 valid values are between 7 and 100}
 
-\item{max.model.degree}{maximum degree of polynomial}
+\item{max_model_degree}{maximum degree of polynomial}
 
-\item{max.cs.permutations}{maximum number of permutations performed in
+\item{max_cs_permutations}{maximum number of permutations performed in
 Monte Carlo test
 for consistency score}
 
-\item{min.cs.permutations}{minimum number of permutations performed in
+\item{min_cs_permutations}{minimum number of permutations performed in
 Monte Carlo test
 for consistency score}
 
-\item{max.hits}{maximum number of putative binding sites per mRNA
+\item{max_hits}{maximum number of putative binding sites per mRNA
 that are counted}
 
-\item{threshold.method}{either \code{"p.value"} (default) or
+\item{threshold_method}{either \code{"p_value"} (default) or
 \code{"relative"}.
-If \code{threshold.method} equals \code{"p.value"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"p_value"}, the default
+\code{threshold_value}
  is \code{0.25^6}, which is
 lowest p-value that can be achieved by hexamer motifs, the shortest
 supported motifs.
-If \code{threshold.method} equals \code{"relative"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"relative"}, the default
+\code{threshold_value}
 is \code{0.9}, which is 90\% of the maximum PWM score.}
 
-\item{threshold.value}{semantics of the \code{threshold.value} depend on
-\code{threshold.method} (default is 0.25^6)}
+\item{threshold_value}{semantics of the \code{threshold_value} depend on
+\code{threshold_method} (default is 0.25^6)}
 
-\item{max.fg.permutations}{maximum number of foreground permutations
+\item{max_fg_permutations}{maximum number of foreground permutations
 performed in
 Monte Carlo test for enrichment score}
 
-\item{min.fg.permutations}{minimum number of foreground permutations
+\item{min_fg_permutations}{minimum number of foreground permutations
 performed in
 Monte Carlo test for enrichment score}
 
@@ -73,11 +83,11 @@ observing \code{e} random enrichment values with more extreme values than
 the actual
 enrichment value}
 
-\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to
+\item{p_adjust_method}{adjustment of p-values from Monte Carlo tests to
 avoid alpha error
  accumulation, see \code{\link[stats]{p.adjust}}}
 
-\item{n.cores}{the number of cores that are used}
+\item{n_cores}{the number of cores that are used}
 
 \item{cache}{either logical or path to a directory where scores are cached.
 The scores of each
@@ -90,18 +100,18 @@ If \code{cache} is \code{FALSE}, scores will not be cached.}
 \value{
 A list with the following components:
 \tabular{rl}{
-  \code{foreground.scores} \tab the result of \code{\link{scoreTranscripts}}
+  \code{foreground_scores} \tab the result of \code{\link{scoreTranscripts}}
   for the foreground
   sets (the bins)\cr
-  \code{background.scores} \tab the result of \code{\link{scoreTranscripts}}
+  \code{background_scores} \tab the result of \code{\link{scoreTranscripts}}
   for the background
   set\cr
-  \code{enrichment.dfs} \tab a list of data frames, returned by
+  \code{enrichment_dfs} \tab a list of data frames, returned by
   \code{\link{calculateMotifEnrichment}}\cr
-  \code{spectrum.info.df} \tab a data frame with the SPMA results\cr
-  \code{spectrum.plots} \tab a list of spectrum plots, as generated by
+  \code{spectrum_info_df} \tab a data frame with the SPMA results\cr
+  \code{spectrum_plots} \tab a list of spectrum plots, as generated by
   \code{\link{scoreSpectrum}}\cr
-  \code{classifier.scores} \tab a list of classifier scores, as returned by
+  \code{classifier_scores} \tab a list of classifier scores, as returned by
   \code{\link{spectrumClassifier}}
 }
 }
@@ -149,33 +159,35 @@ binding sites may play a similar role as clusters of transcription factors.
 }
 \examples{
 # example data set
-background.df <- transite:::ge$background
+background_df <- transite:::ge$background_df
 # sort sequences by signal-to-noise ratio
-background.df <- dplyr::arrange(background.df, value)
+background_df <- dplyr::arrange(background_df, value)
 # character vector of named and ranked (by signal-to-noise ratio) sequences
-background.set <- gsub("T", "U", background.df$seq)
-names(background.set) <- paste0(background.df$refseq, "|",
-  background.df$seq.type)
+background_set <- gsub("T", "U", background_df$seq)
+names(background_set) <- paste0(background_df$refseq, "|",
+  background_df$seq_type)
 
-results <- runMatrixSPMA(background.set,
+results <- runMatrixSPMA(background_set,
                          motifs = getMotifById("M178_0.6"),
-                         n.bins = 20,
-                         max.fg.permutations = 10000)
+                         n_bins = 20,
+                         max_fg_permutations = 10000)
 
 \dontrun{
-results <- runMatrixSPMA(background.set) }
+results <- runMatrixSPMA(background_set) }
 
 }
 \seealso{
-Other SPMA functions: \code{\link{runKmerSPMA}},
-  \code{\link{scoreSpectrum}},
-  \code{\link{spectrumClassifier}},
-  \code{\link{subdivideData}}
+Other SPMA functions: 
+\code{\link{runKmerSPMA}()},
+\code{\link{scoreSpectrum}()},
+\code{\link{spectrumClassifier}()},
+\code{\link{subdivideData}()}
 
-Other matrix functions: \code{\link{calculateMotifEnrichment}},
-  \code{\link{runMatrixTSMA}},
-  \code{\link{scoreTranscriptsSingleMotif}},
-  \code{\link{scoreTranscripts}}
+Other matrix functions: 
+\code{\link{calculateMotifEnrichment}()},
+\code{\link{runMatrixTSMA}()},
+\code{\link{scoreTranscriptsSingleMotif}()},
+\code{\link{scoreTranscripts}()}
 }
 \concept{SPMA functions}
 \concept{matrix functions}

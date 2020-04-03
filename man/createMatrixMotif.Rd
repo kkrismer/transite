@@ -32,9 +32,9 @@ Takes a position weight matrix (PWM) and meta info and returns an object of
 class \code{RBPMotif}.
 }
 \examples{
-custom.motif <- createMatrixMotif(
-  "custom.motif", "RBP1",
-  transite:::toy.motif.matrix, "HITS-CLIP",
+custom_motif <- createMatrixMotif(
+  "custom_motif", "RBP1",
+  transite:::toy_motif_matrix, "HITS-CLIP",
   "Homo sapiens", "user"
 )
 }

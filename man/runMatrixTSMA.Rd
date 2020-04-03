@@ -4,14 +4,23 @@
 \alias{runMatrixTSMA}
 \title{Matrix-based Transcript Set Motif Analysis}
 \usage{
-runMatrixTSMA(foreground.sets, background.set, motifs = NULL,
-  max.hits = 5, threshold.method = "p.value",
-  threshold.value = 0.25^6, max.fg.permutations = 1e+06,
-  min.fg.permutations = 1000, e = 5, p.adjust.method = "BH",
-  n.cores = 1, cache = paste0(tempdir(), "/sc/"))
+runMatrixTSMA(
+  foreground_sets,
+  background_set,
+  motifs = NULL,
+  max_hits = 5,
+  threshold_method = "p_value",
+  threshold_value = 0.25^6,
+  max_fg_permutations = 1e+06,
+  min_fg_permutations = 1000,
+  e = 5,
+  p_adjust_method = "BH",
+  n_cores = 1,
+  cache = paste0(tempdir(), "/sc/")
+)
 }
 \arguments{
-\item{foreground.sets}{a list of named character vectors of
+\item{foreground_sets}{a list of named character vectors of
 foreground sequences
 (only containing upper case characters A, C, G, T), where the
 names are RefSeq identifiers
@@ -19,35 +28,35 @@ and sequence
 type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
 \code{"NM_010356|3UTR"}. Names are only used to cache results.}
 
-\item{background.set}{a named character vector of background
+\item{background_set}{a named character vector of background
 sequences (naming follows same
 rules as foreground set sequences)}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
 
-\item{max.hits}{maximum number of putative binding sites per mRNA
+\item{max_hits}{maximum number of putative binding sites per mRNA
 that are counted}
 
-\item{threshold.method}{either \code{"p.value"} (default) or
+\item{threshold_method}{either \code{"p_value"} (default) or
 \code{"relative"}.
-If \code{threshold.method} equals \code{"p.value"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"p_value"}, the default
+\code{threshold_value}
  is \code{0.25^6}, which is
 lowest p-value that can be achieved by hexamer motifs, the shortest
 supported motifs.
-If \code{threshold.method} equals \code{"relative"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"relative"}, the default
+\code{threshold_value}
 is \code{0.9}, which is 90\% of the maximum PWM score.}
 
-\item{threshold.value}{semantics of the \code{threshold.value} depend on
-\code{threshold.method} (default is 0.25^6)}
+\item{threshold_value}{semantics of the \code{threshold_value} depend on
+\code{threshold_method} (default is 0.25^6)}
 
-\item{max.fg.permutations}{maximum number of foreground permutations
+\item{max_fg_permutations}{maximum number of foreground permutations
 performed in
 Monte Carlo test for enrichment score}
 
-\item{min.fg.permutations}{minimum number of foreground permutations
+\item{min_fg_permutations}{minimum number of foreground permutations
 performed in
 Monte Carlo test for enrichment score}
 
@@ -57,11 +66,11 @@ observing \code{e} random enrichment values with more extreme values than
 the actual
 enrichment value}
 
-\item{p.adjust.method}{adjustment of p-values from Monte Carlo tests to
+\item{p_adjust_method}{adjustment of p-values from Monte Carlo tests to
 avoid alpha error
  accumulation, see \code{\link[stats]{p.adjust}}}
 
-\item{n.cores}{the number of cores that are used}
+\item{n_cores}{the number of cores that are used}
 
 \item{cache}{either logical or path to a directory where scores are cached.
 The scores of each
@@ -74,13 +83,13 @@ If \code{cache} is \code{FALSE}, scores will not be cached.}
 \value{
 A list with the following components:
 \tabular{rl}{
-  \code{foreground.scores} \tab the result of \code{\link{scoreTranscripts}}
+  \code{foreground_scores} \tab the result of \code{\link{scoreTranscripts}}
   for the foreground
   sets\cr
-  \code{background.scores} \tab the result of \code{\link{scoreTranscripts}}
+  \code{background_scores} \tab the result of \code{\link{scoreTranscripts}}
   for the background
   set\cr
-  \code{enrichment.dfs} \tab a list of data frames, returned by
+  \code{enrichment_dfs} \tab a list of data frames, returned by
   \code{\link{calculateMotifEnrichment}}
 }
 }
@@ -140,14 +149,14 @@ binding sites may play a similar role as clusters of transcription factors.
 }
 \examples{
 # define simple sequence sets for foreground and background
-foreground.set1 <- c(
+foreground_set1 <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
   "AUAGAC", "AGUUC", "CCAGUAA"
 )
-names(foreground.set1) <- c(
+names(foreground_set1) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
   "NM_7_DUMMY|3UTR",
@@ -156,15 +165,15 @@ names(foreground.set1) <- c(
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
-foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
-names(foreground.set2) <- c(
+foreground_set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
+names(foreground_set2) <- c(
   "NM_15_DUMMY|3UTR", "NM_16_DUMMY|3UTR", "NM_17_DUMMY|3UTR",
   "NM_18_DUMMY|3UTR"
 )
 
-foreground.sets <- list(foreground.set1, foreground.set2)
+foreground_sets <- list(foreground_set1, foreground_set2)
 
-background.set <- c(
+background_set <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
@@ -173,7 +182,7 @@ background.set <- c(
   "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 )
-names(background.set) <- c(
+names(background_set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
   "NM_7_DUMMY|3UTR",
@@ -187,60 +196,62 @@ names(background.set) <- c(
 )
 
 # run cached version of TSMA with all Transite motifs (recommended):
-# results <- runMatrixTSMA(foreground.sets, background.set)
+# results <- runMatrixTSMA(foreground_sets, background_set)
 
 # run uncached version with one motif:
-motif.db <- getMotifById("M178_0.6")
-results <- runMatrixTSMA(foreground.sets, background.set, motifs = motif.db,
+motif_db <- getMotifById("M178_0.6")
+results <- runMatrixTSMA(foreground_sets, background_set, motifs = motif_db,
 cache = FALSE)
 
 \dontrun{
 # define example sequence sets for foreground and background
-foreground1.df <- transite:::ge$foreground1
-foreground.set1 <- gsub("T", "U", foreground1.df$seq)
-names(foreground.set1) <- paste0(foreground1.df$refseq, "|",
-  foreground1.df$seq.type)
+foreground1_df <- transite:::ge$foreground1_df
+foreground_set1 <- gsub("T", "U", foreground1_df$seq)
+names(foreground_set1) <- paste0(foreground1_df$refseq, "|",
+  foreground1_df$seq_type)
 
-foreground2.df <- transite:::ge$foreground2
-foreground.set2 <- gsub("T", "U", foreground2.df$seq)
-names(foreground.set2) <- paste0(foreground2.df$refseq, "|",
-  foreground2.df$seq.type)
+foreground2_df <- transite:::ge$foreground2_df
+foreground_set2 <- gsub("T", "U", foreground2_df$seq)
+names(foreground_set2) <- paste0(foreground2_df$refseq, "|",
+  foreground2_df$seq_type)
 
-foreground.sets <- list(foreground.set1, foreground.set2)
+foreground_sets <- list(foreground_set1, foreground_set2)
 
-background.df <- transite:::ge$background
-background.set <- gsub("T", "U", background.df$seq)
-names(background.set) <- paste0(background.df$refseq, "|",
-  background.df$seq.type)
+background_df <- transite:::ge$background_df
+background_set <- gsub("T", "U", background_df$seq)
+names(background_set) <- paste0(background_df$refseq, "|",
+  background_df$seq_type)
 
 # run cached version of TSMA with all Transite motifs (recommended)
-results <- runMatrixTSMA(foreground.sets, background.set)
+results <- runMatrixTSMA(foreground_sets, background_set)
 
 # run uncached version of TSMA with all Transite motifs
-results <- runMatrixTSMA(foreground.sets, background.set, cache = FALSE)
+results <- runMatrixTSMA(foreground_sets, background_set, cache = FALSE)
 
 # run TSMA with a subset of Transite motifs
-results <- runMatrixTSMA(foreground.sets, background.set,
+results <- runMatrixTSMA(foreground_sets, background_set,
   motifs = getMotifByRBP("ELAVL1"))
 
 # run TSMA with user-defined motif
-toy.motif <- createMatrixMotif(
-  "toy.motif", "example RBP", toy.motif.matrix,
+toy_motif <- createMatrixMotif(
+  "toy_motif", "example RBP", toy_motif_matrix,
   "example type", "example species", "user"
 )
-results <- runMatrixTSMA(foreground.sets, background.set,
-  motifs = list(toy.motif))
+results <- runMatrixTSMA(foreground_sets, background_set,
+  motifs = list(toy_motif))
 }
 
 }
 \seealso{
-Other TSMA functions: \code{\link{drawVolcanoPlot}},
-  \code{\link{runKmerTSMA}}
+Other TSMA functions: 
+\code{\link{drawVolcanoPlot}()},
+\code{\link{runKmerTSMA}()}
 
-Other matrix functions: \code{\link{calculateMotifEnrichment}},
-  \code{\link{runMatrixSPMA}},
-  \code{\link{scoreTranscriptsSingleMotif}},
-  \code{\link{scoreTranscripts}}
+Other matrix functions: 
+\code{\link{calculateMotifEnrichment}()},
+\code{\link{runMatrixSPMA}()},
+\code{\link{scoreTranscriptsSingleMotif}()},
+\code{\link{scoreTranscripts}()}
 }
 \concept{TSMA functions}
 \concept{matrix functions}

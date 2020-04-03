@@ -3,7 +3,6 @@
 \docType{package}
 \name{transite}
 \alias{transite}
-\alias{transite-package}
 \title{transite}
 \description{
 transite is a computational method that allows comprehensive analysis of

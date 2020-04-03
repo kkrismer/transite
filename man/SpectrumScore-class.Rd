@@ -99,7 +99,7 @@ Getter Method spectrumConsistencyScoreN
 \section{Slots}{
 
 \describe{
-\item{\code{adj.r.squared}}{adjusted \eqn{R^2} of polynomial model}
+\item{\code{adj_r_squared}}{adjusted \eqn{R^2} of polynomial model}
 
 \item{\code{degree}}{degree of polynomial (integer between 0 and 5)}
 
@@ -108,17 +108,17 @@ Getter Method spectrumConsistencyScoreN
 \item{\code{slope}}{coefficient of the linear term of the polynomial model
 (spectrum "direction")}
 
-\item{\code{f.statistic}}{F statistic from the F test used to determine the
+\item{\code{f_statistic}}{F statistic from the F test used to determine the
 degree of the polynomial model}
 
-\item{\code{f.statistic.p.value}}{p-value associated with the F statistic}
+\item{\code{f_statistic_p_value}}{p-value associated with the F statistic}
 
-\item{\code{consistency.score}}{raw local consistency score of the spectrum}
+\item{\code{consistency_score}}{raw local consistency score of the spectrum}
 
-\item{\code{consistency.score.p.value}}{p-value associated with the local consistency
+\item{\code{consistency_score_p_value}}{p-value associated with the local consistency
 score}
 
-\item{\code{consistency.score.n}}{number of permutations performed to calculate
+\item{\code{consistency_score_n}}{number of permutations performed to calculate
 p-value of local consistency score (permutations performed before early
 stopping criterion reached)}
 
@@ -126,15 +126,16 @@ stopping criterion reached)}
 }}
 
 \examples{
-new("SpectrumScore", adj.r.squared = 0,
+new("SpectrumScore",
+    adj_r_squared = 0,
     degree = 0L,
     residuals = 0,
     slope = 0,
-    f.statistic = 0,
-    f.statistic.p.value = 1,
-    consistency.score = 1,
-    consistency.score.p.value = 1,
-    consistency.score.n = 1000L,
+    f_statistic = 0,
+    f_statistic_p_value = 1,
+    consistency_score = 1,
+    consistency_score_p_value = 1,
+    consistency_score_n = 1000L,
     plot = NULL
 )
 }

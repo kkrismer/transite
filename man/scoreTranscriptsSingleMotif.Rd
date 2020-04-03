@@ -4,9 +4,14 @@
 \alias{scoreTranscriptsSingleMotif}
 \title{Scores transadsadscripts with position weight matrices}
 \usage{
-scoreTranscriptsSingleMotif(motif, sequences, max.hits = 5,
-  threshold.method = "p.value", threshold.value = 0.25^6,
-  cache.path = paste0(tempdir(), "/sc/"))
+scoreTranscriptsSingleMotif(
+  motif,
+  sequences,
+  max_hits = 5,
+  threshold_method = "p_value",
+  threshold_value = 0.25^6,
+  cache_path = paste0(tempdir(), "/sc/")
+)
 }
 \arguments{
 \item{motif}{a Transite motif that is used to score the specified sequences}
@@ -18,44 +23,44 @@ and sequence
 type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
 \code{"NM_010356|3UTR"}}
 
-\item{max.hits}{maximum number of putative binding sites per mRNA
+\item{max_hits}{maximum number of putative binding sites per mRNA
 that are counted}
 
-\item{threshold.method}{either \code{"p.value"} (default) or
+\item{threshold_method}{either \code{"p_value"} (default) or
 \code{"relative"}.
-If \code{threshold.method} equals \code{"p.value"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"p_value"}, the default
+\code{threshold_value}
  is \code{0.25^6}, which is
 lowest p-value that can be achieved by hexamer motifs, the shortest
 supported motifs.
-If \code{threshold.method} equals \code{"relative"}, the default
-\code{threshold.value}
+If \code{threshold_method} equals \code{"relative"}, the default
+\code{threshold_value}
 is \code{0.9}, which is 90\% of the maximum PWM score.}
 
-\item{threshold.value}{semantics of the \code{threshold.value} depend on
-\code{threshold.method} (default is 0.25^6)}
+\item{threshold_value}{semantics of the \code{threshold_value} depend on
+\code{threshold_method} (default is 0.25^6)}
 
-\item{cache.path}{the path to a directory where scores are cached.
+\item{cache_path}{the path to a directory where scores are cached.
 The scores of each
 motif are stored in a
 separate file that contains a hash table with RefSeq identifiers
 and sequence type
 qualifiers as keys and the number of binding sites as values.
-If is.null(cache.path), scores will not be cached.}
+If is.null(cache_path), scores will not be cached.}
 }
 \value{
 A list with the following items:
 \tabular{rl}{
-  \code{motif.id} \tab the motif identifier of the specified motif\cr
-  \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
-  \code{absolute.hits} \tab the absolute frequency of binding sites per
+  \code{motif_id} \tab the motif identifier of the specified motif\cr
+  \code{motif_rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
+  \code{absolute_hits} \tab the absolute frequency of binding sites per
   motif in all
   transcripts \cr
-  \code{relative.hits} \tab  the relative, i.e., absolute divided by
+  \code{relative_hits} \tab  the relative, i.e., absolute divided by
   total, frequency of
   binding sites per motif in all transcripts \cr
-  \code{total.sites} \tab the total number of potential binding sites \cr
-  \code{one.hit}, \code{two.hits}, ... \tab number of transcripts with
+  \code{total_sites} \tab the total number of potential binding sites \cr
+  \code{one_hit}, \code{two_hits}, ... \tab number of transcripts with
   one, two, three,
   ... binding sites
 }
@@ -70,8 +75,10 @@ subsequently used by \code{\link{calculateMotifEnrichment}} to
 obtain binding site enrichment scores.
 }
 \seealso{
-Other matrix functions: \code{\link{calculateMotifEnrichment}},
-  \code{\link{runMatrixSPMA}}, \code{\link{runMatrixTSMA}},
-  \code{\link{scoreTranscripts}}
+Other matrix functions: 
+\code{\link{calculateMotifEnrichment}()},
+\code{\link{runMatrixSPMA}()},
+\code{\link{runMatrixTSMA}()},
+\code{\link{scoreTranscripts}()}
 }
 \concept{matrix functions}

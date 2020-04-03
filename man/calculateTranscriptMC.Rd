@@ -4,8 +4,15 @@
 \alias{calculateTranscriptMC}
 \title{Motif Enrichment calculation}
 \usage{
-calculateTranscriptMC(absoluteHits, totalSites, relHitsForeground, n,
-  maxPermutations, minPermutations, e)
+calculateTranscriptMC(
+  absoluteHits,
+  totalSites,
+  relHitsForeground,
+  n,
+  maxPermutations,
+  minPermutations,
+  e
+)
 }
 \arguments{
 \item{absoluteHits}{number of putative binding sites per sequence
@@ -40,20 +47,20 @@ for foreground enrichment
 C++ implementation of Motif Enrichment calculation
 }
 \examples{
-foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUUGUGGGGCUUCCCUGUACAU",
+foreground_seqs <- c("CAGUCAAGACUCC", "AAUUGGUUGUGGGGCUUCCCUGUACAU",
                      "AGAU", "CCAGUAA", "UGUGGGG")
-background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+background_seqs <- c(foreground_seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
                      "AUAGAC", "AGUUC")
-motif.db <- getMotifById("M178_0.6")
-fg <- scoreTranscripts(foreground.seqs, cache = FALSE,
-  motifs = motif.db)
-bg <- scoreTranscripts(background.seqs, cache = FALSE,
-  motifs = motif.db)
+motif_db <- getMotifById("M178_0.6")
+fg <- scoreTranscripts(foreground_seqs, cache = FALSE,
+  motifs = motif_db)
+bg <- scoreTranscripts(background_seqs, cache = FALSE,
+  motifs = motif_db)
 
-mc.result <- calculateTranscriptMC(unlist(bg$absolute.hits),
- unlist(bg$total.sites),
- fg$df$absolute.hits / fg$df$total.sites,
- length(foreground.seqs), 1000, 500, 5)
+mc_result <- calculateTranscriptMC(unlist(bg$absolute_hits),
+ unlist(bg$total_sites),
+ fg$df$absolute_hits / fg$df$total_sites,
+ length(foreground_seqs), 1000, 500, 5)
 }

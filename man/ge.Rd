@@ -4,14 +4,16 @@
 \name{ge}
 \alias{ge}
 \title{Toy Gene Expression Data Set}
-\format{A list with the following components:
+\format{
+A list with the following components:
 \tabular{rl}{
-  \code{foreground1.df} \tab data frame that contains down-regulated
+  \code{foreground1_df} \tab data frame that contains down-regulated
   genes after treatment\cr
-  \code{foreground2.df} \tab data frame that contains up-regulated
+  \code{foreground2_df} \tab data frame that contains up-regulated
   genes after treatment\cr
-  \code{background.df} \tab data frame that contains all genes measured
-}}
+  \code{background_df} \tab data frame that contains all genes measured
+}
+}
 \usage{
 ge
 }

@@ -4,17 +4,23 @@
 \alias{calculateKmerEnrichment}
 \title{\emph{k}-mer Enrichment between Foreground and Background Sets}
 \usage{
-calculateKmerEnrichment(foreground.sets, background.set, k,
-  permutation = FALSE, chisq.p.value.threshold = 0.05,
-  p.adjust.method = "BH", n.cores = 4)
+calculateKmerEnrichment(
+  foreground_sets,
+  background_set,
+  k,
+  permutation = FALSE,
+  chisq_p_value_threshold = 0.05,
+  p_adjust_method = "BH",
+  n_cores = 4
+)
 }
 \arguments{
-\item{foreground.sets}{list of foreground sets; a foreground set is a
+\item{foreground_sets}{list of foreground sets; a foreground set is a
 character vector of
 DNA or RNA sequences (not both) and a strict subset of the
-\code{background.set}}
+\code{background_set}}
 
-\item{background.set}{character vector of DNA or RNA sequences that
+\item{background_set}{character vector of DNA or RNA sequences that
 constitute the
 background set}
 
@@ -25,12 +31,12 @@ background set}
 (efficiency mode
 used for permutation testing)}
 
-\item{chisq.p.value.threshold}{threshold below which Fisher's exact test
+\item{chisq_p_value_threshold}{threshold below which Fisher's exact test
 is used instead of Pearson's chi-squared test}
 
-\item{p.adjust.method}{see \code{\link[stats]{p.adjust}}}
+\item{p_adjust_method}{see \code{\link[stats]{p.adjust}}}
 
-\item{n.cores}{number of computing cores to use}
+\item{n_cores}{number of computing cores to use}
 }
 \value{
 A list with two entries:
@@ -47,35 +53,37 @@ parallel.
 }
 \examples{
 # define simple sequence sets for foreground and background
-foreground.set1 <- c(
+foreground_set1 <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
   "AUAGAC", "AGUUC", "CCAGUAA"
 )
-foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
-foreground.sets <- list(foreground.set1, foreground.set2)
-background.set <- c(foreground.set1, foreground.set2,
+foreground_set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
+foreground_sets <- list(foreground_set1, foreground_set2)
+background_set <- c(foreground_set1, foreground_set2,
                     "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
 
 # single-threaded
-kmer.enrichment.values.st <- calculateKmerEnrichment(foreground.sets,
-  background.set, 6, n.cores = 1)
+kmer_enrichment_values_st <- calculateKmerEnrichment(foreground_sets,
+  background_set, 6, n_cores = 1)
 \dontrun{
 # multi-threaded
-kmer.enrichment.values.mt <- calculateKmerEnrichment(foreground.sets,
-  background.set, 6)}
+kmer_enrichment_values_mt <- calculateKmerEnrichment(foreground_sets,
+  background_set, 6)}
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

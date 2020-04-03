@@ -10,8 +10,8 @@ computeMotifScore(kmers)
 \item{kmers}{list of \emph{k}-mers}
 }
 \value{
-data frame with columns \code{score}, \code{top.kmer},
-and \code{top.kmer.enrichment}
+data frame with columns \code{score}, \code{top_kmer},
+and \code{top_kmer_enrichment}
 }
 \description{
 C++ implementation of motif score algorithm.

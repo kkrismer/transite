@@ -10,7 +10,7 @@
 #'
 #' @param motifs a list of motifs that is used to score the specified sequences.
 #' If \code{is.null(motifs)} then all Transite motifs are used.
-#' @param n.cores the number of cores that are used
+#' @param n_cores the number of cores that are used
 #' @param cache either logical or path to a directory where scores are cached.
 #' The scores of each
 #' motif are stored in a
@@ -24,29 +24,29 @@
 #'
 #' (1) df: a data frame with the following columns:
 #' \tabular{rl}{
-#'   \code{motif.id} \tab the motif identifier that is used in the original
+#'   \code{motif_id} \tab the motif identifier that is used in the original
 #'   motif library\cr
-#'   \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
-#'   \code{absolute.hits} \tab the absolute frequency of putative binding
+#'   \code{motif_rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
+#'   \code{absolute_hits} \tab the absolute frequency of putative binding
 #'   sites per motif in all
 #'   transcripts \cr
-#'   \code{relative.hits} \tab  the relative, i.e., absolute divided by total,
+#'   \code{relative_hits} \tab  the relative, i.e., absolute divided by total,
 #'   frequency of
 #'   binding sites per motif in all transcripts \cr
-#'   \code{total.sites} \tab the total number of potential binding sites \cr
-#'   \code{one.hit}, \code{two.hits}, ... \tab number of transcripts with one,
+#'   \code{total_sites} \tab the total number of potential binding sites \cr
+#'   \code{one_hit}, \code{two_hits}, ... \tab number of transcripts with one,
 #'   two,
 #'   three, ... putative binding sites
 #' }
-#' (2) total.sites: a numeric vector with the total number of potential
+#' (2) total_sites: a numeric vector with the total number of potential
 #' binding sites
 #' per transcript
 #'
-#' (3) absolute.hits: a numeric vector with the absolute (not relative)
+#' (3) absolute_hits: a numeric vector with the absolute (not relative)
 #' number of putative
 #' binding sites per transcript
 #' @examples
-#' foreground.set <- c(
+#' foreground_set <- c(
 #'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
 #'   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
 #'   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
@@ -56,7 +56,7 @@
 #' # names are used as keys in the hash table (cached version only)
 #' # ideally sequence identifiers (e.g., RefSeq ids) and region labels
 #' # (e.g., 3UTR for 3'-UTR)
-#' names(foreground.set) <- c(
+#' names(foreground_set) <- c(
 #'   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
 #'   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
 #'   "NM_7_DUMMY|3UTR", "NM_8_DUMMY|3UTR", "NM_9_DUMMY|3UTR",
@@ -66,36 +66,36 @@
 #'
 #' # specific motifs, uncached
 #' motifs <- getMotifByRBP("ELAVL1")
-#' scores <- scoreTranscripts(foreground.set, motifs = motifs, cache = FALSE)
+#' scores <- scoreTranscripts(foreground_set, motifs = motifs, cache = FALSE)
 #' \dontrun{
 #' # all Transite motifs, cached (writes scores to disk)
-#' scores <- scoreTranscripts(foreground.set)
+#' scores <- scoreTranscripts(foreground_set)
 #'
 #' # all Transite motifs, uncached
-#' scores <- scoreTranscripts(foreground.set, cache = FALSE)
+#' scores <- scoreTranscripts(foreground_set, cache = FALSE)
 #'
-#' foreground.df <- transite:::ge$foreground1
-#' foreground.set <- foreground.df$seq
-#' names(foreground.set) <- paste0(foreground.df$refseq, "|",
-#'    foreground.df$seq.type)
-#' scores <- scoreTranscripts(foreground.set)
+#' foreground_df <- transite:::ge$foreground1_df
+#' foreground_set <- foreground_df$seq
+#' names(foreground_set) <- paste0(foreground_df$refseq, "|",
+#'    foreground_df$seq_type)
+#' scores <- scoreTranscripts(foreground_set)
 #' }
 #' @family matrix functions
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply
 #' @export
-scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
-                             threshold.method = "p.value",
-                             threshold.value = 0.25^6,
-                             n.cores = 1, cache = paste0(tempdir(), "/sc/")) {
-    # if threshold.method == "p.value": default threshold.value == 0.25^6
+scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
+                             threshold_method = "p_value",
+                             threshold_value = 0.25^6,
+                             n_cores = 1, cache = paste0(tempdir(), "/sc/")) {
+    # if threshold_method == "p_value": default threshold_value == 0.25^6
     # (0.25^6: lowest p-value that can be achieved by hexamer motifs, the
     #shortest supported motifs)
-    # if threshold.method == "relative": default threshold.value == 0.9
+    # if threshold_method == "relative": default threshold_value == 0.9
     # (0.9: 90% of the maximum PWM score)
-    if (max.hits < 1) {
-        stop("max.hits must not be smaller than 1")
+    if (max_hits < 1) {
+        stop("max_hits must not be smaller than 1")
     }
 
     if (is.null(motifs)) {
@@ -104,38 +104,38 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
 
     if (is.logical(cache)) {
         if (cache) {
-            cache.path <- paste0(tempdir(), "/sc/")
+            cache_path <- paste0(tempdir(), "/sc/")
         } else {
-            cache.path <- NULL
+            cache_path <- NULL
         }
     } else {
-        cache.path <- as.character(cache)
+        cache_path <- as.character(cache)
     }
 
-    if (!is.null(cache.path)) {
+    if (!is.null(cache_path)) {
         if (is.null(names(sequences))) {
             stop("names(sequences) cannot be null if cache is used")
         }
         names(sequences) <- paste0(names(sequences), "|",
-                                   threshold.method, "|", threshold.value)
-        dir.create(file.path(cache.path), showWarnings = FALSE,
+                                   threshold_method, "|", threshold_value)
+        dir.create(file.path(cache_path), showWarnings = FALSE,
                    recursive = TRUE)
     }
 
-    if (n.cores == 1) {
-        motif.scores <- lapply(motifs, function(motif) {
+    if (n_cores == 1) {
+        motif_scores <- lapply(motifs, function(motif) {
             return(scoreTranscriptsSingleMotif(
-                motif, sequences, max.hits, threshold.method,
-                threshold.value, cache.path
+                motif, sequences, max_hits, threshold_method,
+                threshold_value, cache_path
             ))
         })
     } else {
-        cluster <- parallel::makeCluster(mc <- getOption("cl.cores", n.cores))
+        cluster <- parallel::makeCluster(mc <- getOption("cl.cores", n_cores))
         parallel::clusterExport(
             cl = cluster,
             varlist = c(
-                "scoreTranscriptsSingleMotif", "sequences", "max.hits",
-                "threshold.method", "threshold.value", "cache.path",
+                "scoreTranscriptsSingleMotif", "sequences", "max_hits",
+                "threshold_method", "threshold_value", "cache_path",
                 "motifId", "motifRbps", "motifMatrix", "motifLength",
                 "readMotifCache", "writeMotifCache", "lock", "unlock",
                 "getLockObject", "scoreSequences",
@@ -143,63 +143,63 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
             ),
             envir = environment()
         )
-        motif.scores <- parallel::parLapply(cl = cluster, motifs,
+        motif_scores <- parallel::parLapply(cl = cluster, motifs,
                                             function(motif) {
             return(scoreTranscriptsSingleMotif(
-                motif, sequences, max.hits, threshold.method,
-                threshold.value, cache.path
+                motif, sequences, max_hits, threshold_method,
+                threshold_value, cache_path
             ))
         })
     }
 
-    motif.scores.proto.df <- lapply(motif.scores, function(motif.score) {
-        return(motif.score$df)
+    motif_scores_proto_df <- lapply(motif_scores, function(motif_score) {
+        return(motif_score$df)
     })
 
-    total.sites <- lapply(motif.scores, function(motif.score) {
-        return(motif.score$total.sites)
+    total_sites <- lapply(motif_scores, function(motif_score) {
+        return(motif_score$total_sites)
     })
 
-    absolute.hits <- lapply(motif.scores, function(motif.score) {
-        return(motif.score$absolute.hits)
+    absolute_hits <- lapply(motif_scores, function(motif_score) {
+        return(motif_score$absolute_hits)
     })
 
-    motif.scores.df <- as.data.frame(do.call("rbind", motif.scores.proto.df),
+    motif_scores_df <- as.data.frame(do.call("rbind", motif_scores_proto_df),
                                      stringsAsFactors = FALSE
     )
-    motif.scores.df$motif.id <- as.character(motif.scores.df$motif.id)
-    motif.scores.df$motif.rbps <- as.character(motif.scores.df$motif.rbps)
-    motif.scores.df$absolute.hits <- as.numeric(motif.scores.df$absolute.hits)
-    motif.scores.df$relative.hits <- as.numeric(motif.scores.df$relative.hits)
-    motif.scores.df$total.sites <- as.numeric(motif.scores.df$total.sites)
-    motif.scores.df$one.hit <- as.numeric(motif.scores.df$one.hit)
-    if (max.hits > 1) {
-        motif.scores.df$two.hits <- as.numeric(motif.scores.df$two.hits)
+    motif_scores_df$motif_id <- as.character(motif_scores_df$motif_id)
+    motif_scores_df$motif_rbps <- as.character(motif_scores_df$motif_rbps)
+    motif_scores_df$absolute_hits <- as.numeric(motif_scores_df$absolute_hits)
+    motif_scores_df$relative_hits <- as.numeric(motif_scores_df$relative_hits)
+    motif_scores_df$total_sites <- as.numeric(motif_scores_df$total_sites)
+    motif_scores_df$one_hit <- as.numeric(motif_scores_df$one_hit)
+    if (max_hits > 1) {
+        motif_scores_df$two_hits <- as.numeric(motif_scores_df$two_hits)
     }
-    if (max.hits > 2) {
-        motif.scores.df$three.hits <- as.numeric(motif.scores.df$three.hits)
+    if (max_hits > 2) {
+        motif_scores_df$three_hits <- as.numeric(motif_scores_df$three_hits)
     }
-    if (max.hits > 3) {
-        motif.scores.df$four.hits <- as.numeric(motif.scores.df$four.hits)
+    if (max_hits > 3) {
+        motif_scores_df$four_hits <- as.numeric(motif_scores_df$four_hits)
     }
-    if (max.hits > 4) {
-        motif.scores.df$five.hits <- as.numeric(motif.scores.df$five.hits)
+    if (max_hits > 4) {
+        motif_scores_df$five_hits <- as.numeric(motif_scores_df$five_hits)
     }
-    if (max.hits > 5) {
-        motif.scores.df$six.hits <- as.numeric(motif.scores.df$six.hits)
+    if (max_hits > 5) {
+        motif_scores_df$six_hits <- as.numeric(motif_scores_df$six_hits)
     }
-    if (max.hits > 6) {
-        motif.scores.df$seven.hits <- as.numeric(motif.scores.df$seven.hits)
+    if (max_hits > 6) {
+        motif_scores_df$seven_hits <- as.numeric(motif_scores_df$seven_hits)
     }
-    if (max.hits > 7) {
-        motif.scores.df$eight.hit <- as.numeric(motif.scores.df$eight.hit)
+    if (max_hits > 7) {
+        motif_scores_df$eight_hit <- as.numeric(motif_scores_df$eight_hit)
     }
-    if (max.hits > 8) {
-        motif.scores.df$nine.hits <- as.numeric(motif.scores.df$nine.hits)
+    if (max_hits > 8) {
+        motif_scores_df$nine_hits <- as.numeric(motif_scores_df$nine_hits)
     }
-    motif.scores.df$more.hits <- as.numeric(motif.scores.df$more.hits)
-    return(list(df = motif.scores.df, total.sites = total.sites,
-                absolute.hits = absolute.hits))
+    motif_scores_df$more_hits <- as.numeric(motif_scores_df$more_hits)
+    return(list(df = motif_scores_df, total_sites = total_sites,
+                absolute_hits = absolute_hits))
 }
 
 #' @title Scores transadsadscripts with position weight matrices
@@ -220,39 +220,39 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
 #' and sequence
 #' type qualifiers (\code{"3UTR"}, \code{"5UTR"}, \code{"mRNA"}), e.g.
 #' \code{"NM_010356|3UTR"}
-#' @param max.hits maximum number of putative binding sites per mRNA
+#' @param max_hits maximum number of putative binding sites per mRNA
 #' that are counted
-#' @param cache.path the path to a directory where scores are cached.
+#' @param cache_path the path to a directory where scores are cached.
 #' The scores of each
 #' motif are stored in a
 #' separate file that contains a hash table with RefSeq identifiers
 #' and sequence type
 #' qualifiers as keys and the number of binding sites as values.
-#' If is.null(cache.path), scores will not be cached.
-#' @param threshold.method either \code{"p.value"} (default) or
+#' If is.null(cache_path), scores will not be cached.
+#' @param threshold_method either \code{"p_value"} (default) or
 #' \code{"relative"}.
-#' If \code{threshold.method} equals \code{"p.value"}, the default
-#' \code{threshold.value}
+#' If \code{threshold_method} equals \code{"p_value"}, the default
+#' \code{threshold_value}
 #'  is \code{0.25^6}, which is
 #' lowest p-value that can be achieved by hexamer motifs, the shortest
 #' supported motifs.
-#' If \code{threshold.method} equals \code{"relative"}, the default
-#' \code{threshold.value}
+#' If \code{threshold_method} equals \code{"relative"}, the default
+#' \code{threshold_value}
 #' is \code{0.9}, which is 90\% of the maximum PWM score.
-#' @param threshold.value semantics of the \code{threshold.value} depend on
-#' \code{threshold.method} (default is 0.25^6)
+#' @param threshold_value semantics of the \code{threshold_value} depend on
+#' \code{threshold_method} (default is 0.25^6)
 #' @return A list with the following items:
 #' \tabular{rl}{
-#'   \code{motif.id} \tab the motif identifier of the specified motif\cr
-#'   \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
-#'   \code{absolute.hits} \tab the absolute frequency of binding sites per
+#'   \code{motif_id} \tab the motif identifier of the specified motif\cr
+#'   \code{motif_rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
+#'   \code{absolute_hits} \tab the absolute frequency of binding sites per
 #'   motif in all
 #'   transcripts \cr
-#'   \code{relative.hits} \tab  the relative, i.e., absolute divided by
+#'   \code{relative_hits} \tab  the relative, i.e., absolute divided by
 #'   total, frequency of
 #'   binding sites per motif in all transcripts \cr
-#'   \code{total.sites} \tab the total number of potential binding sites \cr
-#'   \code{one.hit}, \code{two.hits}, ... \tab number of transcripts with
+#'   \code{total_sites} \tab the total number of potential binding sites \cr
+#'   \code{one_hit}, \code{two_hits}, ... \tab number of transcripts with
 #'   one, two, three,
 #'   ... binding sites
 #' }
@@ -260,285 +260,285 @@ scoreTranscripts <- function(sequences, motifs = NULL, max.hits = 5,
 #' @family matrix functions
 #' @importFrom TFMPvalue TFMpv2sc
 #' @importFrom Biostrings maxScore
-scoreTranscriptsSingleMotif <- function(motif, sequences, max.hits = 5,
-                                        threshold.method = "p.value",
-                                        threshold.value = 0.25^6,
-                                        cache.path = paste0(tempdir(), "/sc/")) {
-    # if threshold.method == "p.value": default threshold.value == 0.25^6
+scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
+                                        threshold_method = "p_value",
+                                        threshold_value = 0.25^6,
+                                        cache_path = paste0(tempdir(), "/sc/")) {
+    # if threshold_method == "p_value": default threshold_value == 0.25^6
     # (0.25^6: lowest p-value that can be achieved by hexamer motifs,
     # the shortest supported motifs)
-    # if threshold.method == "relative": default threshold.value == 0.9
+    # if threshold_method == "relative": default threshold_value == 0.9
     # (0.9: 90% of the maximum PWM score)
 
     pwm <- t(motifMatrix(motif))
     rownames(pwm)[4] <- "T"
-    if (threshold.method == "p.value") {
-        threshold.score <- TFMPvalue::TFMpv2sc(
-            pwm, threshold.value,
+    if (threshold_method == "p_value") {
+        threshold_score <- TFMPvalue::TFMpv2sc(
+            pwm, threshold_value,
             c(A = 0.25, C = 0.25, G = 0.25, T = 0.25), "PWM"
         )
-    } else if (threshold.method == "relative") {
-        threshold.score <- Biostrings::maxScore(pwm) * threshold.value
+    } else if (threshold_method == "relative") {
+        threshold_score <- Biostrings::maxScore(pwm) * threshold_value
     } else {
         stop("invalid value threshold method")
     }
 
-    if (threshold.score < 0) {
+    if (threshold_score < 0) {
         warning(paste0(
             motifId(motif), ": threshold score below zero (",
-            threshold.score, "), set to 0.1"
+            threshold_score, "), set to 0.1"
         ))
-        threshold.score <- 0.1
+        threshold_score <- 0.1
     }
 
-    total.sites <- unlist(lapply(sequences, function(sequence) {
+    total_sites <- unlist(lapply(sequences, function(sequence) {
         if (nchar(sequence) < motifLength(motif)) {
             return(0)
         } else {
             return(nchar(sequence) - motifLength(motif) + 1)
         }
     }))
-    sum.total.sites <- sum(total.sites)
+    sum_total_sites <- sum(total_sites)
 
-    if (!is.null(cache.path)) {
-        motif.id.file <- gsub("[^[:alnum:]]", "_", motifId(motif))
-        motif.cache.file <- paste0(cache.path, motif.id.file, ".rds")
-        if (file.exists(motif.cache.file)) {
-            motif.cache <- readMotifCache(cache.path, motif.id.file)
+    if (!is.null(cache_path)) {
+        motif_id_file <- gsub("[^[:alnum:]]", "_", motifId(motif))
+        motif_cache_file <- paste0(cache_path, motif_id_file, ".rds")
+        if (file.exists(motif_cache_file)) {
+            motif_cache <- readMotifCache(cache_path, motif_id_file)
 
-            cached <- vapply(names(sequences), function(seq.id) {
-                return(exists(seq.id, envir = motif.cache, inherits = FALSE))
+            cached <- vapply(names(sequences), function(seq_id) {
+                return(exists(seq_id, envir = motif_cache, inherits = FALSE))
             }, logical(1))
 
-            cached.ids <- names(sequences)[cached]
-            if (length(cached.ids) > 0) {
-                cached.absolute.hits <- unlist(lapply(cached.ids,
-                                                      function(seq.id) {
-                    return(get(seq.id, envir = motif.cache, inherits = FALSE))
+            cached_ids <- names(sequences)[cached]
+            if (length(cached_ids) > 0) {
+                cached_absolute_hits <- unlist(lapply(cached_ids,
+                                                      function(seq_id) {
+                    return(get(seq_id, envir = motif_cache, inherits = FALSE))
                 }))
             } else {
-                cached.absolute.hits <- 0
+                cached_absolute_hits <- 0
             }
 
-            uncached.ids <- names(sequences)[!cached]
-            if (length(uncached.ids) > 0) {
-                uncached.sequences <- sequences[!cached]
-                uncached.absolute.hits <- cachedScoreSequencesHelper(
-                    uncached.sequences, uncached.ids,
+            uncached_ids <- names(sequences)[!cached]
+            if (length(uncached_ids) > 0) {
+                uncached_sequences <- sequences[!cached]
+                uncached_absolute_hits <- cachedScoreSequencesHelper(
+                    uncached_sequences, uncached_ids,
                     as.matrix(motifMatrix(motif)),
-                    threshold.score, motif.cache,
-                    cache.path, motif.id.file
+                    threshold_score, motif_cache,
+                    cache_path, motif_id_file
                 )
             } else {
-                uncached.absolute.hits <- 0
+                uncached_absolute_hits <- 0
             }
 
-            absolute.hits <- c(cached.absolute.hits, uncached.absolute.hits)
+            absolute_hits <- c(cached_absolute_hits, uncached_absolute_hits)
         } else {
-            motif.cache <- new.env(hash = TRUE, parent = emptyenv(),
+            motif_cache <- new.env(hash = TRUE, parent = emptyenv(),
                                    size = length(sequences))
-            absolute.hits <- cachedScoreSequencesHelper(
+            absolute_hits <- cachedScoreSequencesHelper(
                 sequences, names(sequences),
                 as.matrix(motifMatrix(motif)),
-                threshold.score, motif.cache,
-                cache.path, motif.id.file
+                threshold_score, motif_cache,
+                cache_path, motif_id_file
             )
         }
     } else {
-        absolute.hits <- scoreSequencesHelper(sequences,
+        absolute_hits <- scoreSequencesHelper(sequences,
                                               as.matrix(motifMatrix(motif)),
-                                              threshold.score)
+                                              threshold_score)
     }
 
-    if (max.hits > 9) {
-        MAX.HITS.COL <- 9
+    if (max_hits > 9) {
+        max_hits_col <- 9
     } else {
-        MAX.HITS.COL <- max.hits
+        max_hits_col <- max_hits
     }
-    MAX.HITS.COL <- MAX.HITS.COL + 1
-    multiple.hits <- unlist(lapply(seq_len(MAX.HITS.COL), function(hit.count) {
-        if (hit.count == MAX.HITS.COL) {
-            sum(vapply(absolute.hits, function(x) {
-                x >= hit.count
+    max_hits_col <- max_hits_col + 1
+    multiple_hits <- unlist(lapply(seq_len(max_hits_col), function(hit_count) {
+        if (hit_count == max_hits_col) {
+            sum(vapply(absolute_hits, function(x) {
+                x >= hit_count
             }, logical(1)))
         } else {
-            sum(vapply(absolute.hits, function(x) {
-                x == hit.count
+            sum(vapply(absolute_hits, function(x) {
+                x == hit_count
             }, logical(1)))
         }
     }))
 
-    absolute.hits[absolute.hits > max.hits] <- max.hits
-    sum.absolute.hits <- sum(absolute.hits)
+    absolute_hits[absolute_hits > max_hits] <- max_hits
+    sum_absolute_hits <- sum(absolute_hits)
 
-    relative.hits <- sum.absolute.hits / sum.total.sites
+    relative_hits <- sum_absolute_hits / sum_total_sites
 
-    if (MAX.HITS.COL == 2) {
+    if (max_hits_col == 2) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], more.hits = multiple.hits[2]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], more_hits = multiple_hits[2]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 3) {
+    } else if (max_hits_col == 3) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                more.hits = multiple.hits[3]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                more_hits = multiple_hits[3]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 4) {
+    } else if (max_hits_col == 4) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], more.hits = multiple.hits[4]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], more_hits = multiple_hits[4]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 5) {
+    } else if (max_hits_col == 5) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], four.hits = multiple.hits[4],
-                more.hits = multiple.hits[5]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], four_hits = multiple_hits[4],
+                more_hits = multiple_hits[5]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 6) {
+    } else if (max_hits_col == 6) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], four.hits = multiple.hits[4],
-                five.hits = multiple.hits[5], more.hits = multiple.hits[6]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], four_hits = multiple_hits[4],
+                five_hits = multiple_hits[5], more_hits = multiple_hits[6]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 7) {
+    } else if (max_hits_col == 7) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], four.hits = multiple.hits[4],
-                five.hits = multiple.hits[5], six.hits = multiple.hits[6],
-                more.hits = multiple.hits[7]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], four_hits = multiple_hits[4],
+                five_hits = multiple_hits[5], six_hits = multiple_hits[6],
+                more_hits = multiple_hits[7]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 8) {
+    } else if (max_hits_col == 8) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], four.hits = multiple.hits[4],
-                five.hits = multiple.hits[5], six.hits = multiple.hits[6],
-                seven.hits = multiple.hits[7], more.hits = multiple.hits[8]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], four_hits = multiple_hits[4],
+                five_hits = multiple_hits[5], six_hits = multiple_hits[6],
+                seven_hits = multiple_hits[7], more_hits = multiple_hits[8]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 9) {
+    } else if (max_hits_col == 9) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], four.hits = multiple.hits[4],
-                five.hits = multiple.hits[5], six.hits = multiple.hits[6],
-                seven.hits = multiple.hits[7], eight.hit = multiple.hits[8],
-                more.hits = multiple.hits[9]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], four_hits = multiple_hits[4],
+                five_hits = multiple_hits[5], six_hits = multiple_hits[6],
+                seven_hits = multiple_hits[7], eight_hit = multiple_hits[8],
+                more_hits = multiple_hits[9]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
-    } else if (MAX.HITS.COL == 10) {
+    } else if (max_hits_col == 10) {
         return(list(
             df = list(
-                motif.id = motifId(motif),
-                motif.rbps = paste0(motifRbps(motif), collapse = ", "),
-                absolute.hits = sum.absolute.hits,
-                relative.hits = relative.hits,
-                total.sites = sum.total.sites,
-                one.hit = multiple.hits[1], two.hits = multiple.hits[2],
-                three.hits = multiple.hits[3], four.hits = multiple.hits[4],
-                five.hits = multiple.hits[5], six.hits = multiple.hits[6],
-                seven.hits = multiple.hits[7], eight.hit = multiple.hits[8],
-                nine.hits = multiple.hits[9], more.hits = multiple.hits[10]
+                motif_id = motifId(motif),
+                motif_rbps = paste0(motifRbps(motif), collapse = ", "),
+                absolute_hits = sum_absolute_hits,
+                relative_hits = relative_hits,
+                total_sites = sum_total_sites,
+                one_hit = multiple_hits[1], two_hits = multiple_hits[2],
+                three_hits = multiple_hits[3], four_hits = multiple_hits[4],
+                five_hits = multiple_hits[5], six_hits = multiple_hits[6],
+                seven_hits = multiple_hits[7], eight_hit = multiple_hits[8],
+                nine_hits = multiple_hits[9], more_hits = multiple_hits[10]
             ),
-            total.sites = total.sites,
-            absolute.hits = absolute.hits
+            total_sites = total_sites,
+            absolute_hits = absolute_hits
         ))
     }
 }
 
-scoreSequencesHelper <- function(sequences, motif.matrix, threshold.score) {
-    seq.char.vectors <- lapply(sequences, function(seq) {
+scoreSequencesHelper <- function(sequences, motif_matrix, threshold_score) {
+    seq_char_vectors <- lapply(sequences, function(seq) {
         unlist(strsplit(seq, ""))
     })
 
-    scores <- scoreSequences(seq.char.vectors, motif.matrix)
+    scores <- scoreSequences(seq_char_vectors, motif_matrix)
 
-    absolute.hits <- unlist(lapply(scores, function(scores.per.seq) {
-        sum(scores.per.seq >= threshold.score)
+    absolute_hits <- unlist(lapply(scores, function(scores_per_seq) {
+        sum(scores_per_seq >= threshold_score)
     }))
 
-    return(absolute.hits)
+    return(absolute_hits)
 }
 
-cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix,
-                                       threshold.score,
-                                       motif.cache, cache.path, motif.id.file) {
-    absolute.hits <- scoreSequencesHelper(sequences, motif.matrix,
-                                          threshold.score)
+cachedScoreSequencesHelper <- function(sequences, seq_ids, motif_matrix,
+                                       threshold_score,
+                                       motif_cache, cache_path, motif_id_file) {
+    absolute_hits <- scoreSequencesHelper(sequences, motif_matrix,
+                                          threshold_score)
 
-    for (i in seq_len(length(absolute.hits))) {
-        assign(seq.ids[i], absolute.hits[i], envir = motif.cache)
+    for (i in seq_len(length(absolute_hits))) {
+        assign(seq_ids[i], absolute_hits[i], envir = motif_cache)
     }
 
-    writeMotifCache(motif.cache, cache.path, motif.id.file)
-    return(absolute.hits)
+    writeMotifCache(motif_cache, cache_path, motif_id_file)
+    return(absolute_hits)
 }
 
 #' @title Binding Site Enrichment Value Calculation
@@ -549,21 +549,21 @@ cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix,
 #' levels of
 #' enrichment values are obtained by Monte Carlo tests.
 #'
-#' @param foreground.scores.df result of \code{\link{scoreTranscripts}} on
+#' @param foreground_scores_df result of \code{\link{scoreTranscripts}} on
 #' foreground sequence
 #' set (foreground sequence sets must be a subset of the background
 #' sequence set)
-#' @param background.scores.df result of \code{\link{scoreTranscripts}}
+#' @param background_scores_df result of \code{\link{scoreTranscripts}}
 #' on background sequence set
-#' @param background.total.sites number of potential binding sites per sequence
+#' @param background_total_sites number of potential binding sites per sequence
 #' (returned by \code{\link{scoreTranscripts}})
-#' @param background.absolute.hits number of putative binding sites per sequence
+#' @param background_absolute_hits number of putative binding sites per sequence
 #' (returned by \code{\link{scoreTranscripts}})
-#' @param n.transcripts.foreground number of sequences in the foreground set
-#' @param max.fg.permutations maximum number of foreground permutations
+#' @param n_transcripts_foreground number of sequences in the foreground set
+#' @param max_fg_permutations maximum number of foreground permutations
 #' performed in
 #' Monte Carlo test for enrichment score
-#' @param min.fg.permutations minimum number of foreground permutations
+#' @param min_fg_permutations minimum number of foreground permutations
 #' performed in
 #' Monte Carlo test for enrichment score
 #' @param e integer-valued stop criterion for enrichment score Monte Carlo test: aborting
@@ -571,137 +571,134 @@ cachedScoreSequencesHelper <- function(sequences, seq.ids, motif.matrix,
 #' observing \code{e} random enrichment values with more extreme values than
 #' the actual
 #' enrichment value
-#' @param p.adjust.method adjustment of p-values from Monte Carlo tests to
+#' @param p_adjust_method adjustment of p-values from Monte Carlo tests to
 #' avoid alpha error
 #'  accumulation, see \code{\link[stats]{p.adjust}}
 #' @return A data frame with the following columns:
 #' \tabular{rl}{
-#'   \code{motif.id} \tab the motif identifier that is used in the original
+#'   \code{motif_id} \tab the motif identifier that is used in the original
 #'   motif library\cr
-#'   \code{motif.rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
+#'   \code{motif_rbps} \tab the gene symbol of the RNA-binding protein(s)\cr
 #'   \code{enrichment} \tab binding site enrichment between foreground
 #'   and background sequences \cr
-#'   \code{p.value} \tab unadjusted p-value from Monte Carlo test \cr
-#'   \code{p.value.n} \tab number of Monte Carlo test permutations \cr
-#'   \code{adj.p.value} \tab adjusted p-value from Monte Carlo test
+#'   \code{p_value} \tab unadjusted p-value from Monte Carlo test \cr
+#'   \code{p_value_n} \tab number of Monte Carlo test permutations \cr
+#'   \code{adj_p_value} \tab adjusted p-value from Monte Carlo test
 #'   (usually FDR)
 #' }
 #' @examples
-#' foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
+#' foreground_seqs <- c("CAGUCAAGACUCC", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
 #'   "AGAU", "CCAGUAA")
-#' background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+#' background_seqs <- c(foreground_seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
 #'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
 #'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
 #'                      "AUAGAC", "AGUUC")
-#' foreground.scores <- scoreTranscripts(foreground.seqs, cache = FALSE)
-#' background.scores <- scoreTranscripts(background.seqs, cache = FALSE)
-#' enrichments.df <- calculateMotifEnrichment(foreground.scores$df,
-#'   background.scores$df,
-#'   background.scores$total.sites, background.scores$absolute.hits,
-#'   length(foreground.seqs),
-#'   max.fg.permutations = 1000
+#' foreground_scores <- scoreTranscripts(foreground_seqs, cache = FALSE)
+#' background_scores <- scoreTranscripts(background_seqs, cache = FALSE)
+#' enrichments_df <- calculateMotifEnrichment(foreground_scores$df,
+#'   background_scores$df,
+#'   background_scores$total_sites, background_scores$absolute_hits,
+#'   length(foreground_seqs),
+#'   max_fg_permutations = 1000
 #' )
 #' @family matrix functions
 #' @importFrom dplyr filter
 #' @importFrom stats p.adjust
 #' @export
-calculateMotifEnrichment <- function(foreground.scores.df,
-                                     background.scores.df,
-                                     background.total.sites,
-                                     background.absolute.hits,
-                                     n.transcripts.foreground,
-                                     max.fg.permutations = 1000000,
-                                     min.fg.permutations = 1000,
-                                     e = 5, p.adjust.method = "BH") {
+calculateMotifEnrichment <- function(foreground_scores_df,
+                                     background_scores_df,
+                                     background_total_sites,
+                                     background_absolute_hits,
+                                     n_transcripts_foreground,
+                                     max_fg_permutations = 1000000,
+                                     min_fg_permutations = 1000,
+                                     e = 5, p_adjust_method = "BH") {
     # avoid CRAN note
-    motif.id <- NULL
+    motif_id <- NULL
 
-    if (!setequal(foreground.scores.df$motif.id,
-                  background.scores.df$motif.id)) {
+    if (!setequal(foreground_scores_df$motif_id,
+                  background_scores_df$motif_id)) {
         stop("foreground and background scores used different motifs")
     }
 
     i <- 1
-    enrichments <- lapply(foreground.scores.df$motif.id, function(id) {
-        f <- dplyr::filter(foreground.scores.df, motif.id == id)
-        b <- dplyr::filter(background.scores.df, motif.id == id)
+    enrichments <- lapply(foreground_scores_df$motif_id, function(id) {
+        f <- dplyr::filter(foreground_scores_df, motif_id == id)
+        b <- dplyr::filter(background_scores_df, motif_id == id)
 
-        if (b$absolute.hits == 0) {
+        if (b$absolute_hits == 0) {
             enrichment <- 1
-            p.value <- 1
-            p.value.n <- 0
+            p_value <- 1
+            p_value_n <- 0
         } else {
-            enrichment <- (f$absolute.hits / f$total.sites) / (b$absolute.hits / b$total.sites)
-            mc.result <- calculateTranscriptMC(
-                background.absolute.hits[[i]], background.total.sites[[i]],
-                f$absolute.hits / f$total.sites, n.transcripts.foreground,
-                max.fg.permutations, min.fg.permutations, e
+            enrichment <- (f$absolute_hits / f$total_sites) / (b$absolute_hits / b$total_sites)
+            mc_result <- calculateTranscriptMC(
+                background_absolute_hits[[i]], background_total_sites[[i]],
+                f$absolute_hits / f$total_sites, n_transcripts_foreground,
+                max_fg_permutations, min_fg_permutations, e
             )
-            p.value <- mc.result$p.value
-            p.value.n <- mc.result$n
-            #       cont <- matrix(c(f$absolute.hits, f$total.sites - f$absolute.hits,
-            #                        b$absolute.hits, b$total.sites - b$absolute.hits), nrow = 2)
-            #       p.value <- fisher.test(cont)$p.value
+            p_value <- mc_result$p_value
+            p_value_n <- mc_result$n
         }
 
         i <<- i + 1
         return(list(
-            motif.id = id, motif.rbps = f$motif.rbps,
-            enrichment = enrichment, p.value = p.value, p.value.n = p.value.n
+            motif_id = id, motif_rbps = f$motif_rbps,
+            enrichment = enrichment, p_value = p_value, p_value_n = p_value_n
         ))
     })
 
-    enrichment.df <- as.data.frame(do.call("rbind", enrichments),
+    enrichment_df <- as.data.frame(do.call("rbind", enrichments),
                                    stringsAsFactors = FALSE)
-    enrichment.df$motif.id <- as.character(enrichment.df$motif.id)
-    enrichment.df$motif.rbps <- as.character(enrichment.df$motif.rbps)
-    enrichment.df$enrichment <- as.numeric(enrichment.df$enrichment)
-    enrichment.df$p.value <- as.numeric(enrichment.df$p.value)
-    enrichment.df$p.value.n <- as.numeric(enrichment.df$p.value.n)
-    enrichment.df$adj.p.value <- stats::p.adjust(enrichment.df$p.value,
-                                                 method = p.adjust.method)
+    enrichment_df$motif_id <- as.character(enrichment_df$motif_id)
+    enrichment_df$motif_rbps <- as.character(enrichment_df$motif_rbps)
+    enrichment_df$enrichment <- as.numeric(enrichment_df$enrichment)
+    enrichment_df$p_value <- as.numeric(enrichment_df$p_value)
+    enrichment_df$p_value_n <- as.numeric(enrichment_df$p_value_n)
+    enrichment_df$adj_p_value <- stats::p.adjust(enrichment_df$p_value,
+                                                 method = p_adjust_method)
 
-    return(enrichment.df)
+    return(enrichment_df)
 }
 
-readMotifCache <- function(cache.path, motif.id) {
-    motif.cache.file <- paste0(cache.path, motif.id, ".rds")
+readMotifCache <- function(cache_path, motif_id) {
+    motif_cache_file <- paste0(cache_path, motif_id, ".rds")
     succeeded <- FALSE
     while (!succeeded) {
         tryCatch({
-            motif.cache.lock <- lock(paste0(cache.path, motif.id, ".lock"))
-            if (motif.cache.lock$success) {
-                motif.cache <- readRDS(motif.cache.file)
-                if (!unlock(motif.cache.lock)) {
+            motif_cache_lock <- lock(paste0(cache_path, motif_id, ".lock"))
+            if (motif_cache_lock$success) {
+                motif_cache <- readRDS(motif_cache_file)
+                if (!unlock(motif_cache_lock)) {
                     warning(paste0("cannot unlock cache file lock of ",
-                                   motif.id, " motif"))
+                                   motif_id, " motif"))
                 }
                 succeeded <- TRUE
             }
         }, finally = {
-            unlock(motif.cache.lock)
+            unlock(motif_cache_lock)
         })
         Sys.sleep(0.05)
     }
-    return(motif.cache)
+    return(motif_cache)
 }
 
-writeMotifCache <- function(motif.cache, cache.path, motif.id) {
-    motif.cache.file <- paste0(cache.path, motif.id, ".rds")
+writeMotifCache <- function(motif_cache, cache_path, motif_id) {
+    motif_cache_file <- paste0(cache_path, motif_id, ".rds")
     succeeded <- FALSE
     while (!succeeded) {
         tryCatch({
-            motif.cache.lock <- lock(paste0(cache.path, motif.id, ".lock"))
-            if (motif.cache.lock$success) {
-                saveRDS(motif.cache, file = motif.cache.file)
-                if (!unlock(motif.cache.lock)) {
+            motif_cache_lock <- lock(paste0(cache_path, motif_id, ".lock"))
+            if (motif_cache_lock$success) {
+                saveRDS(motif_cache, file = motif_cache_file)
+                if (!unlock(motif_cache_lock)) {
                     warning(paste0("cannot unlock cache file lock of ",
-                                   motif.id, " motif"))
+                                   motif_id, " motif"))
                 }
                 succeeded <- TRUE
             }
         }, finally = {
-            unlock(motif.cache.lock)
+            unlock(motif_cache_lock)
         })
         Sys.sleep(0.05)
     }

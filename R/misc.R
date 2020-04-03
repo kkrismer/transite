@@ -26,7 +26,7 @@ setClassUnion("dfOrNULL", c("data.frame", "NULL"))
 #'   code = initIUPAClookupTable())
 #' hexamers <- generateKmersFromIUPAC(iupac, 6)
 #' heptamers <- generateKmersFromIUPAC(iupac, 7)
-#' new("RBPMotif", id = "custom.motif", rbps = "RBP1",
+#' new("RBPMotif", id = "custom_motif", rbps = "RBP1",
 #'   matrix = NULL, hexamers = hexamers, heptamers = heptamers, length = 7L,
 #'   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
 #' )
@@ -249,9 +249,9 @@ setMethod("plot", signature(x = "RBPMotif"), function(x) {
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
 #' @return object of class \code{RBPMotif}
 #' @examples
-#' custom.motif <- createMatrixMotif(
-#'   "custom.motif", "RBP1",
-#'   transite:::toy.motif.matrix, "HITS-CLIP",
+#' custom_motif <- createMatrixMotif(
+#'   "custom_motif", "RBP1",
+#'   transite:::toy_motif_matrix, "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
 #' @export
@@ -292,8 +292,8 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
 #' @return object of class \code{RBPMotif}
 #' @examples
-#' custom.motif <- createKmerMotif(
-#'   "custom.motif", "RBP1",
+#' custom_motif <- createKmerMotif(
+#'   "custom_motif", "RBP1",
 #'   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
@@ -630,72 +630,72 @@ initIUPAClookupTable <- function() {
 generateKmersFromIUPAC <- function(iupac, k) {
     if (nchar(iupac) < k) {
         diff <- k - nchar(iupac)
-        left.padding.iupac <- paste0(paste(rep("N", diff), collapse = ""), iupac)
-        right.padding.iupac <- paste0(iupac, paste(rep("N", diff), collapse = ""))
+        left_padding_iupac <- paste0(paste(rep("N", diff), collapse = ""), iupac)
+        right_padding_iupac <- paste0(iupac, paste(rep("N", diff), collapse = ""))
 
-        kmers.left.padded <- generateKmersFromIUPAC(left.padding.iupac, k)
-        kmers.right.padded <- generateKmersFromIUPAC(right.padding.iupac, k)
-        return(unique(c(kmers.left.padded, kmers.right.padded)))
+        kmers_left_padded <- generateKmersFromIUPAC(left_padding_iupac, k)
+        kmers_right_padded <- generateKmersFromIUPAC(right_padding_iupac, k)
+        return(unique(c(kmers_left_padded, kmers_right_padded)))
     } else {
         iupac <- gsub(pattern = "U", replacement = "T", x = iupac, fixed = TRUE)
-        iupac.vector <- strsplit(iupac, "")[[1]]
-        expanded <- lapply(iupac.vector, function(letter) {
+        iupac_vector <- strsplit(iupac, "")[[1]]
+        expanded <- lapply(iupac_vector, function(letter) {
             strsplit(Biostrings::IUPAC_CODE_MAP[letter], "")[[1]]
         })
 
         n <- nchar(iupac)
-        full.length <- do.call(paste0, expand.grid(expanded,
+        full_length <- do.call(paste0, expand.grid(expanded,
                                                    stringsAsFactors = FALSE))
-        kmers <- unique(as.vector(apply(as.matrix(full.length), 1, function(x) {
+        kmers <- unique(as.vector(apply(as.matrix(full_length), 1, function(x) {
             substring(x, seq_len(n - k + 1), k:n)
         })))
         return(gsub(pattern = "T", replacement = "U", x = kmers, fixed = TRUE))
     }
 }
 
-lock <- function(lock.file) {
-    t <- 3600
-    if (file.exists(lock.file)) {
+lock <- function(lock_file) {
+    if (file.exists(lock_file)) {
+        # t <- 3600
         # check whether file is older than time threshold t, if it is,
         # remove it not
         # possible: could cause resource conflict as well
-        # con <- file(lock.file)
+        # con <- file(lock_file)
         # timestamp <- scan(file = con, what = numeric(0), quiet = TRUE)
         # close(con)
         # if(as.numeric(Sys.time()) - timestamp > t ||
         # as.numeric(Sys.time()) - timestamp
-        # < 0) { file.remove(lock.file) return(lock(lock.file)) } else {
-        return(getLockObject(lock.file, FALSE))
+        # < 0) { file.remove(lock_file) return(lock(lock_file)) } else {
+        return(getLockObject(lock_file, FALSE))
         # }
     } else {
-        if (!dir.exists(dirname(lock.file))) {
-            dir.create(dirname(lock.file), showWarnings = FALSE,
+        if (!dir.exists(dirname(lock_file))) {
+            dir.create(dirname(lock_file), showWarnings = FALSE,
                        recursive = TRUE)
         }
-        if (file.create(lock.file)) {
-            con <- file(lock.file)
+        if (file.create(lock_file)) {
+            con <- file(lock_file)
             write(as.numeric(Sys.time()), con)
             close(con)
-            return(getLockObject(lock.file, TRUE))
+            return(getLockObject(lock_file, TRUE))
         } else {
-            return(getLockObject(lock.file, FALSE))
+            return(getLockObject(lock_file, FALSE))
         }
     }
 }
 
-getLockObject <- function(lock.file, suc) {
-    lock.obj <- list(path = lock.file, success = suc)
-    class(lock.obj) <- append(class(lock.obj), "lock.object")
-    return(lock.obj)
+getLockObject <- function(lock_file, suc) {
+    lock_obj <- list(path = lock_file, success = suc)
+    class(lock_obj) <- append(class(lock_obj), "lock_object")
+    return(lock_obj)
 }
 
 #' @importFrom methods is
-unlock <- function(lock.obj) {
-    if (!is.null(lock.obj)) {
-        stopifnot(methods::is(lock.obj, "lock.object"))
-        if (lock.obj$success) {
-            if (file.exists(lock.obj$path)) {
-                return(file.remove(lock.obj$path))
+unlock <- function(lock_obj) {
+    if (!is.null(lock_obj)) {
+        stopifnot(methods::is(lock_obj, "lock_object"))
+        if (lock_obj$success) {
+            if (file.exists(lock_obj$path)) {
+                return(file.remove(lock_obj$path))
             } else {
                 return(TRUE)
             }

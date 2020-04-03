@@ -16,20 +16,23 @@ void
 Globally sets Transite motif database, use with care.
 }
 \examples{
-custom.motif <- createKmerMotif(
-  "custom.motif", "RBP1",
+custom_motif <- createKmerMotif(
+  "custom_motif", "RBP1",
   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
   "Homo sapiens", "user"
 )
-setMotifs(list(custom.motif))
+setMotifs(list(custom_motif))
 }
 \seealso{
-Other motif functions: \code{\link{generateIUPACByKmers}},
-  \code{\link{generateIUPACByMatrix}},
-  \code{\link{generateKmersFromIUPAC}},
-  \code{\link{getMotifById}}, \code{\link{getMotifByRBP}},
-  \code{\link{getMotifs}}, \code{\link{getPPM}},
-  \code{\link{initIUPAClookupTable}},
-  \code{\link{motifsMetaInfo}}
+Other motif functions: 
+\code{\link{generateIUPACByKmers}()},
+\code{\link{generateIUPACByMatrix}()},
+\code{\link{generateKmersFromIUPAC}()},
+\code{\link{getMotifById}()},
+\code{\link{getMotifByRBP}()},
+\code{\link{getMotifs}()},
+\code{\link{getPPM}()},
+\code{\link{initIUPAClookupTable}()},
+\code{\link{motifsMetaInfo}()}
 }
 \concept{motif functions}

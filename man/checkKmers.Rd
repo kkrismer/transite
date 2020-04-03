@@ -27,14 +27,16 @@ checkKmers(c("ACGCUC", "AAACCC", "UUUACA"))
 checkKmers(c("ACGCUC", "AAACCC", "UUUACAA"))
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

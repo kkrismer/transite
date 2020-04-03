@@ -4,22 +4,22 @@
 \alias{subdivideData}
 \title{Subdivides Sequences into \emph{n} Bins}
 \usage{
-subdivideData(background.set, n.bins = 40)
+subdivideData(background_set, n_bins = 40)
 }
 \arguments{
-\item{background.set}{character vector of named sequences (names are
+\item{background_set}{character vector of named sequences (names are
 usually RefSeq
 identifiers and sequence region labels,
  e.g., "NM_1_DUMMY|3UTR"). It is important that the sequences are
  already sorted by fold change,
  signal-to-noise ratio or any other meaningful measure.}
 
-\item{n.bins}{specifies the number of bins in which the sequences
+\item{n_bins}{specifies the number of bins in which the sequences
 will be divided,
 valid values are between 7 and 100}
 }
 \value{
-An array of \code{n.bins} length, containing the binned sequences
+An array of \code{n_bins} length, containing the binned sequences
 }
 \description{
 Preprocessing function for SPMA, divides transcript sequences
@@ -27,7 +27,7 @@ into \emph{n} bins.
 }
 \examples{
 # toy example
-toy.background.set <- c(
+toy_background_set <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU", "UCAUUUUAUUAAA",
   "AAUUGGUGUCUGGAUACUUCCCUGUACAU", "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC", "AGUUC", "CCAGUAA"
@@ -35,7 +35,7 @@ toy.background.set <- c(
 # names are used as keys in the hash table (cached version only)
 # ideally sequence identifiers (e.g., RefSeq ids) and
 # sequence region labels (e.g., 3UTR for 3'-UTR)
-names(toy.background.set) <- c(
+names(toy_background_set) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
   "NM_7_DUMMY|3UTR",
@@ -44,22 +44,24 @@ names(toy.background.set) <- c(
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
-foreground.sets <- subdivideData(toy.background.set, n.bins = 7)
+foreground_sets <- subdivideData(toy_background_set, n_bins = 7)
 
 # example data set
-background.df <- transite:::ge$background
+background_df <- transite:::ge$background_df
 # sort sequences by signal-to-noise ratio
-background.df <- dplyr::arrange(background.df, value)
+background_df <- dplyr::arrange(background_df, value)
 # character vector of named sequences
-background.set <- background.df$seq
-names(background.set) <- paste0(background.df$refseq, "|",
-  background.df$seq.type)
+background_set <- background_df$seq
+names(background_set) <- paste0(background_df$refseq, "|",
+  background_df$seq_type)
 
-foreground.sets <- subdivideData(background.set)
+foreground_sets <- subdivideData(background_set)
 }
 \seealso{
-Other SPMA functions: \code{\link{runKmerSPMA}},
-  \code{\link{runMatrixSPMA}}, \code{\link{scoreSpectrum}},
-  \code{\link{spectrumClassifier}}
+Other SPMA functions: 
+\code{\link{runKmerSPMA}()},
+\code{\link{runMatrixSPMA}()},
+\code{\link{scoreSpectrum}()},
+\code{\link{spectrumClassifier}()}
 }
 \concept{SPMA functions}

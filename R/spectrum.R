@@ -1,30 +1,31 @@
 #' An S4 class to represent a scored spectrum
 #'
-#' @slot adj.r.squared adjusted \eqn{R^2} of polynomial model
+#' @slot adj_r_squared adjusted \eqn{R^2} of polynomial model
 #' @slot degree degree of polynomial (integer between 0 and 5)
 #' @slot residuals residuals of the polynomial model
 #' @slot slope coefficient of the linear term of the polynomial model
 #' (spectrum "direction")
-#' @slot f.statistic F statistic from the F test used to determine the
+#' @slot f_statistic F statistic from the F test used to determine the
 #' degree of the polynomial model
-#' @slot f.statistic.p.value p-value associated with the F statistic
-#' @slot consistency.score raw local consistency score of the spectrum
-#' @slot consistency.score.p.value p-value associated with the local consistency
+#' @slot f_statistic_p_value p-value associated with the F statistic
+#' @slot consistency_score raw local consistency score of the spectrum
+#' @slot consistency_score_p_value p-value associated with the local consistency
 #' score
-#' @slot consistency.score.n number of permutations performed to calculate
+#' @slot consistency_score_n number of permutations performed to calculate
 #' p-value of local consistency score (permutations performed before early
 #' stopping criterion reached)
 #' @slot plot spectrum plot
 #' @examples
-#' new("SpectrumScore", adj.r.squared = 0,
+#' new("SpectrumScore",
+#'     adj_r_squared = 0,
 #'     degree = 0L,
 #'     residuals = 0,
 #'     slope = 0,
-#'     f.statistic = 0,
-#'     f.statistic.p.value = 1,
-#'     consistency.score = 1,
-#'     consistency.score.p.value = 1,
-#'     consistency.score.n = 1000L,
+#'     f_statistic = 0,
+#'     f_statistic_p_value = 1,
+#'     consistency_score = 1,
+#'     consistency_score_p_value = 1,
+#'     consistency_score_n = 1000L,
 #'     plot = NULL
 #' )
 #' @return Object of type SpectrumScore
@@ -32,15 +33,15 @@
 #' @name SpectrumScore-class
 #' @rdname SpectrumScore-class
 #' @exportClass SpectrumScore
-.SpectrumScore <- setClass("SpectrumScore", slots = c(adj.r.squared = "numeric",
+.SpectrumScore <- setClass("SpectrumScore", slots = c(adj_r_squared = "numeric",
                                                       degree = "integer",
                                                       residuals = "numeric",
                                                       slope = "numeric",
-                                                      f.statistic = "numeric",
-                                                      f.statistic.p.value = "numeric",
-                                                      consistency.score = "numeric",
-                                                      consistency.score.p.value = "numeric",
-                                                      consistency.score.n = "integer",
+                                                      f_statistic = "numeric",
+                                                      f_statistic_p_value = "numeric",
+                                                      consistency_score = "numeric",
+                                                      consistency_score_p_value = "numeric",
+                                                      consistency_score_n = "integer",
                                                       plot = "ANY"))
 
 #' Getter Method spectrumAdjRSquared
@@ -57,7 +58,7 @@ setGeneric("spectrumAdjRSquared", function(object) standardGeneric("spectrumAdjR
 #' @aliases spectrumAdjRSquared
 #' @aliases spectrumAdjRSquared,SpectrumScore-method
 setMethod("spectrumAdjRSquared", signature(object = "SpectrumScore"),
-          function(object) object@adj.r.squared)
+          function(object) object@adj_r_squared)
 
 #' Getter Method spectrumDegree
 #' @name SpectrumScore-class
@@ -117,7 +118,7 @@ setGeneric("spectrumFStatistic", function(object) standardGeneric("spectrumFStat
 #' @aliases spectrumFStatistic
 #' @aliases spectrumFStatistic,SpectrumScore-method
 setMethod("spectrumFStatistic", signature(object = "SpectrumScore"),
-          function(object) object@f.statistic)
+          function(object) object@f_statistic)
 
 #' Getter Method spectrumFStatisticPValue
 #' @name SpectrumScore-class
@@ -133,7 +134,7 @@ setGeneric("spectrumFStatisticPValue",
 #' @aliases spectrumFStatisticPValue
 #' @aliases spectrumFStatisticPValue,SpectrumScore-method
 setMethod("spectrumFStatisticPValue", signature(object = "SpectrumScore"),
-          function(object) object@f.statistic.p.value)
+          function(object) object@f_statistic_p_value)
 
 #' Getter Method spectrumConsistencyScore
 #' @name SpectrumScore-class
@@ -149,7 +150,7 @@ setGeneric("spectrumConsistencyScore",
 #' @aliases spectrumConsistencyScore
 #' @aliases spectrumConsistencyScore,SpectrumScore-method
 setMethod("spectrumConsistencyScore", signature(object = "SpectrumScore"),
-          function(object) object@consistency.score)
+          function(object) object@consistency_score)
 
 #' Getter Method spectrumConsistencyScorePValue
 #' @name SpectrumScore-class
@@ -165,7 +166,7 @@ setGeneric("spectrumConsistencyScorePValue",
 #' @aliases spectrumConsistencyScorePValue
 #' @aliases spectrumConsistencyScorePValue,SpectrumScore-method
 setMethod("spectrumConsistencyScorePValue", signature(object = "SpectrumScore"),
-          function(object) object@consistency.score.p.value)
+          function(object) object@consistency_score_p_value)
 
 #' Getter Method spectrumConsistencyScoreN
 #' @name SpectrumScore-class
@@ -181,7 +182,7 @@ setGeneric("spectrumConsistencyScoreN",
 #' @aliases spectrumConsistencyScoreN
 #' @aliases spectrumConsistencyScoreN,SpectrumScore-method
 setMethod("spectrumConsistencyScoreN", signature(object = "SpectrumScore"),
-          function(object) object@consistency.score.n)
+          function(object) object@consistency_score_n)
 
 #' @importFrom methods setMethod
 #' @importFrom methods signature
@@ -190,15 +191,15 @@ setMethod("spectrumConsistencyScoreN", signature(object = "SpectrumScore"),
 #' @aliases show,SpectrumScore-method
 setMethod("show", signature(object = "SpectrumScore"), function(object) {
     cat(is(object)[[1]], "\n",
-        "  adjusted R squared: ", object@adj.r.squared, "\n",
+        "  adjusted R squared: ", object@adj_r_squared, "\n",
         "  degree:  ", object@degree, "\n",
         "  residuals:  ", object@residuals, "\n",
         "  slope (linear coefficient):  ", object@slope, "\n",
-        "  F statistic:  ", object@f.statistic, "\n",
-        "  F statistic (p-value):  ", object@f.statistic.p.value, "\n",
-        "  local consistency score:  ", object@consistency.score, "\n",
-        "  local consistency score (p-value):  ", object@consistency.score.p.value, "\n",
-        "  local consistency score (number of permutations):  ", object@consistency.score.n, "\n",
+        "  F statistic:  ", object@f_statistic, "\n",
+        "  F statistic (p-value):  ", object@f_statistic_p_value, "\n",
+        "  local consistency score:  ", object@consistency_score, "\n",
+        "  local consistency score (p-value):  ", object@consistency_score_p_value, "\n",
+        "  local consistency score (number of permutations):  ", object@consistency_score_n, "\n",
         sep = ""
     )
 })
@@ -219,19 +220,19 @@ setMethod("plot", signature(x = "SpectrumScore"), function(x) {
 #' Preprocessing function for SPMA, divides transcript sequences
 #' into \emph{n} bins.
 #'
-#' @param background.set character vector of named sequences (names are
+#' @param background_set character vector of named sequences (names are
 #' usually RefSeq
 #' identifiers and sequence region labels,
 #'  e.g., "NM_1_DUMMY|3UTR"). It is important that the sequences are
 #'  already sorted by fold change,
 #'  signal-to-noise ratio or any other meaningful measure.
-#' @param n.bins specifies the number of bins in which the sequences
+#' @param n_bins specifies the number of bins in which the sequences
 #' will be divided,
 #' valid values are between 7 and 100
-#' @return An array of \code{n.bins} length, containing the binned sequences
+#' @return An array of \code{n_bins} length, containing the binned sequences
 #' @examples
 #' # toy example
-#' toy.background.set <- c(
+#' toy_background_set <- c(
 #'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU", "UCAUUUUAUUAAA",
 #'   "AAUUGGUGUCUGGAUACUUCCCUGUACAU", "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
 #'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC", "AGUUC", "CCAGUAA"
@@ -239,7 +240,7 @@ setMethod("plot", signature(x = "SpectrumScore"), function(x) {
 #' # names are used as keys in the hash table (cached version only)
 #' # ideally sequence identifiers (e.g., RefSeq ids) and
 #' # sequence region labels (e.g., 3UTR for 3'-UTR)
-#' names(toy.background.set) <- c(
+#' names(toy_background_set) <- c(
 #'   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
 #'   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
 #'   "NM_7_DUMMY|3UTR",
@@ -248,35 +249,35 @@ setMethod("plot", signature(x = "SpectrumScore"), function(x) {
 #'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 #' )
 #'
-#' foreground.sets <- subdivideData(toy.background.set, n.bins = 7)
+#' foreground_sets <- subdivideData(toy_background_set, n_bins = 7)
 #'
 #' # example data set
-#' background.df <- transite:::ge$background
+#' background_df <- transite:::ge$background_df
 #' # sort sequences by signal-to-noise ratio
-#' background.df <- dplyr::arrange(background.df, value)
+#' background_df <- dplyr::arrange(background_df, value)
 #' # character vector of named sequences
-#' background.set <- background.df$seq
-#' names(background.set) <- paste0(background.df$refseq, "|",
-#'   background.df$seq.type)
+#' background_set <- background_df$seq
+#' names(background_set) <- paste0(background_df$refseq, "|",
+#'   background_df$seq_type)
 #'
-#' foreground.sets <- subdivideData(background.set)
+#' foreground_sets <- subdivideData(background_set)
 #' @family SPMA functions
 #' @export
-subdivideData <- function(background.set, n.bins = 40) {
-    if (n.bins < 7 || n.bins > 100) {
-        stop("value of bin.num is invalid, valid values are integers between 7 and 100")
+subdivideData <- function(background_set, n_bins = 40) {
+    if (n_bins < 7 || n_bins > 100) {
+        stop("value of bin_num is invalid, valid values are integers between 7 and 100")
     }
-    if (n.bins > length(background.set)) {
+    if (n_bins > length(background_set)) {
         stop("more bins than transcripts")
     }
 
-    bin.size <- floor(length(background.set) / n.bins)
-    cuts <- seq_len(n.bins - 1) * bin.size
-    cuts <- c(0, cuts, length(background.set))
-    foreground.sets <- tapply(background.set,
-                              cut(seq_len(length(background.set)),
+    bin_size <- floor(length(background_set) / n_bins)
+    cuts <- seq_len(n_bins - 1) * bin_size
+    cuts <- c(0, cuts, length(background_set))
+    foreground_sets <- tapply(background_set,
+                              cut(seq_len(length(background_set)),
                                   breaks = cuts), identity)
-    return(foreground.sets)
+    return(foreground_sets)
 }
 
 #' @title Calculates spectrum scores and creates spectrum plots
@@ -411,17 +412,17 @@ subdivideData <- function(background.set, n.bins = 40) {
 #'
 #' @param x vector of values (e.g., enrichment values, normalized RBP
 #' scores) per bin
-#' @param p.value vector of p-values (e.g., significance of enrichment
+#' @param p_value vector of p-values (e.g., significance of enrichment
 #' values) per bin
-#' @param x.label label of values (e.g., \code{"enrichment value"})
+#' @param x_label label of values (e.g., \code{"enrichment value"})
 #' @param midpoint for enrichment values the midpoint should be \code{1},
 #' for log enrichment
 #' values \code{0})
-#' @param max.model.degree maximum degree of polynomial
-#' @param max.cs.permutations maximum number of permutations performed in
+#' @param max_model_degree maximum degree of polynomial
+#' @param max_cs_permutations maximum number of permutations performed in
 #' Monte Carlo test
 #' for consistency score
-#' @param min.cs.permutations minimum number of permutations performed in
+#' @param min_cs_permutations minimum number of permutations performed in
 #' Monte Carlo test
 #' for consistency score
 #' @param e integer-valued stop criterion for consistency score Monte Carlo test: aborting
@@ -433,38 +434,38 @@ subdivideData <- function(background.set, n.bins = 40) {
 #' @return A list object of class \code{SpectrumScore} with the following
 #' components:
 #' \tabular{rl}{
-#'   \code{adj.r.squared} \tab adjusted \eqn{R^2} of polynomial model\cr
+#'   \code{adj_r_squared} \tab adjusted \eqn{R^2} of polynomial model\cr
 #'   \code{degree} \tab maximum degree of polynomial\cr
 #'   \code{residuals} \tab residuals  of polynomial model\cr
 #'   \code{slope} \tab coefficient of the linear term of the polynomial model
 #'    (spectrum "direction")\cr
-#'   \code{f.statistic} \tab statistic of the F-test \cr
-#'   \code{f.statistic.p.value} \tab p-value of F-test\cr
-#'   \code{consistency.score} \tab normalized sum of deviance between the linear
+#'   \code{f_statistic} \tab statistic of the F-test \cr
+#'   \code{f_statistic_p_value} \tab p-value of F-test\cr
+#'   \code{consistency_score} \tab normalized sum of deviance between the linear
 #'   interpolation of the scores
 #'    of two adjoining bins and the score of the middle bin, for each position
 #'    in the spectrum \cr
-#'   \code{consistency.score.p.value} \tab obtained by Monte Carlo sampling
+#'   \code{consistency_score_p_value} \tab obtained by Monte Carlo sampling
 #'   (randomly permuting
 #'   the coordinates of the scores vector) \cr
-#'   \code{consistency.score.n} \tab number of permutations\cr
+#'   \code{consistency_score_n} \tab number of permutations\cr
 #'   \code{plot} \tab
 #' }
 #' @examples
 #' # random spectrum
-#' scoreSpectrum(runif(n = 40, min = -1, max = 1), max.model.degree = 1)
+#' scoreSpectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
 #'
 #' # non-random linear spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-#' scoreSpectrum(signal + noise, max.model.degree = 1,
-#'   max.cs.permutations = 100000)
+#' scoreSpectrum(signal + noise, max_model_degree = 1,
+#'   max_cs_permutations = 100000)
 #'
 #' # non-random quadratic spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-#' scoreSpectrum(signal + noise, max.model.degree = 2,
-#'   max.cs.permutations = 100000)
+#' scoreSpectrum(signal + noise, max_model_degree = 2,
+#'   max_cs_permutations = 100000)
 #' @family SPMA functions
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 aes_string
@@ -494,28 +495,28 @@ subdivideData <- function(background.set, n.bins = 40) {
 #' @importFrom stats pf
 #' @importFrom methods new
 #' @export
-scoreSpectrum <- function(x, p.value = array(1, length(x)),
-                          x.label = "log enrichment",
+scoreSpectrum <- function(x, p_value = array(1, length(x)),
+                          x_label = "log enrichment",
                           midpoint = 0,
-                          max.model.degree = 3,
-                          max.cs.permutations = 10000000,
-                          min.cs.permutations = 5000, e = 5) {
+                          max_model_degree = 3,
+                          max_cs_permutations = 10000000,
+                          min_cs_permutations = 5000, e = 5) {
     if (length(x) < 7) {
         print(x)
         message(x)
         stop("too few bins")
     }
-    if (max.model.degree > 5 || max.model.degree < 1) {
-        stop("supported values for max.model.degree: 1, 2, 3, 4, 5")
+    if (max_model_degree > 5 || max_model_degree < 1) {
+        stop("supported values for max_model_degree: 1, 2, 3, 4, 5")
     }
     bin <- seq_len(length(x))
 
     df <- data.frame(
-        bin = bin, value = x, p.value = p.value, RBP = rep("", length(bin)),
+        bin = bin, value = x, p_value = p_value, RBP = rep("", length(bin)),
         stringsAsFactors = FALSE
     )
 
-    enrichment.plot <- ggplot2::ggplot(df, ggplot2::aes_string(
+    enrichment_plot <- ggplot2::ggplot(df, ggplot2::aes_string(
         x = as.character("bin"),
         y = "RBP", fill = "value"
     )) +
@@ -525,9 +526,9 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
             midpoint = midpoint
         ) +
         ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
-        ggplot2::geom_text(ggplot2::aes(label = ifelse(p.value <= 0.001, "***",
-                                                       ifelse(p.value <= 0.01, "**",
-                                                              ifelse(p.value <= 0.05, "*", "")
+        ggplot2::geom_text(ggplot2::aes(label = ifelse(p_value <= 0.001, "***",
+                                                       ifelse(p_value <= 0.01, "**",
+                                                              ifelse(p_value <= 0.05, "*", "")
                                                        )
         )),
         size = 4
@@ -538,23 +539,23 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
             panel.background = ggplot2::element_blank(),
             legend.position = "top"
         ) +
-        ggplot2::labs(fill = x.label, y = x.label)
+        ggplot2::labs(fill = x_label, y = x_label)
 
 
     # determine polynomial degree of gradient
-    model <- stats::lm(x ~ stats::poly(bin, degree = max.model.degree))
+    model <- stats::lm(x ~ stats::poly(bin, degree = max_model_degree))
     coeffs <- summary(model)$coefficients
 
     if (stats::sd(x) <= 1e-10) {
         degree <- 0
     } else {
-        if (max.model.degree == 5 && coeffs[6, 4] <= 0.001) {
+        if (max_model_degree == 5 && coeffs[6, 4] <= 0.001) {
             degree <- 5
-        } else if (max.model.degree >= 4 && coeffs[5, 4] <= 0.001) {
+        } else if (max_model_degree >= 4 && coeffs[5, 4] <= 0.001) {
             degree <- 4
-        } else if (max.model.degree >= 3 && coeffs[4, 4] <= 0.001) {
+        } else if (max_model_degree >= 3 && coeffs[4, 4] <= 0.001) {
             degree <- 3
-        } else if (max.model.degree >= 2 && coeffs[3, 4] <= 0.001) {
+        } else if (max_model_degree >= 2 && coeffs[3, 4] <= 0.001) {
             degree <- 2
         } else if (coeffs[2, 4] <= 0.001) {
             degree <- 1
@@ -566,14 +567,14 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
     df <- data.frame(y = x, bin = bin)
     # calculate residuals of selected model
     if (degree > 0) {
-        selected.model <- stats::lm(x ~ stats::poly(bin, degree = degree))
+        selected_model <- stats::lm(x ~ stats::poly(bin, degree = degree))
         scatterplot <- ggplot2::ggplot(df, ggplot2::aes_string(x = "bin",
                                                                y = "y")) +
             ggplot2::geom_tile(colour = "transparent", width = 0, height = 0) +
             ggplot2::geom_point() +
             ggplot2::geom_smooth(method = "lm",
                                  formula = y ~ stats::poly(x, degree = degree)) +
-            ggplot2::ylab(x.label) +
+            ggplot2::ylab(x_label) +
             ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
             ggplot2::theme(
                 axis.text.x = ggplot2::element_text(size = 8),
@@ -583,14 +584,14 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
                 strip.background = ggplot2::element_blank()
             )
     } else {
-        selected.model <- stats::lm(x ~ 1)
+        selected_model <- stats::lm(x ~ 1)
         scatterplot <- ggplot2::ggplot(df,
                                        ggplot2::aes_string(x = "bin",
                                                            y = "y")) +
             ggplot2::geom_tile(colour = "transparent", width = 0, height = 0) +
             ggplot2::geom_point() +
             ggplot2::geom_smooth(method = "lm", formula = y ~ 1) +
-            ggplot2::ylab(x.label) +
+            ggplot2::ylab(x_label) +
             ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
             ggplot2::theme(
                 axis.text.x = ggplot2::element_text(size = 8),
@@ -601,44 +602,44 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
             )
     }
 
-    predicted <- stats::predict(selected.model, data.frame(bin))
+    predicted <- stats::predict(selected_model, data.frame(bin))
     residuals <- sum((predicted - x)^2)
-    meta.info <- summary(selected.model)
+    meta_info <- summary(selected_model)
 
     # calculate local consistency score
-    local.consistency <- calculateLocalConsistency(x, max.cs.permutations,
-                                                   min.cs.permutations, e)
+    local_consistency <- calculateLocalConsistency(x, max_cs_permutations,
+                                                   min_cs_permutations, e)
 
     if (degree > 0) {
-        slope <- meta.info$coefficients[2, 1]
-        f.statistic <- meta.info$fstatistic
-        f.statistic.p.value <- stats::pf(f.statistic[[1]],
-                                         df1 = f.statistic[[2]],
-                                         df2 = f.statistic[[3]],
+        slope <- meta_info$coefficients[2, 1]
+        f_statistic <- meta_info$fstatistic
+        f_statistic_p_value <- stats::pf(f_statistic[[1]],
+                                         df1 = f_statistic[[2]],
+                                         df2 = f_statistic[[3]],
                                          lower.tail = FALSE
         )
     } else {
         slope <- 0
-        f.statistic <- list(0, NA, NA)
-        f.statistic.p.value <- 1
+        f_statistic <- list(0, NA, NA)
+        f_statistic_p_value <- 1
     }
 
     # combine figure
-    gp1 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(enrichment.plot))
+    gp1 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(enrichment_plot))
     gp2 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(scatterplot))
 
     gp2$widths <- gp1$widths
 
     return(.SpectrumScore(
-        adj.r.squared = meta.info$adj.r.squared,
+        adj_r_squared = meta_info$adj.r.squared,
         degree = as.integer(degree),
         residuals = residuals,
         slope = slope,
-        f.statistic = f.statistic[[1]],
-        f.statistic.p.value = f.statistic.p.value,
-        consistency.score = local.consistency$score,
-        consistency.score.p.value = local.consistency$p.value,
-        consistency.score.n = as.integer(local.consistency$n),
+        f_statistic = f_statistic[[1]],
+        f_statistic_p_value = f_statistic_p_value,
+        consistency_score = local_consistency$score,
+        consistency_score_p_value = local_consistency$p_value,
+        consistency_score_n = as.integer(local_consistency$n),
         plot = gridExtra::arrangeGrob(gp1, gp2, ncol = 1, heights = c(1, 1.4))
     ))
 }
@@ -649,55 +650,55 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' Spectra can be classified based on the aggregate spectrum classifier score.
 #' If \code{sum(score) == 3} spectrum considered non-random, random otherwise.
 #'
-#' @param adj.r.squared adjusted \eqn{R^2} of polynomial model, returned by
+#' @param adj_r_squared adjusted \eqn{R^2} of polynomial model, returned by
 #' \link{scoreSpectrum}
 #' @param degree degree of polynomial, returned by \link{scoreSpectrum}
 #' @param slope coefficient of the linear term of the polynomial model
 #' (spectrum "direction"),
 #' returned by \link{scoreSpectrum}
-#' @param consistency.score.n number of performed permutations before
+#' @param consistency_score_n number of performed permutations before
 #' early stopping,
 #' returned by \link{scoreSpectrum}
-#' @param n.significant number of bins with statistically significant
+#' @param n_significant number of bins with statistically significant
 #' enrichment
-#' @param n.bins number of bins
+#' @param n_bins number of bins
 #' @return a three-dimensional binary vector with the following components:
 #' \tabular{rl}{
-#'   \code{coordinate 1} \tab \code{adj.r.squared >= 0.4}\cr
-#'   \code{coordinate 2} \tab \code{consistency.score.n > 1000000}\cr
-#'   \code{coordinate 3} \tab \code{n.significant >= floor(n.bins / 10)}
+#'   \code{coordinate 1} \tab \code{adj_r_squared >= 0.4}\cr
+#'   \code{coordinate 2} \tab \code{consistency_score_n > 1000000}\cr
+#'   \code{coordinate 3} \tab \code{n_significant >= floor(n_bins / 10)}
 #' }
 #' @examples
-#' n.bins <- 40
+#' n_bins <- 40
 #'
 #' # random spectrum
-#' random.sp <- scoreSpectrum(runif(n = n.bins, min = -1, max = 1),
-#'   max.model.degree = 1)
+#' random_sp <- scoreSpectrum(runif(n = n_bins, min = -1, max = 1),
+#'   max_model_degree = 1)
 #' score <- spectrumClassifier(
-#'   spectrumAdjRSquared(random.sp), spectrumDegree(random.sp),
-#'   spectrumSlope(random.sp), spectrumConsistencyScoreN(random.sp), 0, n.bins
+#'   spectrumAdjRSquared(random_sp), spectrumDegree(random_sp),
+#'   spectrumSlope(random_sp), spectrumConsistencyScoreN(random_sp), 0, n_bins
 #' )
 #' sum(score)
 #'
 #' # non-random linear spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-#' linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
-#'   max.cs.permutations = 100000)
+#' linear_sp <- scoreSpectrum(signal + noise, max_model_degree = 1,
+#'   max_cs_permutations = 100000)
 #' score <- spectrumClassifier(
-#'   spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
-#'   spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
+#'   spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
+#'   spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
 #' )
 #' sum(score)
 #' \dontrun{
 #' # non-random linear spectrum with weak noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-#' linear.sp <- scoreSpectrum(signal + noise, max.model.degree = 1,
-#'   max.cs.permutations = 100000)
+#' linear_sp <- scoreSpectrum(signal + noise, max_model_degree = 1,
+#'   max_cs_permutations = 100000)
 #' score <- spectrumClassifier(
-#'   spectrumAdjRSquared(linear.sp), spectrumDegree(linear.sp),
-#'   spectrumSlope(linear.sp), spectrumConsistencyScoreN(linear.sp), 10, n.bins
+#'   spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
+#'   spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
 #' )
 #' sum(score)
 #' }
@@ -705,32 +706,32 @@ scoreSpectrum <- function(x, p.value = array(1, length(x)),
 #' # non-random quadratic spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-#' quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2,
-#'   max.cs.permutations = 100000)
+#' quadratic_sp <- scoreSpectrum(signal + noise, max_model_degree = 2,
+#'   max_cs_permutations = 100000)
 #' score <- spectrumClassifier(
-#'   spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
-#'   spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
+#'   spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
+#'   spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
 #' )
 #' sum(score)
 #' \dontrun{
 #' # non-random quadratic spectrum with weak noise component
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.1)
-#' quadratic.sp <- scoreSpectrum(signal + noise, max.model.degree = 2)
+#' quadratic_sp <- scoreSpectrum(signal + noise, max_model_degree = 2)
 #' score <- spectrumClassifier(
-#'   spectrumAdjRSquared(quadratic.sp), spectrumDegree(quadratic.sp),
-#'   spectrumSlope(quadratic.sp), spectrumConsistencyScoreN(quadratic.sp), 10, n.bins
+#'   spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
+#'   spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
 #' )
 #' sum(score)
 #' }
 #' @family SPMA functions
 #' @export
-spectrumClassifier <- function(adj.r.squared, degree, slope,
-                               consistency.score.n,
-                               n.significant, n.bins) {
+spectrumClassifier <- function(adj_r_squared, degree, slope,
+                               consistency_score_n,
+                               n_significant, n_bins) {
     return(c(
-        as.integer(adj.r.squared >= 0.4),
-        as.integer(consistency.score.n > 1000000),
-        as.integer(n.significant >= ceiling(n.bins / 10))
+        as.integer(adj_r_squared >= 0.4),
+        as.integer(consistency_score_n > 1000000),
+        as.integer(n_significant >= ceiling(n_bins / 10))
     ))
 }

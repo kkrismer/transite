@@ -140,7 +140,7 @@ iupac <- generateIUPACByKmers(kmers,
   code = initIUPAClookupTable())
 hexamers <- generateKmersFromIUPAC(iupac, 6)
 heptamers <- generateKmersFromIUPAC(iupac, 7)
-new("RBPMotif", id = "custom.motif", rbps = "RBP1",
+new("RBPMotif", id = "custom_motif", rbps = "RBP1",
   matrix = NULL, hexamers = hexamers, heptamers = heptamers, length = 7L,
   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
 )

@@ -4,36 +4,40 @@
 \alias{permTestGeometricMean}
 \title{Permutation Test Based Significance of Observed Mean}
 \usage{
-permTestGeometricMean(actual.mean, motif.kmers, random.permutations,
-  alternative = c("two.sided", "less", "greater"), conf.level = 0.95,
-  produce.plot = TRUE)
+permTestGeometricMean(
+  actual_mean,
+  motif_kmers,
+  random_permutations,
+  alternative = c("two_sided", "less", "greater"),
+  conf_level = 0.95,
+  produce_plot = TRUE
+)
 }
 \arguments{
-\item{actual.mean}{observed mean}
+\item{actual_mean}{observed mean}
 
-\item{motif.kmers}{set of \emph{k}-mers that were used to compute
-the \code{actual.mean}}
+\item{motif_kmers}{set of \emph{k}-mers that were used to compute
+the \code{actual_mean}}
 
-\item{random.permutations}{a set of random permutations of the
+\item{random_permutations}{a set of random permutations of the
 original data, used
 to generate an empirical null distribution.}
 
 \item{alternative}{side of the test, one of the following:
-\code{"two.sided"},
+\code{"two_sided"},
 \code{"less"}, \code{"greater"}}
 
-\item{conf.level}{confidence level for the returned confidence
-    interval.}
+\item{conf_level}{confidence level for the returned confidence interval}
 
-\item{produce.plot}{if distribution plot should be part of the
+\item{produce_plot}{if distribution plot should be part of the
 returned list}
 }
 \value{
 A list with the following components:
 \tabular{rl}{
-  \code{p.value.estimate} \tab the estimated p-value of the
+  \code{p_value_estimate} \tab the estimated p-value of the
   observed mean\cr
-  \code{conf.int} \tab the confidence interval around that estimate\cr
+  \code{conf_int} \tab the confidence interval around that estimate\cr
   \code{plot} \tab plot of the empirical distribution of
   geometric means of the
   enrichment values
@@ -45,14 +49,16 @@ of the observed
 mean, given a set of random permutations of the data.
 }
 \seealso{
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{runKmerSPMA}}, \code{\link{runKmerTSMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{runKmerSPMA}()},
+\code{\link{runKmerTSMA}()}
 }
 \concept{\emph{k}-mer functions}

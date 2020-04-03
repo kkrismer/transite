@@ -17,10 +17,10 @@
 #'                "AUCAAAUUA", "UGUGGGG", "GACACUUAAAGAUCCU",
 #'                "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC",
 #'                "AGUUC", "CCAGUAA")
-#' seq.char.vectors <- lapply(sequences, function(seq) {
+#' seq_char_vectors <- lapply(sequences, function(seq) {
 #'   unlist(strsplit(seq, ""))
 #' })
-#' scoreSequences(seq.char.vectors, as.matrix(motifMatrix(motif)))
+#' scoreSequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
 #'
 #' @export
 scoreSequences <- function(sequences, pwm) {
@@ -66,8 +66,8 @@ lookupKmerScores <- function(kmers, kmerScores) {
 #' C++ implementation of motif score algorithm.
 #'
 #' @param kmers list of \emph{k}-mers
-#' @return data frame with columns \code{score}, \code{top.kmer},
-#' and \code{top.kmer.enrichment}
+#' @return data frame with columns \code{score}, \code{top_kmer},
+#' and \code{top_kmer_enrichment}
 computeMotifScore <- function(kmers) {
     .Call('_transite_computeMotifScore', PACKAGE = 'transite', kmers)
 }
@@ -89,21 +89,21 @@ computeMotifScore <- function(kmers) {
 #' process after observing \code{e} random consistency values with
 #' more extreme values
 #' than the actual consistency value
-#' @return list with \code{score}, \code{p.value}, and \code{n} components,
+#' @return list with \code{score}, \code{p_value}, and \code{n} components,
 #' where \code{score} is the raw local consistency score (usually not used),
-#' \code{p.value} is the associated p-value for that score, obtained by
+#' \code{p_value} is the associated p-value for that score, obtained by
 #' Monte Carlo testing, and \code{n} is the number of permutations performed
 #' in the Monte Carlo test (the higher, the more significant)
 #'
 #' @examples
-#' poor.enrichment.spectrum <- c(0.1, 0.5, 0.6, 0.4,
+#' poor_enrichment_spectrum <- c(0.1, 0.5, 0.6, 0.4,
 #'   0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
-#' local.consistency <- calculateLocalConsistency(poor.enrichment.spectrum,
+#' local_consistency <- calculateLocalConsistency(poor_enrichment_spectrum,
 #'   1000000, 1000, 5)
 #'
-#' enrichment.spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
+#' enrichment_spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
 #'   0.9, 1.2, 1.4, 1.6, 1.4)
-#' local.consistency <- calculateLocalConsistency(enrichment.spectrum,
+#' local_consistency <- calculateLocalConsistency(enrichment_spectrum,
 #'   1000000, 1000, 5)
 #' @export
 calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
@@ -137,22 +137,22 @@ calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
 #' for foreground enrichment
 #'
 #' @examples
-#' foreground.seqs <- c("CAGUCAAGACUCC", "AAUUGGUUGUGGGGCUUCCCUGUACAU",
+#' foreground_seqs <- c("CAGUCAAGACUCC", "AAUUGGUUGUGGGGCUUCCCUGUACAU",
 #'                      "AGAU", "CCAGUAA", "UGUGGGG")
-#' background.seqs <- c(foreground.seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
+#' background_seqs <- c(foreground_seqs, "CAACAGCCUUAAUU", "CUUUGGGGAAU",
 #'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
 #'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
 #'                      "AUAGAC", "AGUUC")
-#' motif.db <- getMotifById("M178_0.6")
-#' fg <- scoreTranscripts(foreground.seqs, cache = FALSE,
-#'   motifs = motif.db)
-#' bg <- scoreTranscripts(background.seqs, cache = FALSE,
-#'   motifs = motif.db)
+#' motif_db <- getMotifById("M178_0.6")
+#' fg <- scoreTranscripts(foreground_seqs, cache = FALSE,
+#'   motifs = motif_db)
+#' bg <- scoreTranscripts(background_seqs, cache = FALSE,
+#'   motifs = motif_db)
 #'
-#' mc.result <- calculateTranscriptMC(unlist(bg$absolute.hits),
-#'  unlist(bg$total.sites),
-#'  fg$df$absolute.hits / fg$df$total.sites,
-#'  length(foreground.seqs), 1000, 500, 5)
+#' mc_result <- calculateTranscriptMC(unlist(bg$absolute_hits),
+#'  unlist(bg$total_sites),
+#'  fg$df$absolute_hits / fg$df$total_sites,
+#'  length(foreground_seqs), 1000, 500, 5)
 #' @export
 calculateTranscriptMC <- function(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e) {
     .Call('_transite_calculateTranscriptMC', PACKAGE = 'transite', absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e)

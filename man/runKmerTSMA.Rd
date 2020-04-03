@@ -4,18 +4,26 @@
 \alias{runKmerTSMA}
 \title{\emph{k}-mer-based Transcript Set Motif Analysis}
 \usage{
-runKmerTSMA(foreground.sets, background.set, motifs = NULL, k = 6,
-  fg.permutations = 5000, kmer.significance.threshold = 0.01,
-  produce.plot = TRUE, p.adjust.method = "BH",
-  p.combining.method = "fisher", n.cores = 1)
+runKmerTSMA(
+  foreground_sets,
+  background_set,
+  motifs = NULL,
+  k = 6,
+  fg_permutations = 5000,
+  kmer_significance_threshold = 0.01,
+  produce_plot = TRUE,
+  p_adjust_method = "BH",
+  p_combining_method = "fisher",
+  n_cores = 1
+)
 }
 \arguments{
-\item{foreground.sets}{list of foreground sets; a foreground set is a
+\item{foreground_sets}{list of foreground sets; a foreground set is a
 character vector of
 DNA or RNA sequences (not both) and a strict subset of the
-\code{background.set}}
+\code{background_set}}
 
-\item{background.set}{character vector of DNA or RNA sequences that
+\item{background_set}{character vector of DNA or RNA sequences that
 constitute the
 background set}
 
@@ -25,39 +33,39 @@ If \code{is.null(motifs)} then all Transite motifs are used.}
 \item{k}{length of \emph{k}-mer, either \code{6} for hexamers or
 \code{7} for heptamers}
 
-\item{fg.permutations}{numer of foreground permutations}
+\item{fg_permutations}{numer of foreground permutations}
 
-\item{kmer.significance.threshold}{p-value threshold for significance,
+\item{kmer_significance_threshold}{p-value threshold for significance,
 e.g., \code{0.05} or
 \code{0.01} (used for volcano plots)}
 
-\item{produce.plot}{if \code{TRUE} volcano plots and distribution plots
+\item{produce_plot}{if \code{TRUE} volcano plots and distribution plots
 are created}
 
-\item{p.adjust.method}{see \code{\link[stats]{p.adjust}}}
+\item{p_adjust_method}{see \code{\link[stats]{p.adjust}}}
 
-\item{p.combining.method}{one of the following: Fisher (1932)
+\item{p_combining_method}{one of the following: Fisher (1932)
 (\code{"fisher"}), Stouffer (1949),
 Liptak (1958) (\code{"SL"}), Mudholkar and George (1979)
 (\code{"MG"}), and Tippett (1931)
 (\code{"tippett"}) (see \code{\link{pCombine}})}
 
-\item{n.cores}{number of computing cores to use}
+\item{n_cores}{number of computing cores to use}
 }
 \value{
 A list of lists (one for each transcript set) with the
 following components:
 \tabular{rl}{
-  \code{enrichment.df} \tab the result of
+  \code{enrichment_df} \tab the result of
   \code{\link{computeKmerEnrichment}} \cr
-  \code{motif.df} \tab \cr
-  \code{motif.kmers.dfs} \tab \cr
-  \code{volcano.plots} \tab volcano plots for each
+  \code{motif_df} \tab \cr
+  \code{motif_kmers_dfs} \tab \cr
+  \code{volcano_plots} \tab volcano plots for each
   motif (see \code{\link{drawVolcanoPlot}}) \cr
-  \code{perm.test.plots} \tab plots of the empirical distribution of
+  \code{perm_test_plots} \tab plots of the empirical distribution of
   \emph{k}-mer enrichment values for each motif \cr
-  \code{enriched.kmers.combined.p.values} \tab \cr
-  \code{depleted.kmers.combined.p.values} \tab
+  \code{enriched_kmers_combined_p_values} \tab \cr
+  \code{depleted_kmers_combined_p_values} \tab
 }
 }
 \description{
@@ -96,64 +104,66 @@ target overrepresentation.
 }
 \examples{
 # define simple sequence sets for foreground and background
-foreground.set1 <- c(
+foreground_set1 <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
   "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
   "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
   "AUAGAC", "AGUUC", "CCAGUAA"
 )
-foreground.set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
-foreground.sets <- list(foreground.set1, foreground.set2)
-background.set <- unique(c(foreground.set1, foreground.set2, c(
+foreground_set2 <- c("UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU")
+foreground_sets <- list(foreground_set1, foreground_set2)
+background_set <- unique(c(foreground_set1, foreground_set2, c(
   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA",
   "CCACACCGG", "GUCAUCAGU", "GUCAGUCC", "CAGGUCAGGGGCA"
 )))
 
 # run k-mer based TSMA with all Transite motifs (recommended):
-# results <- runKmerTSMA(foreground.sets, background.set)
+# results <- runKmerTSMA(foreground_sets, background_set)
 
 # run TSMA with one motif:
-motif.db <- getMotifById("M178_0.6")
-results <- runKmerTSMA(foreground.sets, background.set, motifs = motif.db)
+motif_db <- getMotifById("M178_0.6")
+results <- runKmerTSMA(foreground_sets, background_set, motifs = motif_db)
 \dontrun{
 # define example sequence sets for foreground and background
-foreground.set1 <- gsub("T", "U", transite:::ge$foreground1$seq)
-foreground.set2 <- gsub("T", "U", transite:::ge$foreground2$seq)
-foreground.sets <- list(foreground.set1, foreground.set2)
-background.set <- gsub("T", "U", transite:::ge$background$seq)
+foreground_set1 <- gsub("T", "U", transite:::ge$foreground1_df$seq)
+foreground_set2 <- gsub("T", "U", transite:::ge$foreground2_df$seq)
+foreground_sets <- list(foreground_set1, foreground_set2)
+background_set <- gsub("T", "U", transite:::ge$background_df$seq)
 
 # run TSMA with all Transite motifs
-results <- runKmerTSMA(foreground.sets, background.set)
+results <- runKmerTSMA(foreground_sets, background_set)
 
 # run TSMA with a subset of Transite motifs
-results <- runKmerTSMA(foreground.sets, background.set,
+results <- runKmerTSMA(foreground_sets, background_set,
   motifs = getMotifByRBP("ELAVL1"))
 
 # run TSMA with user-defined motif
-toy.motif <- createKmerMotif(
-  "toy.motif", "example RBP",
+toy_motif <- createKmerMotif(
+  "toy_motif", "example RBP",
   c("AACCGG", "AAAACG", "AACACG"), "example type", "example species", "user"
 )
-results <- runMatrixTSMA(foreground.sets, background.set,
-  motifs = list(toy.motif))
+results <- runMatrixTSMA(foreground_sets, background_set,
+  motifs = list(toy_motif))
 }
 
 }
 \seealso{
-Other TSMA functions: \code{\link{drawVolcanoPlot}},
-  \code{\link{runMatrixTSMA}}
+Other TSMA functions: 
+\code{\link{drawVolcanoPlot}()},
+\code{\link{runMatrixTSMA}()}
 
-Other \emph{k}-mer functions: \code{\link{calculateKmerEnrichment}},
-  \code{\link{checkKmers}},
-  \code{\link{computeKmerEnrichment}},
-  \code{\link{drawVolcanoPlot}},
-  \code{\link{empiricalEnrichmentMeanCDF}},
-  \code{\link{generateKmers}},
-  \code{\link{generatePermutedEnrichments}},
-  \code{\link{homopolymerCorrection}},
-  \code{\link{permTestGeometricMean}},
-  \code{\link{runKmerSPMA}}
+Other \emph{k}-mer functions: 
+\code{\link{calculateKmerEnrichment}()},
+\code{\link{checkKmers}()},
+\code{\link{computeKmerEnrichment}()},
+\code{\link{drawVolcanoPlot}()},
+\code{\link{empiricalEnrichmentMeanCDF}()},
+\code{\link{generateKmers}()},
+\code{\link{generatePermutedEnrichments}()},
+\code{\link{homopolymerCorrection}()},
+\code{\link{permTestGeometricMean}()},
+\code{\link{runKmerSPMA}()}
 }
 \concept{TSMA functions}
 \concept{\emph{k}-mer functions}

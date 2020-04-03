@@ -5,7 +5,7 @@
 #' all or a
 #' subset of RNA-binding protein sequence
 #' motifs and returns the result in a data frame, which is subsequently used by
-#' \code{\link{calculateMotifEnrichment}} to
+#' \code{\link{calculate_motif_enrichment}} to
 #' obtain binding site enrichment scores.
 #'
 #' @param motifs a list of motifs that is used to score the specified sequences.
@@ -18,7 +18,7 @@
 #' sequence type
 #' qualifiers as keys and the number of putative binding sites as values.
 #' If \code{cache} is \code{FALSE}, scores will not be cached.
-#' @inheritParams scoreTranscriptsSingleMotif
+#' @inheritParams score_transcripts_single_motif
 #'
 #' @return A list with three entries:
 #'
@@ -65,27 +65,27 @@
 #' )
 #'
 #' # specific motifs, uncached
-#' motifs <- getMotifByRBP("ELAVL1")
-#' scores <- scoreTranscripts(foreground_set, motifs = motifs, cache = FALSE)
+#' motifs <- get_motif_by_rbp("ELAVL1")
+#' scores <- score_transcripts(foreground_set, motifs = motifs, cache = FALSE)
 #' \dontrun{
 #' # all Transite motifs, cached (writes scores to disk)
-#' scores <- scoreTranscripts(foreground_set)
+#' scores <- score_transcripts(foreground_set)
 #'
 #' # all Transite motifs, uncached
-#' scores <- scoreTranscripts(foreground_set, cache = FALSE)
+#' scores <- score_transcripts(foreground_set, cache = FALSE)
 #'
 #' foreground_df <- transite:::ge$foreground1_df
 #' foreground_set <- foreground_df$seq
 #' names(foreground_set) <- paste0(foreground_df$refseq, "|",
 #'    foreground_df$seq_type)
-#' scores <- scoreTranscripts(foreground_set)
+#' scores <- score_transcripts(foreground_set)
 #' }
 #' @family matrix functions
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply
 #' @export
-scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
+score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
                              threshold_method = "p_value",
                              threshold_value = 0.25^6,
                              n_cores = 1, cache = paste0(tempdir(), "/sc/")) {
@@ -99,7 +99,7 @@ scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
     }
 
     if (is.null(motifs)) {
-        motifs <- getMotifs()
+        motifs <- get_motifs()
     }
 
     if (is.logical(cache)) {
@@ -124,7 +124,7 @@ scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
 
     if (n_cores == 1) {
         motif_scores <- lapply(motifs, function(motif) {
-            return(scoreTranscriptsSingleMotif(
+            return(score_transcripts_single_motif(
                 motif, sequences, max_hits, threshold_method,
                 threshold_value, cache_path
             ))
@@ -134,18 +134,18 @@ scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
         parallel::clusterExport(
             cl = cluster,
             varlist = c(
-                "scoreTranscriptsSingleMotif", "sequences", "max_hits",
+                "score_transcripts_single_motif", "sequences", "max_hits",
                 "threshold_method", "threshold_value", "cache_path",
                 "motifId", "motifRbps", "motifMatrix", "motifLength",
-                "readMotifCache", "writeMotifCache", "lock", "unlock",
-                "getLockObject", "scoreSequences",
-                "cachedScoreSequencesHelper", "scoreSequencesHelper"
+                "read_motif_cache", "write_motif_cache", "lock", "unlock",
+                "get_lock_object", "score_sequences",
+                "cached_score_sequences_helper", "score_sequences_helper"
             ),
             envir = environment()
         )
         motif_scores <- parallel::parLapply(cl = cluster, motifs,
                                             function(motif) {
-            return(scoreTranscriptsSingleMotif(
+            return(score_transcripts_single_motif(
                 motif, sequences, max_hits, threshold_method,
                 threshold_value, cache_path
             ))
@@ -209,8 +209,8 @@ scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
 #' in a set of
 #' sequences for the specified RNA-binding protein sequence
 #' motifs and returns the result in a data frame, which is aggregated by
-#' \code{\link{scoreTranscripts}} and
-#' subsequently used by \code{\link{calculateMotifEnrichment}} to
+#' \code{\link{score_transcripts}} and
+#' subsequently used by \code{\link{calculate_motif_enrichment}} to
 #' obtain binding site enrichment scores.
 #'
 #' @param motif a Transite motif that is used to score the specified sequences
@@ -260,7 +260,7 @@ scoreTranscripts <- function(sequences, motifs = NULL, max_hits = 5,
 #' @family matrix functions
 #' @importFrom TFMPvalue TFMpv2sc
 #' @importFrom Biostrings maxScore
-scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
+score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
                                         threshold_method = "p_value",
                                         threshold_value = 0.25^6,
                                         cache_path = paste0(tempdir(), "/sc/")) {
@@ -304,7 +304,7 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
         motif_id_file <- gsub("[^[:alnum:]]", "_", motifId(motif))
         motif_cache_file <- paste0(cache_path, motif_id_file, ".rds")
         if (file.exists(motif_cache_file)) {
-            motif_cache <- readMotifCache(cache_path, motif_id_file)
+            motif_cache <- read_motif_cache(cache_path, motif_id_file)
 
             cached <- vapply(names(sequences), function(seq_id) {
                 return(exists(seq_id, envir = motif_cache, inherits = FALSE))
@@ -323,7 +323,7 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
             uncached_ids <- names(sequences)[!cached]
             if (length(uncached_ids) > 0) {
                 uncached_sequences <- sequences[!cached]
-                uncached_absolute_hits <- cachedScoreSequencesHelper(
+                uncached_absolute_hits <- cached_score_sequences_helper(
                     uncached_sequences, uncached_ids,
                     as.matrix(motifMatrix(motif)),
                     threshold_score, motif_cache,
@@ -337,7 +337,7 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
         } else {
             motif_cache <- new.env(hash = TRUE, parent = emptyenv(),
                                    size = length(sequences))
-            absolute_hits <- cachedScoreSequencesHelper(
+            absolute_hits <- cached_score_sequences_helper(
                 sequences, names(sequences),
                 as.matrix(motifMatrix(motif)),
                 threshold_score, motif_cache,
@@ -345,7 +345,7 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
             )
         }
     } else {
-        absolute_hits <- scoreSequencesHelper(sequences,
+        absolute_hits <- score_sequences_helper(sequences,
                                               as.matrix(motifMatrix(motif)),
                                               threshold_score)
     }
@@ -513,12 +513,12 @@ scoreTranscriptsSingleMotif <- function(motif, sequences, max_hits = 5,
     }
 }
 
-scoreSequencesHelper <- function(sequences, motif_matrix, threshold_score) {
+score_sequences_helper <- function(sequences, motif_matrix, threshold_score) {
     seq_char_vectors <- lapply(sequences, function(seq) {
         unlist(strsplit(seq, ""))
     })
 
-    scores <- scoreSequences(seq_char_vectors, motif_matrix)
+    scores <- score_sequences(seq_char_vectors, motif_matrix)
 
     absolute_hits <- unlist(lapply(scores, function(scores_per_seq) {
         sum(scores_per_seq >= threshold_score)
@@ -527,17 +527,17 @@ scoreSequencesHelper <- function(sequences, motif_matrix, threshold_score) {
     return(absolute_hits)
 }
 
-cachedScoreSequencesHelper <- function(sequences, seq_ids, motif_matrix,
+cached_score_sequences_helper <- function(sequences, seq_ids, motif_matrix,
                                        threshold_score,
                                        motif_cache, cache_path, motif_id_file) {
-    absolute_hits <- scoreSequencesHelper(sequences, motif_matrix,
+    absolute_hits <- score_sequences_helper(sequences, motif_matrix,
                                           threshold_score)
 
     for (i in seq_len(length(absolute_hits))) {
         assign(seq_ids[i], absolute_hits[i], envir = motif_cache)
     }
 
-    writeMotifCache(motif_cache, cache_path, motif_id_file)
+    write_motif_cache(motif_cache, cache_path, motif_id_file)
     return(absolute_hits)
 }
 
@@ -549,16 +549,16 @@ cachedScoreSequencesHelper <- function(sequences, seq_ids, motif_matrix,
 #' levels of
 #' enrichment values are obtained by Monte Carlo tests.
 #'
-#' @param foreground_scores_df result of \code{\link{scoreTranscripts}} on
+#' @param foreground_scores_df result of \code{\link{score_transcripts}} on
 #' foreground sequence
 #' set (foreground sequence sets must be a subset of the background
 #' sequence set)
-#' @param background_scores_df result of \code{\link{scoreTranscripts}}
+#' @param background_scores_df result of \code{\link{score_transcripts}}
 #' on background sequence set
 #' @param background_total_sites number of potential binding sites per sequence
-#' (returned by \code{\link{scoreTranscripts}})
+#' (returned by \code{\link{score_transcripts}})
 #' @param background_absolute_hits number of putative binding sites per sequence
-#' (returned by \code{\link{scoreTranscripts}})
+#' (returned by \code{\link{score_transcripts}})
 #' @param n_transcripts_foreground number of sequences in the foreground set
 #' @param max_fg_permutations maximum number of foreground permutations
 #' performed in
@@ -593,9 +593,9 @@ cachedScoreSequencesHelper <- function(sequences, seq_ids, motif_matrix,
 #'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
 #'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
 #'                      "AUAGAC", "AGUUC")
-#' foreground_scores <- scoreTranscripts(foreground_seqs, cache = FALSE)
-#' background_scores <- scoreTranscripts(background_seqs, cache = FALSE)
-#' enrichments_df <- calculateMotifEnrichment(foreground_scores$df,
+#' foreground_scores <- score_transcripts(foreground_seqs, cache = FALSE)
+#' background_scores <- score_transcripts(background_seqs, cache = FALSE)
+#' enrichments_df <- calculate_motif_enrichment(foreground_scores$df,
 #'   background_scores$df,
 #'   background_scores$total_sites, background_scores$absolute_hits,
 #'   length(foreground_seqs),
@@ -605,7 +605,7 @@ cachedScoreSequencesHelper <- function(sequences, seq_ids, motif_matrix,
 #' @importFrom dplyr filter
 #' @importFrom stats p.adjust
 #' @export
-calculateMotifEnrichment <- function(foreground_scores_df,
+calculate_motif_enrichment <- function(foreground_scores_df,
                                      background_scores_df,
                                      background_total_sites,
                                      background_absolute_hits,
@@ -632,7 +632,7 @@ calculateMotifEnrichment <- function(foreground_scores_df,
             p_value_n <- 0
         } else {
             enrichment <- (f$absolute_hits / f$total_sites) / (b$absolute_hits / b$total_sites)
-            mc_result <- calculateTranscriptMC(
+            mc_result <- calculate_transcript_mc(
                 background_absolute_hits[[i]], background_total_sites[[i]],
                 f$absolute_hits / f$total_sites, n_transcripts_foreground,
                 max_fg_permutations, min_fg_permutations, e
@@ -661,7 +661,7 @@ calculateMotifEnrichment <- function(foreground_scores_df,
     return(enrichment_df)
 }
 
-readMotifCache <- function(cache_path, motif_id) {
+read_motif_cache <- function(cache_path, motif_id) {
     motif_cache_file <- paste0(cache_path, motif_id, ".rds")
     succeeded <- FALSE
     while (!succeeded) {
@@ -683,7 +683,7 @@ readMotifCache <- function(cache_path, motif_id) {
     return(motif_cache)
 }
 
-writeMotifCache <- function(motif_cache, cache_path, motif_id) {
+write_motif_cache <- function(motif_cache, cache_path, motif_id) {
     motif_cache_file <- paste0(cache_path, motif_id, ".rds")
     succeeded <- FALSE
     while (!succeeded) {

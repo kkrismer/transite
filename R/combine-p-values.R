@@ -1,7 +1,7 @@
 #' @title P-value aggregation
 #'
 #' @description
-#' \code{pCombine} is used to combine the p-values of independent
+#' \code{p_combine} is used to combine the p-values of independent
 #' significance tests.
 #'
 #' @details
@@ -83,15 +83,15 @@
 #' }
 #'
 #' @examples
-#' pCombine(c(0.01, 0.05, 0.5))
+#' p_combine(c(0.01, 0.05, 0.5))
 #'
-#' pCombine(c(0.01, 0.05, 0.5), method = "tippett")
+#' p_combine(c(0.01, 0.05, 0.5), method = "tippett")
 #' @importFrom stats pchisq
 #' @importFrom stats qnorm
 #' @importFrom stats pnorm
 #' @importFrom stats pt
 #' @export
-pCombine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
+p_combine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) {
     method <- match.arg(method, choices = c("fisher", "SL", "MG", "tippett"))
     p <- p[!is.na(p)]
     n <- length(p)

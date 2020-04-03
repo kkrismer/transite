@@ -15,19 +15,19 @@
 #' @param background_set a named character vector of background
 #' sequences (naming follows same
 #' rules as foreground set sequences)
-#' @inheritParams scoreTranscripts
-#' @inheritParams calculateMotifEnrichment
+#' @inheritParams score_transcripts
+#' @inheritParams calculate_motif_enrichment
 #'
 #' @return A list with the following components:
 #' \tabular{rl}{
-#'   \code{foreground_scores} \tab the result of \code{\link{scoreTranscripts}}
+#'   \code{foreground_scores} \tab the result of \code{\link{score_transcripts}}
 #'   for the foreground
 #'   sets\cr
-#'   \code{background_scores} \tab the result of \code{\link{scoreTranscripts}}
+#'   \code{background_scores} \tab the result of \code{\link{score_transcripts}}
 #'   for the background
 #'   set\cr
 #'   \code{enrichment_dfs} \tab a list of data frames, returned by
-#'   \code{\link{calculateMotifEnrichment}}
+#'   \code{\link{calculate_motif_enrichment}}
 #' }
 #'
 #' @details
@@ -128,11 +128,11 @@
 #' )
 #'
 #' # run cached version of TSMA with all Transite motifs (recommended):
-#' # results <- runMatrixTSMA(foreground_sets, background_set)
+#' # results <- run_matrix_tsma(foreground_sets, background_set)
 #'
 #' # run uncached version with one motif:
-#' motif_db <- getMotifById("M178_0.6")
-#' results <- runMatrixTSMA(foreground_sets, background_set, motifs = motif_db,
+#' motif_db <- get_motif_by_id("M178_0.6")
+#' results <- run_matrix_tsma(foreground_sets, background_set, motifs = motif_db,
 #' cache = FALSE)
 #'
 #' \dontrun{
@@ -155,21 +155,21 @@
 #'   background_df$seq_type)
 #'
 #' # run cached version of TSMA with all Transite motifs (recommended)
-#' results <- runMatrixTSMA(foreground_sets, background_set)
+#' results <- run_matrix_tsma(foreground_sets, background_set)
 #'
 #' # run uncached version of TSMA with all Transite motifs
-#' results <- runMatrixTSMA(foreground_sets, background_set, cache = FALSE)
+#' results <- run_matrix_tsma(foreground_sets, background_set, cache = FALSE)
 #'
 #' # run TSMA with a subset of Transite motifs
-#' results <- runMatrixTSMA(foreground_sets, background_set,
-#'   motifs = getMotifByRBP("ELAVL1"))
+#' results <- run_matrix_tsma(foreground_sets, background_set,
+#'   motifs = get_motif_by_rbp("ELAVL1"))
 #'
 #' # run TSMA with user-defined motif
-#' toy_motif <- createMatrixMotif(
+#' toy_motif <- create_matrix_motif(
 #'   "toy_motif", "example RBP", toy_motif_matrix,
 #'   "example type", "example species", "user"
 #' )
-#' results <- runMatrixTSMA(foreground_sets, background_set,
+#' results <- run_matrix_tsma(foreground_sets, background_set,
 #'   motifs = list(toy_motif))
 #' }
 #'
@@ -177,81 +177,80 @@
 #' @family matrix functions
 #' @importFrom dplyr arrange
 #' @export
-runMatrixTSMA <-
-    function(foreground_sets,
-             background_set,
-             motifs = NULL,
-             max_hits = 5,
-             threshold_method = "p_value",
-             threshold_value = 0.25^6,
-             max_fg_permutations = 1000000,
-             min_fg_permutations = 1000,
-             e = 5,
-             p_adjust_method = "BH",
-             n_cores = 1,
-             cache = paste0(tempdir(), "/sc/")) {
-        # avoid CRAN note
-        adj_p_value <- p_value <- NULL
+run_matrix_tsma <- function(foreground_sets,
+                            background_set,
+                            motifs = NULL,
+                            max_hits = 5,
+                            threshold_method = "p_value",
+                            threshold_value = 0.25^6,
+                            max_fg_permutations = 1000000,
+                            min_fg_permutations = 1000,
+                            e = 5,
+                            p_adjust_method = "BH",
+                            n_cores = 1,
+                            cache = paste0(tempdir(), "/sc/")) {
+    # avoid CRAN note
+    adj_p_value <- p_value <- NULL
 
-        i <- 1
-        foreground_scores <-
-            lapply(foreground_sets, function(foreground_set) {
-                result <-
-                    scoreTranscripts(
-                        foreground_set,
-                        motifs = motifs,
-                        max_hits = max_hits,
-                        threshold_method = threshold_method,
-                        threshold_value = threshold_value,
-                        n_cores = n_cores,
-                        cache = cache
-                    )
-                message(paste0("scored transcripts in foreground set ", i))
-                i <<- i + 1
-                return(result)
-            })
+    i <- 1
+    foreground_scores <-
+        lapply(foreground_sets, function(foreground_set) {
+            result <-
+                score_transcripts(
+                    foreground_set,
+                    motifs = motifs,
+                    max_hits = max_hits,
+                    threshold_method = threshold_method,
+                    threshold_value = threshold_value,
+                    n_cores = n_cores,
+                    cache = cache
+                )
+            message(paste0("scored transcripts in foreground set ", i))
+            i <<- i + 1
+            return(result)
+        })
 
-        background_scores <-
-            scoreTranscripts(
-                background_set,
-                motifs = motifs,
-                max_hits = max_hits,
-                threshold_method = threshold_method,
-                threshold_value = threshold_value,
-                n_cores = n_cores,
-                cache = cache
-            )
-        message("scored transcripts in background set")
-
-        i <- 1
-        enrichment_dfs <-
-            lapply(foreground_scores, function(scores_per_condition) {
-                enrichment_df <-
-                    calculateMotifEnrichment(
-                        scores_per_condition$df,
-                        background_scores$df,
-                        background_scores$total_sites,
-                        background_scores$absolute_hits,
-                        length(foreground_sets[[i]]),
-                        max_fg_permutations = max_fg_permutations,
-                        min_fg_permutations = min_fg_permutations,
-                        e = e,
-                        p_adjust_method = p_adjust_method
-                    )
-                enrichment_df <-
-                    dplyr::arrange(enrichment_df, adj_p_value, p_value)
-                message(paste0("calculated enrichment for foreground set ", i))
-                i <<- i + 1
-                return(enrichment_df)
-            })
-        return(
-            list(
-                foreground_scores = foreground_scores,
-                background_scores = background_scores,
-                enrichment_dfs = enrichment_dfs
-            )
+    background_scores <-
+        score_transcripts(
+            background_set,
+            motifs = motifs,
+            max_hits = max_hits,
+            threshold_method = threshold_method,
+            threshold_value = threshold_value,
+            n_cores = n_cores,
+            cache = cache
         )
-    }
+    message("scored transcripts in background set")
+
+    i <- 1
+    enrichment_dfs <-
+        lapply(foreground_scores, function(scores_per_condition) {
+            enrichment_df <-
+                calculate_motif_enrichment(
+                    scores_per_condition$df,
+                    background_scores$df,
+                    background_scores$total_sites,
+                    background_scores$absolute_hits,
+                    length(foreground_sets[[i]]),
+                    max_fg_permutations = max_fg_permutations,
+                    min_fg_permutations = min_fg_permutations,
+                    e = e,
+                    p_adjust_method = p_adjust_method
+                )
+            enrichment_df <-
+                dplyr::arrange(enrichment_df, adj_p_value, p_value)
+            message(paste0("calculated enrichment for foreground set ", i))
+            i <<- i + 1
+            return(enrichment_df)
+        })
+    return(
+        list(
+            foreground_scores = foreground_scores,
+            background_scores = background_scores,
+            enrichment_dfs = enrichment_dfs
+        )
+    )
+}
 
 #' @title Matrix-based Spectrum Motif Analysis
 #'
@@ -271,25 +270,25 @@ runMatrixTSMA <-
 #' Commonly used sorting criteria are measures of differential expression, such
 #' as fold change or signal-to-noise ratio (e.g., between treatment and control
 #' samples in gene expression profiling experiments).
-#' @inheritParams runMatrixTSMA
-#' @inheritParams subdivideData
-#' @inheritParams scoreSpectrum
+#' @inheritParams run_matrix_tsma
+#' @inheritParams subdivide_data
+#' @inheritParams score_spectrum
 #'
 #' @return A list with the following components:
 #' \tabular{rl}{
-#'   \code{foreground_scores} \tab the result of \code{\link{scoreTranscripts}}
+#'   \code{foreground_scores} \tab the result of \code{\link{score_transcripts}}
 #'   for the foreground
 #'   sets (the bins)\cr
-#'   \code{background_scores} \tab the result of \code{\link{scoreTranscripts}}
+#'   \code{background_scores} \tab the result of \code{\link{score_transcripts}}
 #'   for the background
 #'   set\cr
 #'   \code{enrichment_dfs} \tab a list of data frames, returned by
-#'   \code{\link{calculateMotifEnrichment}}\cr
+#'   \code{\link{calculate_motif_enrichment}}\cr
 #'   \code{spectrum_info_df} \tab a data frame with the SPMA results\cr
 #'   \code{spectrum_plots} \tab a list of spectrum plots, as generated by
-#'   \code{\link{scoreSpectrum}}\cr
+#'   \code{\link{score_spectrum}}\cr
 #'   \code{classifier_scores} \tab a list of classifier scores, as returned by
-#'   \code{\link{spectrumClassifier}}
+#'   \code{\link{spectrum_classifier}}
 #' }
 #'
 #' @details
@@ -339,230 +338,229 @@ runMatrixTSMA <-
 #' names(background_set) <- paste0(background_df$refseq, "|",
 #'   background_df$seq_type)
 #'
-#' results <- runMatrixSPMA(background_set,
-#'                          motifs = getMotifById("M178_0.6"),
+#' results <- run_matrix_spma(background_set,
+#'                          motifs = get_motif_by_id("M178_0.6"),
 #'                          n_bins = 20,
 #'                          max_fg_permutations = 10000)
 #'
 #' \dontrun{
-#' results <- runMatrixSPMA(background_set) }
+#' results <- run_matrix_spma(background_set) }
 #'
 #' @family SPMA functions
 #' @family matrix functions
 #' @importFrom stats p.adjust
 #' @importFrom dplyr filter
 #' @export
-runMatrixSPMA <-
-    function(background_set,
-             motifs = NULL,
-             n_bins = 40,
-             max_model_degree = 1,
-             max_cs_permutations = 10000000,
-             min_cs_permutations = 5000,
-             max_hits = 5,
-             threshold_method = "p_value",
-             threshold_value = 0.25^6,
-             max_fg_permutations = 1000000,
-             min_fg_permutations = 1000,
-             e = 5,
-             p_adjust_method = "BH",
-             n_cores = 1,
-             cache = paste0(tempdir(), "/sc/")) {
-        # avoid CRAN note
-        motif_id <- motif_rbps <- adj_r_squared <- degree <-
-            residuals <- slope <- NULL
-        f_statistic <- f_statistic_p_value <- f_statistic_adj_p_value <- NULL
-        consistency_score <-
-            consistency_score_p_value <-
-            consistency_score_adj_p_value <-
-            consistency_score_n <- NULL
-        n_significant <-
-            n_very_significant <-
-            n_extremely_significant <-
-            aggregate_classifier_score <- NULL
+run_matrix_spma <- function(background_set,
+                            motifs = NULL,
+                            n_bins = 40,
+                            max_model_degree = 1,
+                            max_cs_permutations = 10000000,
+                            min_cs_permutations = 5000,
+                            max_hits = 5,
+                            threshold_method = "p_value",
+                            threshold_value = 0.25^6,
+                            max_fg_permutations = 1000000,
+                            min_fg_permutations = 1000,
+                            e = 5,
+                            p_adjust_method = "BH",
+                            n_cores = 1,
+                            cache = paste0(tempdir(), "/sc/")) {
+    # avoid CRAN note
+    motif_id <- motif_rbps <- adj_r_squared <- degree <-
+        residuals <- slope <- NULL
+    f_statistic <- f_statistic_p_value <- f_statistic_adj_p_value <- NULL
+    consistency_score <-
+        consistency_score_p_value <-
+        consistency_score_adj_p_value <-
+        consistency_score_n <- NULL
+    n_significant <-
+        n_very_significant <-
+        n_extremely_significant <-
+        aggregate_classifier_score <- NULL
 
-        foreground_sets <- subdivideData(background_set, n_bins)
+    foreground_sets <- subdivide_data(background_set, n_bins)
 
-        results <- runMatrixTSMA(
-            foreground_sets,
-            background_set,
-            motifs = motifs,
-            max_hits = max_hits,
-            threshold_method = threshold_method,
-            threshold_value = threshold_value,
-            max_fg_permutations = max_fg_permutations,
-            min_fg_permutations = min_fg_permutations,
-            e = e,
-            p_adjust_method = p_adjust_method,
-            n_cores = n_cores,
-            cache = cache
-        )
+    results <- run_matrix_tsma(
+        foreground_sets,
+        background_set,
+        motifs = motifs,
+        max_hits = max_hits,
+        threshold_method = threshold_method,
+        threshold_value = threshold_value,
+        max_fg_permutations = max_fg_permutations,
+        min_fg_permutations = min_fg_permutations,
+        e = e,
+        p_adjust_method = p_adjust_method,
+        n_cores = n_cores,
+        cache = cache
+    )
 
-        if (length(results$enrichment_dfs) > 0) {
-            enrichment_df <- do.call("rbind", results$enrichment_dfs)
-            enrichment_df$adj_p_value <-
-                stats::p.adjust(enrichment_df$p_value, method = p_adjust_method)
+    if (length(results$enrichment_dfs) > 0) {
+        enrichment_df <- do.call("rbind", results$enrichment_dfs)
+        enrichment_df$adj_p_value <-
+            stats::p.adjust(enrichment_df$p_value, method = p_adjust_method)
 
-            if (is.null(motifs)) {
-                motifs <- getMotifs()
-            }
-            spectrum_info <- lapply(motifs, function(motif) {
-                motif_data_df <- dplyr::filter(enrichment_df,
-                                               motif_id == motifId(motif))
-                values <- motif_data_df$enrichment
-                values[values == 0] <-
-                    0.01 # avoid -Inf after taking the log
-                score <-
-                    scoreSpectrum(
-                        log(values),
-                        motif_data_df$adj_p_value,
-                        max_model_degree = max_model_degree,
-                        max_cs_permutations = max_cs_permutations,
-                        min_cs_permutations = min_cs_permutations
-                    )
-
-                n_significant <-
-                    sum(motif_data_df$adj_p_value <= 0.05)
-                classifier_score <-
-                    spectrumClassifier(
-                        spectrumAdjRSquared(score),
-                        spectrumDegree(score),
-                        spectrumSlope(score),
-                        spectrumConsistencyScoreN(score),
-                        n_significant,
-                        n_bins
-                    )
-
-                return(
-                    list(
-                        info = list(
-                            motif_id = motifId(motif),
-                            motif_rbps = paste(motifRbps(motif), collapse = ", "),
-                            adj_r_squared = spectrumAdjRSquared(score),
-                            degree = spectrumDegree(score),
-                            residuals = spectrumResiduals(score),
-                            slope = spectrumSlope(score),
-                            f_statistic = spectrumFStatistic(score),
-                            f_statistic_p_value = spectrumFStatisticPValue(score),
-                            consistency_score = spectrumConsistencyScore(score),
-                            consistency_score_p_value = spectrumConsistencyScorePValue(score),
-                            consistency_score_n = spectrumConsistencyScoreN(score),
-                            n_significant = n_significant,
-                            n_very_significant = sum(motif_data_df$adj_p_value <= 0.01),
-                            n_extremely_significant = sum(motif_data_df$adj_p_value <= 0.001),
-                            aggregate_classifier_score = sum(classifier_score)
-                        ),
-                        spectrum_plot = score@plot,
-                        classifier_score = classifier_score
-                    )
-                )
-            })
-            spectrum_info_df <-
-                as.data.frame(do.call("rbind", lapply(spectrum_info, function(x)
-                    x$info)),
-                    stringsAsFactors = FALSE
-                )
-            spectrum_info_df$motif_id <-
-                as.character(spectrum_info_df$motif_id)
-            spectrum_info_df$motif_rbps <-
-                as.character(spectrum_info_df$motif_rbps)
-            spectrum_info_df$adj_r_squared <-
-                as.numeric(spectrum_info_df$adj_r_squared)
-            spectrum_info_df$degree <-
-                as.integer(spectrum_info_df$degree)
-            spectrum_info_df$residuals <-
-                as.numeric(spectrum_info_df$residuals)
-            spectrum_info_df$slope <-
-                as.numeric(spectrum_info_df$slope)
-            spectrum_info_df$f_statistic <-
-                as.numeric(spectrum_info_df$f_statistic)
-            spectrum_info_df$f_statistic_p_value <-
-                as.numeric(spectrum_info_df$f_statistic_p_value)
-            spectrum_info_df$consistency_score <-
-                as.numeric(spectrum_info_df$consistency_score)
-            spectrum_info_df$consistency_score_p_value <-
-                as.numeric(spectrum_info_df$consistency_score_p_value)
-            spectrum_info_df$consistency_score_n <-
-                as.integer(spectrum_info_df$consistency_score_n)
-            spectrum_info_df$n_significant <-
-                as.integer(spectrum_info_df$n_significant)
-            spectrum_info_df$n_very_significant <-
-                as.integer(spectrum_info_df$n_very_significant)
-            spectrum_info_df$n_extremely_significant <-
-                as.integer(spectrum_info_df$n_extremely_significant)
-            spectrum_info_df$aggregate_classifier_score <-
-                as.integer(spectrum_info_df$aggregate_classifier_score)
-
-            spectrum_info_df$f_statistic_adj_p_value <-
-                stats::p.adjust(spectrum_info_df$f_statistic_p_value,
-                                method = p_adjust_method)
-            spectrum_info_df$consistency_score_adj_p_value <-
-                stats::p.adjust(spectrum_info_df$consistency_score_p_value,
-                                method = p_adjust_method)
-
-            spectrum_info_df <-
-                dplyr::select(
-                    spectrum_info_df,
-                    motif_id,
-                    motif_rbps,
-                    adj_r_squared,
-                    degree,
-                    residuals,
-                    slope,
-                    f_statistic,
-                    f_statistic_p_value,
-                    f_statistic_adj_p_value,
-                    consistency_score,
-                    consistency_score_p_value,
-                    consistency_score_adj_p_value,
-                    consistency_score_n,
-                    n_significant,
-                    n_very_significant,
-                    n_extremely_significant,
-                    aggregate_classifier_score
-                )
-
-            spectrum_plots <-
-                lapply(spectrum_info, function(x)
-                    x$spectrum_plot)
-            classifier_scores <-
-                lapply(spectrum_info, function(x)
-                    x$classifier_score)
-        } else {
-            spectrum_info_df <- data.frame(
-                motif_id = character(0),
-                motif_rbps = character(0),
-                adj_r_squared = numeric(0),
-                degree = integer(0),
-                residuals = numeric(0),
-                slope = numeric(0),
-                f_statistic = numeric(0),
-                f_statistic_p_value = numeric(0),
-                f_statistic_adj_p_value = numeric(0),
-                consistency_score = numeric(0),
-                consistency_score_p_value = numeric(0),
-                consistency_score_adj_p_value = numeric(0),
-                consistency_score_n = integer(0),
-                n_significant = integer(0),
-                n_very_significant = integer(0),
-                n_extremely_significant = integer(0),
-                aggregate_classifier_score = integer(0)
-            )
-            spectrum_plots <- NULL
-            warning("no sequences in any condition")
+        if (is.null(motifs)) {
+            motifs <- get_motifs()
         }
+        spectrum_info <- lapply(motifs, function(motif) {
+            motif_data_df <- dplyr::filter(enrichment_df,
+                                           motif_id == motifId(motif))
+            values <- motif_data_df$enrichment
+            values[values == 0] <-
+                0.01 # avoid -Inf after taking the log
+            score <-
+                score_spectrum(
+                    log(values),
+                    motif_data_df$adj_p_value,
+                    max_model_degree = max_model_degree,
+                    max_cs_permutations = max_cs_permutations,
+                    min_cs_permutations = min_cs_permutations
+                )
 
-        return(
-            list(
-                foreground_scores = results$foreground_scores,
-                background_scores = results$background_scores,
-                enrichment_dfs = results$enrichment_dfs,
-                spectrum_info_df = spectrum_info_df,
-                spectrum_plots = spectrum_plots,
-                classifier_scores = classifier_scores
+            n_significant <-
+                sum(motif_data_df$adj_p_value <= 0.05)
+            classifier_score <-
+                spectrum_classifier(
+                    spectrumAdjRSquared(score),
+                    spectrumDegree(score),
+                    spectrumSlope(score),
+                    spectrumConsistencyScoreN(score),
+                    n_significant,
+                    n_bins
+                )
+
+            return(
+                list(
+                    info = list(
+                        motif_id = motifId(motif),
+                        motif_rbps = paste(motifRbps(motif), collapse = ", "),
+                        adj_r_squared = spectrumAdjRSquared(score),
+                        degree = spectrumDegree(score),
+                        residuals = spectrumResiduals(score),
+                        slope = spectrumSlope(score),
+                        f_statistic = spectrumFStatistic(score),
+                        f_statistic_p_value = spectrumFStatisticPValue(score),
+                        consistency_score = spectrumConsistencyScore(score),
+                        consistency_score_p_value = spectrumConsistencyScorePValue(score),
+                        consistency_score_n = spectrumConsistencyScoreN(score),
+                        n_significant = n_significant,
+                        n_very_significant = sum(motif_data_df$adj_p_value <= 0.01),
+                        n_extremely_significant = sum(motif_data_df$adj_p_value <= 0.001),
+                        aggregate_classifier_score = sum(classifier_score)
+                    ),
+                    spectrum_plot = score@plot,
+                    classifier_score = classifier_score
+                )
             )
+        })
+        spectrum_info_df <-
+            as.data.frame(do.call("rbind", lapply(spectrum_info, function(x)
+                x$info)),
+                stringsAsFactors = FALSE
+            )
+        spectrum_info_df$motif_id <-
+            as.character(spectrum_info_df$motif_id)
+        spectrum_info_df$motif_rbps <-
+            as.character(spectrum_info_df$motif_rbps)
+        spectrum_info_df$adj_r_squared <-
+            as.numeric(spectrum_info_df$adj_r_squared)
+        spectrum_info_df$degree <-
+            as.integer(spectrum_info_df$degree)
+        spectrum_info_df$residuals <-
+            as.numeric(spectrum_info_df$residuals)
+        spectrum_info_df$slope <-
+            as.numeric(spectrum_info_df$slope)
+        spectrum_info_df$f_statistic <-
+            as.numeric(spectrum_info_df$f_statistic)
+        spectrum_info_df$f_statistic_p_value <-
+            as.numeric(spectrum_info_df$f_statistic_p_value)
+        spectrum_info_df$consistency_score <-
+            as.numeric(spectrum_info_df$consistency_score)
+        spectrum_info_df$consistency_score_p_value <-
+            as.numeric(spectrum_info_df$consistency_score_p_value)
+        spectrum_info_df$consistency_score_n <-
+            as.integer(spectrum_info_df$consistency_score_n)
+        spectrum_info_df$n_significant <-
+            as.integer(spectrum_info_df$n_significant)
+        spectrum_info_df$n_very_significant <-
+            as.integer(spectrum_info_df$n_very_significant)
+        spectrum_info_df$n_extremely_significant <-
+            as.integer(spectrum_info_df$n_extremely_significant)
+        spectrum_info_df$aggregate_classifier_score <-
+            as.integer(spectrum_info_df$aggregate_classifier_score)
+
+        spectrum_info_df$f_statistic_adj_p_value <-
+            stats::p.adjust(spectrum_info_df$f_statistic_p_value,
+                            method = p_adjust_method)
+        spectrum_info_df$consistency_score_adj_p_value <-
+            stats::p.adjust(spectrum_info_df$consistency_score_p_value,
+                            method = p_adjust_method)
+
+        spectrum_info_df <-
+            dplyr::select(
+                spectrum_info_df,
+                motif_id,
+                motif_rbps,
+                adj_r_squared,
+                degree,
+                residuals,
+                slope,
+                f_statistic,
+                f_statistic_p_value,
+                f_statistic_adj_p_value,
+                consistency_score,
+                consistency_score_p_value,
+                consistency_score_adj_p_value,
+                consistency_score_n,
+                n_significant,
+                n_very_significant,
+                n_extremely_significant,
+                aggregate_classifier_score
+            )
+
+        spectrum_plots <-
+            lapply(spectrum_info, function(x)
+                x$spectrum_plot)
+        classifier_scores <-
+            lapply(spectrum_info, function(x)
+                x$classifier_score)
+    } else {
+        spectrum_info_df <- data.frame(
+            motif_id = character(0),
+            motif_rbps = character(0),
+            adj_r_squared = numeric(0),
+            degree = integer(0),
+            residuals = numeric(0),
+            slope = numeric(0),
+            f_statistic = numeric(0),
+            f_statistic_p_value = numeric(0),
+            f_statistic_adj_p_value = numeric(0),
+            consistency_score = numeric(0),
+            consistency_score_p_value = numeric(0),
+            consistency_score_adj_p_value = numeric(0),
+            consistency_score_n = integer(0),
+            n_significant = integer(0),
+            n_very_significant = integer(0),
+            n_extremely_significant = integer(0),
+            aggregate_classifier_score = integer(0)
         )
+        spectrum_plots <- NULL
+        warning("no sequences in any condition")
     }
+
+    return(
+        list(
+            foreground_scores = results$foreground_scores,
+            background_scores = results$background_scores,
+            enrichment_dfs = results$enrichment_dfs,
+            spectrum_info_df = spectrum_info_df,
+            spectrum_plots = spectrum_plots,
+            classifier_scores = classifier_scores
+        )
+    )
+}
 
 #' @title \emph{k}-mer-based Transcript Set Motif Analysis
 #'
@@ -583,18 +581,18 @@ runMatrixSPMA <-
 #' (\code{"fisher"}), Stouffer (1949),
 #' Liptak (1958) (\code{"SL"}), Mudholkar and George (1979)
 #' (\code{"MG"}), and Tippett (1931)
-#' (\code{"tippett"}) (see \code{\link{pCombine}})
-#' @inheritParams calculateKmerEnrichment
+#' (\code{"tippett"}) (see \code{\link{p_combine}})
+#' @inheritParams calculate_kmer_enrichment
 #'
 #' @return A list of lists (one for each transcript set) with the
 #' following components:
 #' \tabular{rl}{
 #'   \code{enrichment_df} \tab the result of
-#'   \code{\link{computeKmerEnrichment}} \cr
+#'   \code{\link{compute_kmer_enrichment}} \cr
 #'   \code{motif_df} \tab \cr
 #'   \code{motif_kmers_dfs} \tab \cr
 #'   \code{volcano_plots} \tab volcano plots for each
-#'   motif (see \code{\link{drawVolcanoPlot}}) \cr
+#'   motif (see \code{\link{draw_volcano_plot}}) \cr
 #'   \code{perm_test_plots} \tab plots of the empirical distribution of
 #'   \emph{k}-mer enrichment values for each motif \cr
 #'   \code{enriched_kmers_combined_p_values} \tab \cr
@@ -647,11 +645,11 @@ runMatrixSPMA <-
 #' )))
 #'
 #' # run k-mer based TSMA with all Transite motifs (recommended):
-#' # results <- runKmerTSMA(foreground_sets, background_set)
+#' # results <- run_kmer_tsma(foreground_sets, background_set)
 #'
 #' # run TSMA with one motif:
-#' motif_db <- getMotifById("M178_0.6")
-#' results <- runKmerTSMA(foreground_sets, background_set, motifs = motif_db)
+#' motif_db <- get_motif_by_id("M178_0.6")
+#' results <- run_kmer_tsma(foreground_sets, background_set, motifs = motif_db)
 #' \dontrun{
 #' # define example sequence sets for foreground and background
 #' foreground_set1 <- gsub("T", "U", transite:::ge$foreground1_df$seq)
@@ -660,18 +658,18 @@ runMatrixSPMA <-
 #' background_set <- gsub("T", "U", transite:::ge$background_df$seq)
 #'
 #' # run TSMA with all Transite motifs
-#' results <- runKmerTSMA(foreground_sets, background_set)
+#' results <- run_kmer_tsma(foreground_sets, background_set)
 #'
 #' # run TSMA with a subset of Transite motifs
-#' results <- runKmerTSMA(foreground_sets, background_set,
-#'   motifs = getMotifByRBP("ELAVL1"))
+#' results <- run_kmer_tsma(foreground_sets, background_set,
+#'   motifs = get_motif_by_rbp("ELAVL1"))
 #'
 #' # run TSMA with user-defined motif
-#' toy_motif <- createKmerMotif(
+#' toy_motif <- create_kmer_motif(
 #'   "toy_motif", "example RBP",
 #'   c("AACCGG", "AAAACG", "AACACG"), "example type", "example species", "user"
 #' )
-#' results <- runMatrixTSMA(foreground_sets, background_set,
+#' results <- run_matrix_tsma(foreground_sets, background_set,
 #'   motifs = list(toy_motif))
 #' }
 #'
@@ -681,227 +679,226 @@ runMatrixSPMA <-
 #' @importFrom dplyr select
 #' @importFrom dplyr filter
 #' @export
-runKmerTSMA <-
-    function(foreground_sets,
-             background_set,
-             motifs = NULL,
-             k = 6,
-             fg_permutations = 5000,
-             kmer_significance_threshold = 0.01,
-             produce_plot = TRUE,
-             p_adjust_method = "BH",
-             p_combining_method = "fisher",
-             n_cores = 1) {
-        # avoid CRAN note
-        kmer <- enrichment <- p_value <- adj_p_value <- NULL
+run_kmer_tsma <- function(foreground_sets,
+                          background_set,
+                          motifs = NULL,
+                          k = 6,
+                          fg_permutations = 5000,
+                          kmer_significance_threshold = 0.01,
+                          produce_plot = TRUE,
+                          p_adjust_method = "BH",
+                          p_combining_method = "fisher",
+                          n_cores = 1) {
+    # avoid CRAN note
+    kmer <- enrichment <- p_value <- adj_p_value <- NULL
 
-        if (is.null(motifs)) {
-            motifs <- getMotifs()
-        }
-
-        enrichment_result <-
-            calculateKmerEnrichment(
-                foreground_sets,
-                background_set,
-                k,
-                p_adjust_method = p_adjust_method,
-                n_cores = n_cores
-            )
-        message("calculated enrichment for all foreground sets")
-
-        i <- 1
-        if (!is.null(enrichment_result)) {
-            set_sizes <- unique(unlist(lapply(foreground_sets, length)))
-            random_enrichments <- new.env()
-            for (set_size in set_sizes) {
-                if (set_size < 10) {
-                    adapted_fg_permutations <- min(fg_permutations, 100)
-                } else if (set_size < 30) {
-                    adapted_fg_permutations <- min(fg_permutations, 500)
-                } else {
-                    adapted_fg_permutations <- fg_permutations
-                }
-                assign(
-                    as.character(set_size),
-                    generatePermutedEnrichments(
-                        set_size,
-                        background_set,
-                        k,
-                        n_permutations = adapted_fg_permutations,
-                        n_cores = n_cores
-                    ),
-                    envir = random_enrichments
-                )
-            }
-            message("calculated enrichment for all permuted sets")
-
-            motif_result <-
-                lapply(seq_len(length(foreground_sets)), function(i) {
-                    kmers_df <- enrichment_result$dfs[[i]]
-                    kmers_df$kmer <- enrichment_result$kmers
-
-                    foreground_result <-
-                        lapply(motifs, function(motif) {
-                            if (k == 6) {
-                                rbp_kmers <- motifHexamers(motif)
-                            } else if (k == 7) {
-                                rbp_kmers <- motifHeptamers(motif)
-                            }
-
-                            idx <-
-                                which(enrichment_result$kmers %in% rbp_kmers)
-                            motif_kmers_df <- kmers_df[idx, ]
-                            motif_kmers_df <-
-                                dplyr::select(
-                                    motif_kmers_df,
-                                    kmer,
-                                    enrichment,
-                                    p_value,
-                                    adj_p_value
-                                )
-
-                            geo_mean <-
-                                geometricMean(motif_kmers_df$enrichment)
-                            perm_test <-
-                                permTestGeometricMean(
-                                    geo_mean,
-                                    rbp_kmers,
-                                    get(
-                                        as.character(length(foreground_sets[[i]])),
-                                        envir = random_enrichments,
-                                        inherits = FALSE
-                                    ),
-                                    alternative = "two_sided",
-                                    conf_level = 0.95,
-                                    produce_plot = produce_plot
-                                )
-
-                            motif_kmers_enriched_df <-
-                                dplyr::filter(motif_kmers_df, enrichment > 1)
-                            enriched_kmers_combined_p_value <-
-                                pCombine(motif_kmers_enriched_df$adj_p_value,
-                                         method = p_combining_method
-                                )
-
-                            motif_kmers_depleted_df <-
-                                dplyr::filter(motif_kmers_df, enrichment < 1)
-                            depleted_kmers_combined_p_value <-
-                                pCombine(motif_kmers_depleted_df$adj_p_value,
-                                         method = p_combining_method
-                                )
-
-                            if (produce_plot) {
-                                volcano_plot <-
-                                    drawVolcanoPlot(
-                                        kmers_df,
-                                        rbp_kmers,
-                                        paste(motifRbps(motif), collapse = ", "),
-                                        kmer_significance_threshold
-                                    )
-                            } else {
-                                volcano_plot <- NULL
-                            }
-
-                            return(
-                                list(
-                                    df = list(
-                                        motif_id = motifId(motif),
-                                        motif_rbps = paste0(motifRbps(motif),
-                                                            collapse = ", "),
-                                        geo_mean_enrichment = geo_mean,
-                                        p_value_estimate = perm_test$p_value_estimate,
-                                        cont_int_low = perm_test$conf_int[1],
-                                        cont_int_high = perm_test$conf_int[2],
-                                        enriched_kmers_combined_p_value = enriched_kmers_combined_p_value$p_value,
-                                        depleted_kmers_combined_p_value = depleted_kmers_combined_p_value$p_value
-                                    ),
-                                    motif_kmers_df = motif_kmers_df,
-                                    volcano_plot = volcano_plot,
-                                    perm_test_plot = perm_test$plot,
-                                    enriched_kmers_combined_p_value = enriched_kmers_combined_p_value,
-                                    depleted_kmers_combined_p_value = depleted_kmers_combined_p_value
-                                )
-                            )
-                        })
-
-                    df <-
-                        as.data.frame(do.call(
-                            "rbind",
-                            lapply(foreground_result, function(x)
-                                x$df)
-                        ), stringsAsFactors = FALSE)
-                    df$motif_id <- as.character(df$motif_id)
-                    df$motif_rbps <- as.character(df$motif_rbps)
-                    df$geo_mean_enrichment <-
-                        as.numeric(df$geo_mean_enrichment)
-                    df$p_value_estimate <-
-                        as.numeric(df$p_value_estimate)
-                    df$cont_int_low <- as.numeric(df$cont_int_low)
-                    df$cont_int_high <- as.numeric(df$cont_int_high)
-                    df$enriched_kmers_combined_p_value <-
-                        as.numeric(df$enriched_kmers_combined_p_value)
-                    df$depleted_kmers_combined_p_value <-
-                        as.numeric(df$depleted_kmers_combined_p_value)
-
-                    df$adj_p_value_estimate <-
-                        stats::p.adjust(df$p_value_estimate,
-                                        method = p_adjust_method)
-                    df$adj_enriched_kmers_combined_p_value <-
-                        stats::p.adjust(df$enriched_kmers_combined_p_value,
-                                        method = p_adjust_method)
-                    df$adj_depleted_kmers_combined_p_value <-
-                        stats::p.adjust(df$depleted_kmers_combined_p_value,
-                                        method = p_adjust_method)
-
-                    motif_kmers_dfs <-
-                        lapply(foreground_result, function(x)
-                            x$motif_kmers_df)
-                    volcano_plots <-
-                        lapply(foreground_result, function(x)
-                            x$volcano_plot)
-                    perm_test_plots <-
-                        lapply(foreground_result, function(x)
-                            x$perm_test_plot)
-                    enriched_kmers_combined_p_values <-
-                        lapply(foreground_result, function(x)
-                            x$enriched_kmers_combined_p_value)
-                    depleted_kmers_combined_p_values <-
-                        lapply(foreground_result, function(x)
-                            x$depleted_kmers_combined_p_value)
-
-                    return(
-                        list(
-                            df = df,
-                            motif_kmers_dfs = motif_kmers_dfs,
-                            volcano_plots = volcano_plots,
-                            perm_test_plots = perm_test_plots,
-                            enriched_kmers_combined_p_values = enriched_kmers_combined_p_values,
-                            depleted_kmers_combined_p_values = depleted_kmers_combined_p_values
-                        )
-                    )
-                })
-
-            result <-
-                lapply(seq_len(length(foreground_sets)), function(i) {
-                    enrichment_df <- enrichment_result$dfs[[i]]
-                    enrichment_df$kmer <- enrichment_result$kmers
-                    return(
-                        list(
-                            enrichment_df = enrichment_df,
-                            motif_df = motif_result[[i]]$df,
-                            motif_kmers_dfs = motif_result[[i]]$motif_kmers_dfs,
-                            volcano_plots = motif_result[[i]]$volcano_plots,
-                            perm_test_plots = motif_result[[i]]$perm_test_plots,
-                            enriched_kmers_combined_p_values = motif_result[[i]]$enriched_kmers_combined_p_values,
-                            depleted_kmers_combined_p_values = motif_result[[i]]$depleted_kmers_combined_p_values
-                        )
-                    )
-                })
-            return(result)
-        } else {
-            return(NULL)
-        }
+    if (is.null(motifs)) {
+        motifs <- get_motifs()
     }
+
+    enrichment_result <-
+        calculate_kmer_enrichment(
+            foreground_sets,
+            background_set,
+            k,
+            p_adjust_method = p_adjust_method,
+            n_cores = n_cores
+        )
+    message("calculated enrichment for all foreground sets")
+
+    i <- 1
+    if (!is.null(enrichment_result)) {
+        set_sizes <- unique(unlist(lapply(foreground_sets, length)))
+        random_enrichments <- new.env()
+        for (set_size in set_sizes) {
+            if (set_size < 10) {
+                adapted_fg_permutations <- min(fg_permutations, 100)
+            } else if (set_size < 30) {
+                adapted_fg_permutations <- min(fg_permutations, 500)
+            } else {
+                adapted_fg_permutations <- fg_permutations
+            }
+            assign(
+                as.character(set_size),
+                generate_permuted_enrichments(
+                    set_size,
+                    background_set,
+                    k,
+                    n_permutations = adapted_fg_permutations,
+                    n_cores = n_cores
+                ),
+                envir = random_enrichments
+            )
+        }
+        message("calculated enrichment for all permuted sets")
+
+        motif_result <-
+            lapply(seq_len(length(foreground_sets)), function(i) {
+                kmers_df <- enrichment_result$dfs[[i]]
+                kmers_df$kmer <- enrichment_result$kmers
+
+                foreground_result <-
+                    lapply(motifs, function(motif) {
+                        if (k == 6) {
+                            rbp_kmers <- motifHexamers(motif)
+                        } else if (k == 7) {
+                            rbp_kmers <- motifHeptamers(motif)
+                        }
+
+                        idx <-
+                            which(enrichment_result$kmers %in% rbp_kmers)
+                        motif_kmers_df <- kmers_df[idx, ]
+                        motif_kmers_df <-
+                            dplyr::select(
+                                motif_kmers_df,
+                                kmer,
+                                enrichment,
+                                p_value,
+                                adj_p_value
+                            )
+
+                        geo_mean <-
+                            geometric_mean(motif_kmers_df$enrichment)
+                        perm_test <-
+                            perm_test_geometric_mean(
+                                geo_mean,
+                                rbp_kmers,
+                                get(
+                                    as.character(length(foreground_sets[[i]])),
+                                    envir = random_enrichments,
+                                    inherits = FALSE
+                                ),
+                                alternative = "two_sided",
+                                conf_level = 0.95,
+                                produce_plot = produce_plot
+                            )
+
+                        motif_kmers_enriched_df <-
+                            dplyr::filter(motif_kmers_df, enrichment > 1)
+                        enriched_kmers_combined_p_value <-
+                            p_combine(motif_kmers_enriched_df$adj_p_value,
+                                      method = p_combining_method
+                            )
+
+                        motif_kmers_depleted_df <-
+                            dplyr::filter(motif_kmers_df, enrichment < 1)
+                        depleted_kmers_combined_p_value <-
+                            p_combine(motif_kmers_depleted_df$adj_p_value,
+                                      method = p_combining_method
+                            )
+
+                        if (produce_plot) {
+                            volcano_plot <-
+                                draw_volcano_plot(
+                                    kmers_df,
+                                    rbp_kmers,
+                                    paste(motifRbps(motif), collapse = ", "),
+                                    kmer_significance_threshold
+                                )
+                        } else {
+                            volcano_plot <- NULL
+                        }
+
+                        return(
+                            list(
+                                df = list(
+                                    motif_id = motifId(motif),
+                                    motif_rbps = paste0(motifRbps(motif),
+                                                        collapse = ", "),
+                                    geo_mean_enrichment = geo_mean,
+                                    p_value_estimate = perm_test$p_value_estimate,
+                                    cont_int_low = perm_test$conf_int[1],
+                                    cont_int_high = perm_test$conf_int[2],
+                                    enriched_kmers_combined_p_value = enriched_kmers_combined_p_value$p_value,
+                                    depleted_kmers_combined_p_value = depleted_kmers_combined_p_value$p_value
+                                ),
+                                motif_kmers_df = motif_kmers_df,
+                                volcano_plot = volcano_plot,
+                                perm_test_plot = perm_test$plot,
+                                enriched_kmers_combined_p_value = enriched_kmers_combined_p_value,
+                                depleted_kmers_combined_p_value = depleted_kmers_combined_p_value
+                            )
+                        )
+                    })
+
+                df <-
+                    as.data.frame(do.call(
+                        "rbind",
+                        lapply(foreground_result, function(x)
+                            x$df)
+                    ), stringsAsFactors = FALSE)
+                df$motif_id <- as.character(df$motif_id)
+                df$motif_rbps <- as.character(df$motif_rbps)
+                df$geo_mean_enrichment <-
+                    as.numeric(df$geo_mean_enrichment)
+                df$p_value_estimate <-
+                    as.numeric(df$p_value_estimate)
+                df$cont_int_low <- as.numeric(df$cont_int_low)
+                df$cont_int_high <- as.numeric(df$cont_int_high)
+                df$enriched_kmers_combined_p_value <-
+                    as.numeric(df$enriched_kmers_combined_p_value)
+                df$depleted_kmers_combined_p_value <-
+                    as.numeric(df$depleted_kmers_combined_p_value)
+
+                df$adj_p_value_estimate <-
+                    stats::p.adjust(df$p_value_estimate,
+                                    method = p_adjust_method)
+                df$adj_enriched_kmers_combined_p_value <-
+                    stats::p.adjust(df$enriched_kmers_combined_p_value,
+                                    method = p_adjust_method)
+                df$adj_depleted_kmers_combined_p_value <-
+                    stats::p.adjust(df$depleted_kmers_combined_p_value,
+                                    method = p_adjust_method)
+
+                motif_kmers_dfs <-
+                    lapply(foreground_result, function(x)
+                        x$motif_kmers_df)
+                volcano_plots <-
+                    lapply(foreground_result, function(x)
+                        x$volcano_plot)
+                perm_test_plots <-
+                    lapply(foreground_result, function(x)
+                        x$perm_test_plot)
+                enriched_kmers_combined_p_values <-
+                    lapply(foreground_result, function(x)
+                        x$enriched_kmers_combined_p_value)
+                depleted_kmers_combined_p_values <-
+                    lapply(foreground_result, function(x)
+                        x$depleted_kmers_combined_p_value)
+
+                return(
+                    list(
+                        df = df,
+                        motif_kmers_dfs = motif_kmers_dfs,
+                        volcano_plots = volcano_plots,
+                        perm_test_plots = perm_test_plots,
+                        enriched_kmers_combined_p_values = enriched_kmers_combined_p_values,
+                        depleted_kmers_combined_p_values = depleted_kmers_combined_p_values
+                    )
+                )
+            })
+
+        result <-
+            lapply(seq_len(length(foreground_sets)), function(i) {
+                enrichment_df <- enrichment_result$dfs[[i]]
+                enrichment_df$kmer <- enrichment_result$kmers
+                return(
+                    list(
+                        enrichment_df = enrichment_df,
+                        motif_df = motif_result[[i]]$df,
+                        motif_kmers_dfs = motif_result[[i]]$motif_kmers_dfs,
+                        volcano_plots = motif_result[[i]]$volcano_plots,
+                        perm_test_plots = motif_result[[i]]$perm_test_plots,
+                        enriched_kmers_combined_p_values = motif_result[[i]]$enriched_kmers_combined_p_values,
+                        depleted_kmers_combined_p_values = motif_result[[i]]$depleted_kmers_combined_p_values
+                    )
+                )
+            })
+        return(result)
+    } else {
+        return(NULL)
+    }
+}
 
 
 
@@ -919,19 +916,19 @@ runKmerTSMA <-
 #' as fold change or signal-to-noise ratio (e.g., between treatment and control
 #' samples in gene expression profiling experiments).
 #'
-#' @inheritParams runKmerTSMA
-#' @inheritParams subdivideData
-#' @inheritParams scoreSpectrum
+#' @inheritParams run_kmer_tsma
+#' @inheritParams subdivide_data
+#' @inheritParams score_spectrum
 #'
 #' @return A list with the following components:
 #' \tabular{rl}{
-#'   \code{foreground_scores} \tab the result of \code{\link{runKmerTSMA}}
+#'   \code{foreground_scores} \tab the result of \code{\link{run_kmer_tsma}}
 #'   for the binned data\cr
 #'   \code{spectrum_info_df} \tab a data frame with the SPMA results\cr
 #'   \code{spectrum_plots} \tab a list of spectrum plots, as generated by
-#'   \code{\link{scoreSpectrum}}\cr
+#'   \code{\link{score_spectrum}}\cr
 #'   \code{classifier_scores} \tab a list of classifier scores, as returned by
-#'   \code{\link{spectrumClassifier}}
+#'   \code{\link{spectrum_classifier}}
 #' }
 #'
 #' @details
@@ -961,13 +958,13 @@ runKmerTSMA <-
 #' names(background_set) <- paste0(background_df$refseq, "|",
 #'   background_df$seq_type)
 #'
-#' results <- runKmerSPMA(background_set,
-#'                        motifs = getMotifById("M178_0.6"),
+#' results <- run_kmer_spma(background_set,
+#'                        motifs = get_motif_by_id("M178_0.6"),
 #'                        n_bins = 20,
 #'                        fg_permutations = 10)
 #'
 #' \dontrun{
-#' results <- runKmerSPMA(background_set)}
+#' results <- run_kmer_spma(background_set)}
 #'
 #' @family SPMA functions
 #' @family \emph{k}-mer functions
@@ -975,211 +972,210 @@ runKmerTSMA <-
 #' @importFrom dplyr select
 #' @importFrom dplyr filter
 #' @export
-runKmerSPMA <-
-    function(background_set,
-             motifs = NULL,
-             k = 6,
-             n_bins = 40,
-             max_model_degree = 1,
-             max_cs_permutations = 10000000,
-             min_cs_permutations = 5000,
-             fg_permutations = 5000,
-             p_adjust_method = "BH",
-             p_combining_method = "fisher",
-             n_cores = 1) {
-        # avoid CRAN note
-        motif_id <-
-            motif_rbps <-
-            adj_r_squared <- degree <- residuals <- slope <- NULL
-        f_statistic <-
-            f_statistic_p_value <- f_statistic_adj_p_value <- NULL
-        consistency_score <-
-            consistency_score_p_value <-
-            consistency_score_adj_p_value <- NULL
-        consistency_score_n <- aggregate_classifier_score <- NULL
-        n_significant <-
-            n_very_significant <- n_extremely_significant <- NULL
+run_kmer_spma <- function(background_set,
+                          motifs = NULL,
+                          k = 6,
+                          n_bins = 40,
+                          max_model_degree = 1,
+                          max_cs_permutations = 10000000,
+                          min_cs_permutations = 5000,
+                          fg_permutations = 5000,
+                          p_adjust_method = "BH",
+                          p_combining_method = "fisher",
+                          n_cores = 1) {
+    # avoid CRAN note
+    motif_id <-
+        motif_rbps <-
+        adj_r_squared <- degree <- residuals <- slope <- NULL
+    f_statistic <-
+        f_statistic_p_value <- f_statistic_adj_p_value <- NULL
+    consistency_score <-
+        consistency_score_p_value <-
+        consistency_score_adj_p_value <- NULL
+    consistency_score_n <- aggregate_classifier_score <- NULL
+    n_significant <-
+        n_very_significant <- n_extremely_significant <- NULL
 
-        foreground_sets <- subdivideData(background_set, n_bins)
+    foreground_sets <- subdivide_data(background_set, n_bins)
 
-        results <- runKmerTSMA(
-            foreground_sets,
-            background_set,
-            motifs = motifs,
-            k = k,
-            fg_permutations = fg_permutations,
-            kmer_significance_threshold = 0.01,
-            produce_plot = FALSE,
-            p_adjust_method = p_adjust_method,
-            p_combining_method = p_combining_method,
-            n_cores = n_cores
-        )
+    results <- run_kmer_tsma(
+        foreground_sets,
+        background_set,
+        motifs = motifs,
+        k = k,
+        fg_permutations = fg_permutations,
+        kmer_significance_threshold = 0.01,
+        produce_plot = FALSE,
+        p_adjust_method = p_adjust_method,
+        p_combining_method = p_combining_method,
+        n_cores = n_cores
+    )
 
-        if (length(results) > 0) {
-            dfs <- lapply(results, function(result) {
-                result$motif_df
-            })
-            enrichment_df <- do.call("rbind", dfs)
-            enrichment_df$adj_p_value_estimate <-
-                stats::p.adjust(enrichment_df$p_value_estimate,
-                                method = p_adjust_method
-                )
-
-            if (is.null(motifs)) {
-                motifs <- getMotifs()
-            }
-            spectrum_info <- lapply(motifs, function(motif) {
-                motif_data_df <- dplyr::filter(enrichment_df,
-                                               motif_id == motifId(motif))
-                values <- motif_data_df$geo_mean_enrichment
-                values[values == 0] <-
-                    0.01 # avoid -Inf after taking the log
-                score <-
-                    scoreSpectrum(
-                        log(values),
-                        motif_data_df$adj_p_value_estimate,
-                        max_model_degree = max_model_degree,
-                        max_cs_permutations = max_cs_permutations,
-                        min_cs_permutations = min_cs_permutations
-                    )
-
-                n_significant <-
-                    sum(motif_data_df$adj_p_value_estimate <= 0.05)
-                classifier_score <-
-                    spectrumClassifier(
-                        spectrumAdjRSquared(score),
-                        spectrumDegree(score),
-                        spectrumSlope(score),
-                        spectrumConsistencyScoreN(score),
-                        n_significant,
-                        n_bins
-                    )
-
-                return(
-                    list(
-                        info = list(
-                            motif_id = motifId(motif),
-                            motif_rbps = paste(motifRbps(motif), collapse = ", "),
-                            adj_r_squared = spectrumAdjRSquared(score),
-                            degree = spectrumDegree(score),
-                            residuals = spectrumResiduals(score),
-                            slope = spectrumSlope(score),
-                            f_statistic = spectrumFStatistic(score),
-                            f_statistic_p_value = spectrumFStatisticPValue(score),
-                            consistency_score = spectrumConsistencyScore(score),
-                            consistency_score_p_value = spectrumConsistencyScorePValue(score),
-                            consistency_score_n = spectrumConsistencyScoreN(score),
-                            n_significant = n_significant,
-                            n_very_significant = sum(motif_data_df$adj_p_value <= 0.01),
-                            n_extremely_significant = sum(motif_data_df$adj_p_value <= 0.001),
-                            aggregate_classifier_score = sum(classifier_score)
-                        ),
-                        spectrum_plot = score@plot,
-                        classifier_score = classifier_score
-                    )
-                )
-            })
-            spectrum_info_df <-
-                as.data.frame(do.call("rbind", lapply(spectrum_info, function(x)
-                    x$info)),
-                    stringsAsFactors = FALSE
-                )
-            spectrum_info_df$motif_id <-
-                as.character(spectrum_info_df$motif_id)
-            spectrum_info_df$motif_rbps <-
-                as.character(spectrum_info_df$motif_rbps)
-            spectrum_info_df$adj_r_squared <-
-                as.numeric(spectrum_info_df$adj_r_squared)
-            spectrum_info_df$degree <-
-                as.integer(spectrum_info_df$degree)
-            spectrum_info_df$residuals <-
-                as.numeric(spectrum_info_df$residuals)
-            spectrum_info_df$slope <-
-                as.numeric(spectrum_info_df$slope)
-            spectrum_info_df$f_statistic <-
-                as.numeric(spectrum_info_df$f_statistic)
-            spectrum_info_df$f_statistic_p_value <-
-                as.numeric(spectrum_info_df$f_statistic_p_value)
-            spectrum_info_df$consistency_score <-
-                as.numeric(spectrum_info_df$consistency_score)
-            spectrum_info_df$consistency_score_p_value <-
-                as.numeric(spectrum_info_df$consistency_score_p_value)
-            spectrum_info_df$consistency_score_n <-
-                as.integer(spectrum_info_df$consistency_score_n)
-            spectrum_info_df$n_significant <-
-                as.integer(spectrum_info_df$n_significant)
-            spectrum_info_df$n_very_significant <-
-                as.integer(spectrum_info_df$n_very_significant)
-            spectrum_info_df$n_extremely_significant <-
-                as.integer(spectrum_info_df$n_extremely_significant)
-            spectrum_info_df$aggregate_classifier_score <-
-                as.integer(spectrum_info_df$aggregate_classifier_score)
-
-            spectrum_info_df$f_statistic_adj_p_value <-
-                stats::p.adjust(spectrum_info_df$f_statistic_p_value,
-                                method = p_adjust_method)
-            spectrum_info_df$consistency_score_adj_p_value <-
-                stats::p.adjust(spectrum_info_df$consistency_score_p_value,
-                                method = p_adjust_method)
-
-            spectrum_info_df <-
-                dplyr::select(
-                    spectrum_info_df,
-                    motif_id,
-                    motif_rbps,
-                    adj_r_squared,
-                    degree,
-                    residuals,
-                    slope,
-                    f_statistic,
-                    f_statistic_p_value,
-                    f_statistic_adj_p_value,
-                    consistency_score,
-                    consistency_score_p_value,
-                    consistency_score_adj_p_value,
-                    consistency_score_n,
-                    n_significant,
-                    n_very_significant,
-                    n_extremely_significant,
-                    aggregate_classifier_score
-                )
-
-            spectrum_plots <-
-                lapply(spectrum_info, function(x)
-                    x$spectrum_plot)
-            classifier_scores <-
-                lapply(spectrum_info, function(x)
-                    x$classifier_score)
-        } else {
-            spectrum_info_df <- data.frame(
-                motif_id = character(0),
-                motif_rbps = character(0),
-                adj_r_squared = numeric(0),
-                degree = integer(0),
-                residuals = numeric(0),
-                slope = numeric(0),
-                f_statistic = numeric(0),
-                f_statistic_p_value = numeric(0),
-                f_statistic_adj_p_value = numeric(0),
-                consistency_score = numeric(0),
-                consistency_score_p_value = numeric(0),
-                consistency_score_adj_p_value = numeric(0),
-                consistency_score_n = integer(0),
-                n_significant = integer(0),
-                n_very_significant = integer(0),
-                n_extremely_significant = integer(0),
-                aggregate_classifier_score = integer(0)
+    if (length(results) > 0) {
+        dfs <- lapply(results, function(result) {
+            result$motif_df
+        })
+        enrichment_df <- do.call("rbind", dfs)
+        enrichment_df$adj_p_value_estimate <-
+            stats::p.adjust(enrichment_df$p_value_estimate,
+                            method = p_adjust_method
             )
-            spectrum_plots <- NULL
-            warning("no sequences in any condition")
+
+        if (is.null(motifs)) {
+            motifs <- get_motifs()
         }
+        spectrum_info <- lapply(motifs, function(motif) {
+            motif_data_df <- dplyr::filter(enrichment_df,
+                                           motif_id == motifId(motif))
+            values <- motif_data_df$geo_mean_enrichment
+            values[values == 0] <-
+                0.01 # avoid -Inf after taking the log
+            score <-
+                score_spectrum(
+                    log(values),
+                    motif_data_df$adj_p_value_estimate,
+                    max_model_degree = max_model_degree,
+                    max_cs_permutations = max_cs_permutations,
+                    min_cs_permutations = min_cs_permutations
+                )
 
-        return(
-            list(
-                foreground_scores = results,
-                spectrum_info_df = spectrum_info_df,
-                spectrum_plots = spectrum_plots,
-                classifier_scores = classifier_scores
+            n_significant <-
+                sum(motif_data_df$adj_p_value_estimate <= 0.05)
+            classifier_score <-
+                spectrum_classifier(
+                    spectrumAdjRSquared(score),
+                    spectrumDegree(score),
+                    spectrumSlope(score),
+                    spectrumConsistencyScoreN(score),
+                    n_significant,
+                    n_bins
+                )
+
+            return(
+                list(
+                    info = list(
+                        motif_id = motifId(motif),
+                        motif_rbps = paste(motifRbps(motif), collapse = ", "),
+                        adj_r_squared = spectrumAdjRSquared(score),
+                        degree = spectrumDegree(score),
+                        residuals = spectrumResiduals(score),
+                        slope = spectrumSlope(score),
+                        f_statistic = spectrumFStatistic(score),
+                        f_statistic_p_value = spectrumFStatisticPValue(score),
+                        consistency_score = spectrumConsistencyScore(score),
+                        consistency_score_p_value = spectrumConsistencyScorePValue(score),
+                        consistency_score_n = spectrumConsistencyScoreN(score),
+                        n_significant = n_significant,
+                        n_very_significant = sum(motif_data_df$adj_p_value <= 0.01),
+                        n_extremely_significant = sum(motif_data_df$adj_p_value <= 0.001),
+                        aggregate_classifier_score = sum(classifier_score)
+                    ),
+                    spectrum_plot = score@plot,
+                    classifier_score = classifier_score
+                )
             )
+        })
+        spectrum_info_df <-
+            as.data.frame(do.call("rbind", lapply(spectrum_info, function(x)
+                x$info)),
+                stringsAsFactors = FALSE
+            )
+        spectrum_info_df$motif_id <-
+            as.character(spectrum_info_df$motif_id)
+        spectrum_info_df$motif_rbps <-
+            as.character(spectrum_info_df$motif_rbps)
+        spectrum_info_df$adj_r_squared <-
+            as.numeric(spectrum_info_df$adj_r_squared)
+        spectrum_info_df$degree <-
+            as.integer(spectrum_info_df$degree)
+        spectrum_info_df$residuals <-
+            as.numeric(spectrum_info_df$residuals)
+        spectrum_info_df$slope <-
+            as.numeric(spectrum_info_df$slope)
+        spectrum_info_df$f_statistic <-
+            as.numeric(spectrum_info_df$f_statistic)
+        spectrum_info_df$f_statistic_p_value <-
+            as.numeric(spectrum_info_df$f_statistic_p_value)
+        spectrum_info_df$consistency_score <-
+            as.numeric(spectrum_info_df$consistency_score)
+        spectrum_info_df$consistency_score_p_value <-
+            as.numeric(spectrum_info_df$consistency_score_p_value)
+        spectrum_info_df$consistency_score_n <-
+            as.integer(spectrum_info_df$consistency_score_n)
+        spectrum_info_df$n_significant <-
+            as.integer(spectrum_info_df$n_significant)
+        spectrum_info_df$n_very_significant <-
+            as.integer(spectrum_info_df$n_very_significant)
+        spectrum_info_df$n_extremely_significant <-
+            as.integer(spectrum_info_df$n_extremely_significant)
+        spectrum_info_df$aggregate_classifier_score <-
+            as.integer(spectrum_info_df$aggregate_classifier_score)
+
+        spectrum_info_df$f_statistic_adj_p_value <-
+            stats::p.adjust(spectrum_info_df$f_statistic_p_value,
+                            method = p_adjust_method)
+        spectrum_info_df$consistency_score_adj_p_value <-
+            stats::p.adjust(spectrum_info_df$consistency_score_p_value,
+                            method = p_adjust_method)
+
+        spectrum_info_df <-
+            dplyr::select(
+                spectrum_info_df,
+                motif_id,
+                motif_rbps,
+                adj_r_squared,
+                degree,
+                residuals,
+                slope,
+                f_statistic,
+                f_statistic_p_value,
+                f_statistic_adj_p_value,
+                consistency_score,
+                consistency_score_p_value,
+                consistency_score_adj_p_value,
+                consistency_score_n,
+                n_significant,
+                n_very_significant,
+                n_extremely_significant,
+                aggregate_classifier_score
+            )
+
+        spectrum_plots <-
+            lapply(spectrum_info, function(x)
+                x$spectrum_plot)
+        classifier_scores <-
+            lapply(spectrum_info, function(x)
+                x$classifier_score)
+    } else {
+        spectrum_info_df <- data.frame(
+            motif_id = character(0),
+            motif_rbps = character(0),
+            adj_r_squared = numeric(0),
+            degree = integer(0),
+            residuals = numeric(0),
+            slope = numeric(0),
+            f_statistic = numeric(0),
+            f_statistic_p_value = numeric(0),
+            f_statistic_adj_p_value = numeric(0),
+            consistency_score = numeric(0),
+            consistency_score_p_value = numeric(0),
+            consistency_score_adj_p_value = numeric(0),
+            consistency_score_n = integer(0),
+            n_significant = integer(0),
+            n_very_significant = integer(0),
+            n_extremely_significant = integer(0),
+            aggregate_classifier_score = integer(0)
         )
+        spectrum_plots <- NULL
+        warning("no sequences in any condition")
     }
+
+    return(
+        list(
+            foreground_scores = results,
+            spectrum_info_df = spectrum_info_df,
+            spectrum_plots = spectrum_plots,
+            classifier_scores = classifier_scores
+        )
+    )
+}

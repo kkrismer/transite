@@ -13,7 +13,7 @@ setClassUnion("dfOrNULL", c("data.frame", "NULL"))
 #' @slot heptamers character vector of heptamers associated with this motif
 #' @slot length length of the motif (i.e., \code{nrow(matrix)})
 #' @slot iupac IUPAC code for motif matrix
-#' (see \code{\link{generateIUPACByMatrix}})
+#' (see \code{\link{generate_iupac_by_matrix}})
 #' @slot type type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
 #' \code{'SELEX'}, etc.)
 #' @slot species species where motif was discovered (e.g.,
@@ -22,10 +22,10 @@ setClassUnion("dfOrNULL", c("data.frame", "NULL"))
 #' @return Object of type RBPMotif
 #' @examples
 #' kmers <- c("AAAAAAA", "CAAAAAA")
-#' iupac <- generateIUPACByKmers(kmers,
-#'   code = initIUPAClookupTable())
-#' hexamers <- generateKmersFromIUPAC(iupac, 6)
-#' heptamers <- generateKmersFromIUPAC(iupac, 7)
+#' iupac <- generate_iupac_by_kmers(kmers,
+#'   code = init_iupac_lookup_table())
+#' hexamers <- generate_kmers_from_iupac(iupac, 6)
+#' heptamers <- generate_kmers_from_iupac(iupac, 7)
 #' new("RBPMotif", id = "custom_motif", rbps = "RBP1",
 #'   matrix = NULL, hexamers = hexamers, heptamers = heptamers, length = 7L,
 #'   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"
@@ -226,7 +226,7 @@ setMethod("show", signature(object = "RBPMotif"), function(object) {
 #' @aliases plot,RBPMotif-method
 #' @exportMethod plot
 setMethod("plot", signature(x = "RBPMotif"), function(x) {
-    ppm <- t(getPPM(x))
+    ppm <- t(get_ppm(x))
     return(ggseqlogo::ggseqlogo(ppm))
 })
 
@@ -249,17 +249,17 @@ setMethod("plot", signature(x = "RBPMotif"), function(x) {
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
 #' @return object of class \code{RBPMotif}
 #' @examples
-#' custom_motif <- createMatrixMotif(
+#' custom_motif <- create_matrix_motif(
 #'   "custom_motif", "RBP1",
 #'   transite:::toy_motif_matrix, "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
 #' @export
-createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
-    iupac <- generateIUPACByMatrix(matrix, code = initIUPAClookupTable())
+create_matrix_motif <- function(id, rbps, matrix, type, species, src) {
+    iupac <- generate_iupac_by_matrix(matrix, code = init_iupac_lookup_table())
     length <- nrow(matrix)
-    hexamers <- generateKmersFromIUPAC(iupac, 6)
-    heptamers <- generateKmersFromIUPAC(iupac, 7)
+    hexamers <- generate_kmers_from_iupac(iupac, 6)
+    heptamers <- generate_kmers_from_iupac(iupac, 7)
 
     return(.RBPMotif(
         id = id, rbps = rbps, matrix = matrix,
@@ -292,16 +292,16 @@ createMatrixMotif <- function(id, rbps, matrix, type, species, src) {
 #' @param src source of motif (e.g., \code{'RBPDB v1.3.1'})
 #' @return object of class \code{RBPMotif}
 #' @examples
-#' custom_motif <- createKmerMotif(
+#' custom_motif <- create_kmer_motif(
 #'   "custom_motif", "RBP1",
 #'   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
 #' @export
-createKmerMotif <- function(id, rbps, kmers, type, species, src) {
+create_kmer_motif <- function(id, rbps, kmers, type, species, src) {
     kmers <- toupper(kmers)
     kmers <- gsub("T", "U", kmers)
-    if (!checkKmers(kmers)) {
+    if (!check_kmers(kmers)) {
         stop("invalid k-mers: (1) all k-mers must have the same length, (2) only hexamers or heptamers allowed, (3) allowed characters are A, C, G, U")
     }
 
@@ -314,9 +314,9 @@ createKmerMotif <- function(id, rbps, kmers, type, species, src) {
         heptamers <- kmers
     }
 
-    iupac <- generateIUPACByKmers(kmers, code = initIUPAClookupTable())
-    hexamers <- generateKmersFromIUPAC(iupac, 6)
-    heptamers <- generateKmersFromIUPAC(iupac, 7)
+    iupac <- generate_iupac_by_kmers(kmers, code = init_iupac_lookup_table())
+    hexamers <- generate_kmers_from_iupac(iupac, 6)
+    heptamers <- generate_kmers_from_iupac(iupac, 7)
 
     return(.RBPMotif(
         id = id, rbps = rbps, matrix = NULL,
@@ -344,11 +344,11 @@ createKmerMotif <- function(id, rbps, kmers, type, species, src) {
 #'   \item \code{src}
 #' }
 #' @examples
-#' motifsMetaInfo()
+#' motifs_meta_info()
 #' @family motif functions
 #' @export
-motifsMetaInfo <- function() {
-    motifs <- getMotifs()
+motifs_meta_info <- function() {
+    motifs <- get_motifs()
     id <- vapply(motifs, function(motif) {
         return(motifId(motif))
     }, FUN.VALUE = character(1))
@@ -381,13 +381,13 @@ motifsMetaInfo <- function() {
 #' @param id character vector of motif identifiers
 #' @return A list of objects of class \code{RBPMotif}
 #' @examples
-#' getMotifById("M178_0.6")
+#' get_motif_by_id("M178_0.6")
 #'
-#' getMotifById(c("M178_0.6", "M188_0.6"))
+#' get_motif_by_id(c("M178_0.6", "M188_0.6"))
 #' @family motif functions
 #' @export
-getMotifById <- function(id) {
-    motifs <- getMotifs()
+get_motif_by_id <- function(id) {
+    motifs <- get_motifs()
     idx <- unlist(lapply(motifs, function(motif) {
         return(sum(tolower(motifId(motif)) %in% tolower(id)) > 0)
     }))
@@ -402,13 +402,13 @@ getMotifById <- function(id) {
 #' @param rbp character vector of gene symbols of RNA-binding proteins
 #' @return A list of objects of class \code{RBPMotif}
 #' @examples
-#' getMotifByRBP("ELAVL1")
+#' get_motif_by_rbp("ELAVL1")
 #'
-#' getMotifByRBP(c("ELAVL1", "ELAVL2"))
+#' get_motif_by_rbp(c("ELAVL1", "ELAVL2"))
 #' @family motif functions
 #' @export
-getMotifByRBP <- function(rbp) {
-    motifs <- getMotifs()
+get_motif_by_rbp <- function(rbp) {
+    motifs <- get_motifs()
     idx <- unlist(lapply(motifs, function(motif) {
         return(sum(tolower(motifRbps(motif)) %in% tolower(rbp)) > 0)
     }))
@@ -423,10 +423,10 @@ getMotifByRBP <- function(rbp) {
 #' @param motif object of class \code{RBPMotif}
 #' @return The position probability matrix of the specified motif
 #' @examples
-#' getPPM(getMotifById("M178_0.6")[[1]])
+#' get_ppm(get_motif_by_id("M178_0.6")[[1]])
 #' @family motif functions
 #' @export
-getPPM <- function(motif) {
+get_ppm <- function(motif) {
     return(2^motifMatrix(motif) * 0.25)
 }
 
@@ -459,16 +459,16 @@ getPPM <- function(motif) {
 #' @param threshold the threshold probability (nucleotides with lower
 #' probabilities are ignored)
 #' @param code if IUPAC code table has already been initialized by
-#' \code{\link{initIUPAClookupTable}}, it can be specified here
+#' \code{\link{init_iupac_lookup_table}}, it can be specified here
 #' @return the IUPAC string of the binding site
 #' @examples
-#' generateIUPACByMatrix(motifMatrix(getMotifById("M178_0.6")[[1]]))
+#' generate_iupac_by_matrix(motifMatrix(get_motif_by_id("M178_0.6")[[1]]))
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
-generateIUPACByMatrix <- function(matrix, threshold = 0.215, code = NULL) {
+generate_iupac_by_matrix <- function(matrix, threshold = 0.215, code = NULL) {
     if (is.null(code)) {
-        code <- initIUPAClookupTable()
+        code <- init_iupac_lookup_table()
     }
 
     codes <- apply(matrix, 1, function(x) {
@@ -518,17 +518,17 @@ generateIUPACByMatrix <- function(matrix, threshold = 0.215, code = NULL) {
 #' }
 #' @param kmers character vector of \emph{k}-mers
 #' @param code if IUPAC code table has already been initialized by
-#' \code{\link{initIUPAClookupTable}}, it can be
+#' \code{\link{init_iupac_lookup_table}}, it can be
 #' specified here
 #' @return the IUPAC string of the binding site
 #' @examples
-#' generateIUPACByKmers(c("AACCAA", "AACCGG", "CACCGA"))
+#' generate_iupac_by_kmers(c("AACCAA", "AACCGG", "CACCGA"))
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
-generateIUPACByKmers <- function(kmers, code = NULL) {
+generate_iupac_by_kmers <- function(kmers, code = NULL) {
     if (is.null(code)) {
-        code <- initIUPAClookupTable()
+        # code <- init_iupac_lookup_table()
     }
 
     codes <- lapply(seq_len(nchar(kmers[1])), function(i) {
@@ -545,7 +545,7 @@ generateIUPACByKmers <- function(kmers, code = NULL) {
 #'
 #' @description
 #' Initializes a hash table that serves as a IUPAC lookup table for the
-#' \code{\link{generateIUPACByMatrix}} function.
+#' \code{\link{generate_iupac_by_matrix}} function.
 #'
 #' @details
 #' IUPAC RNA nucleotide code:
@@ -568,12 +568,12 @@ generateIUPACByKmers <- function(kmers, code = NULL) {
 #' }
 #' @return an environment, the IUPAC lookup hash table
 #' @examples
-#' generateIUPACByMatrix(motifMatrix(getMotifById("M178_0.6")[[1]]),
-#'   code = initIUPAClookupTable())
+#' generate_iupac_by_matrix(motifMatrix(get_motif_by_id("M178_0.6")[[1]]),
+#'   code = init_iupac_lookup_table())
 #' @family motif functions
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
-initIUPAClookupTable <- function() {
+init_iupac_lookup_table <- function() {
     table <- new.env(hash = TRUE, parent = emptyenv())
     table[["A"]] <- "A"
     table[["C"]] <- "C"
@@ -622,19 +622,19 @@ initIUPAClookupTable <- function() {
 #' @param k length of \emph{k}-mer, \code{6} (hexamers) or \code{7} (heptamers)
 #' @return list of \emph{k}-mers
 #' @examples
-#' generateKmersFromIUPAC(motifIUPAC(getMotifById("M178_0.6")[[1]]), k = 6)
+#' generate_kmers_from_iupac(motifIUPAC(get_motif_by_id("M178_0.6")[[1]]), k = 6)
 #' @family motif functions
 #' @importFrom Biostrings IUPAC_CODE_MAP
 #' @references \url{http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html}
 #' @export
-generateKmersFromIUPAC <- function(iupac, k) {
+generate_kmers_from_iupac <- function(iupac, k) {
     if (nchar(iupac) < k) {
         diff <- k - nchar(iupac)
         left_padding_iupac <- paste0(paste(rep("N", diff), collapse = ""), iupac)
         right_padding_iupac <- paste0(iupac, paste(rep("N", diff), collapse = ""))
 
-        kmers_left_padded <- generateKmersFromIUPAC(left_padding_iupac, k)
-        kmers_right_padded <- generateKmersFromIUPAC(right_padding_iupac, k)
+        kmers_left_padded <- generate_kmers_from_iupac(left_padding_iupac, k)
+        kmers_right_padded <- generate_kmers_from_iupac(right_padding_iupac, k)
         return(unique(c(kmers_left_padded, kmers_right_padded)))
     } else {
         iupac <- gsub(pattern = "U", replacement = "T", x = iupac, fixed = TRUE)
@@ -665,7 +665,7 @@ lock <- function(lock_file) {
         # if(as.numeric(Sys.time()) - timestamp > t ||
         # as.numeric(Sys.time()) - timestamp
         # < 0) { file.remove(lock_file) return(lock(lock_file)) } else {
-        return(getLockObject(lock_file, FALSE))
+        return(get_lock_object(lock_file, FALSE))
         # }
     } else {
         if (!dir.exists(dirname(lock_file))) {
@@ -676,14 +676,14 @@ lock <- function(lock_file) {
             con <- file(lock_file)
             write(as.numeric(Sys.time()), con)
             close(con)
-            return(getLockObject(lock_file, TRUE))
+            return(get_lock_object(lock_file, TRUE))
         } else {
-            return(getLockObject(lock_file, FALSE))
+            return(get_lock_object(lock_file, FALSE))
         }
     }
 }
 
-getLockObject <- function(lock_file, suc) {
+get_lock_object <- function(lock_file, suc) {
     lock_obj <- list(path = lock_file, success = suc)
     class(lock_obj) <- append(class(lock_obj), "lock_object")
     return(lock_obj)

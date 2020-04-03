@@ -23,11 +23,11 @@ NULL
 #'
 #' @return A list of objects of class Motif
 #' @examples
-#' transite_motifs <- getMotifs()
+#' transite_motifs <- get_motifs()
 #' @family motif functions
 #' @importFrom utils data
 #' @export
-getMotifs <- function() {
+get_motifs <- function() {
     return(motif_db$motifs)
 }
 
@@ -41,16 +41,16 @@ getMotifs <- function() {
 #' @return void
 #'
 #' @examples
-#' custom_motif <- createKmerMotif(
+#' custom_motif <- create_kmer_motif(
 #'   "custom_motif", "RBP1",
 #'   c("AAAAAAA", "CAAAAAA"), "HITS-CLIP",
 #'   "Homo sapiens", "user"
 #' )
-#' setMotifs(list(custom_motif))
+#' set_motifs(list(custom_motif))
 #' @family motif functions
 #' @importFrom utils data
 #' @export
-setMotifs <- function(value) {
+set_motifs <- function(value) {
     old <- motif_db$motifs
     motif_db$motifs <- value
     invisible(old)

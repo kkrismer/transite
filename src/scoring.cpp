@@ -15,7 +15,7 @@
 //'
 //' @return list of PWM scores for each sequence
 //' @examples
-//' motif <- getMotifById("M178_0.6")[[1]]
+//' motif <- get_motif_by_id("M178_0.6")[[1]]
 //' sequences <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
 //'                "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
 //'                "AUCAAAUUA", "UGUGGGG", "GACACUUAAAGAUCCU",
@@ -24,11 +24,11 @@
 //' seq_char_vectors <- lapply(sequences, function(seq) {
 //'   unlist(strsplit(seq, ""))
 //' })
-//' scoreSequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
+//' score_sequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
 //'
 //' @export
 // [[Rcpp::export]]
-SEXP scoreSequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm) {
+SEXP score_sequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm) {
     std::vector<Rcpp::NumericVector> scores;
     for(int i(0); i < sequences.size(); ++i) {
         Rcpp::CharacterVector seq(sequences[i]);
@@ -75,13 +75,13 @@ SEXP scoreSequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm) {
 //' @return list of PWM scores for the specified \emph{k}-mers
 //'
 //' @examples
-//' motif <- getMotifById("M178_0.6")[[1]]
+//' motif <- get_motif_by_id("M178_0.6")[[1]]
 //' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-//' calculateKmerScores(kmers, as.matrix(motifMatrix(motif)))
+//' calculate_kmer_scores(kmers, as.matrix(motifMatrix(motif)))
 //'
 //' @export
 // [[Rcpp::export]]
-Rcpp::NumericVector calculateKmerScores(Rcpp::List kmers, Rcpp::NumericMatrix pwm) {
+Rcpp::NumericVector calculate_kmer_scores(Rcpp::List kmers, Rcpp::NumericMatrix pwm) {
     Rcpp::NumericVector scores(kmers.size());
     for(int i(0); i < kmers.size(); ++i) {
         Rcpp::CharacterVector seq(kmers[i]);
@@ -139,7 +139,7 @@ Rcpp::NumericVector calculateKmerScores(Rcpp::List kmers, Rcpp::NumericMatrix pw
 //'
 //' @return numeric vector of \emph{k}-mer scores
 // [[Rcpp::export]]
-Rcpp::NumericVector lookupKmerScores(Rcpp::List kmers, Rcpp::Environment kmerScores) {
+Rcpp::NumericVector lookup_kmer_scores(Rcpp::List kmers, Rcpp::Environment kmerScores) {
     Rcpp::NumericVector scores(kmers.size());
     for(int i(0); i < kmers.size(); ++i) {
         std::string kmer = kmers[i];
@@ -157,7 +157,7 @@ Rcpp::NumericVector lookupKmerScores(Rcpp::List kmers, Rcpp::Environment kmerSco
 //' @return data frame with columns \code{score}, \code{top_kmer},
 //' and \code{top_kmer_enrichment}
 // [[Rcpp::export]]
-Rcpp::DataFrame computeMotifScore(Rcpp::List kmers) {
+Rcpp::DataFrame compute_motif_score(Rcpp::List kmers) {
     // kmers is a list of data frames (sorted desc(score), filtered score > 0)
     Rcpp::NumericVector scores(kmers.size());
     Rcpp::CharacterVector topKmers(kmers.size());
@@ -195,7 +195,7 @@ Rcpp::DataFrame computeMotifScore(Rcpp::List kmers) {
                                    Rcpp::_["top_kmer_enrichment"] = topKmerEnrichments);
 }
 
-double calculateConsistencyScore(Rcpp::NumericVector x) {
+double calculate_consistency_score(Rcpp::NumericVector x) {
     double score(0.0);
     for(int i(0); i < x.size() - 2; ++i) {
         score += std::abs(((x[i] + x[i + 2]) / 2) - x[i + 1]);
@@ -230,18 +230,18 @@ double calculateConsistencyScore(Rcpp::NumericVector x) {
 //' @examples
 //' poor_enrichment_spectrum <- c(0.1, 0.5, 0.6, 0.4,
 //'   0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
-//' local_consistency <- calculateLocalConsistency(poor_enrichment_spectrum,
+//' local_consistency <- calculate_local_consistency(poor_enrichment_spectrum,
 //'   1000000, 1000, 5)
 //'
 //' enrichment_spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
 //'   0.9, 1.2, 1.4, 1.6, 1.4)
-//' local_consistency <- calculateLocalConsistency(enrichment_spectrum,
+//' local_consistency <- calculate_local_consistency(enrichment_spectrum,
 //'   1000000, 1000, 5)
 //' @export
 // [[Rcpp::export]]
-Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations,
+Rcpp::List calculate_local_consistency(Rcpp::NumericVector x, int numPermutations,
                                int minPermutations, int e) {
-    double score(calculateConsistencyScore(x));
+    double score(calculate_consistency_score(x));
     int k(0);
     int i(1);
     std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
@@ -252,7 +252,7 @@ Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations,
         std::shuffle(shuffledSpectrum.begin(), shuffledSpectrum.end(), gen);
 
         // calculate consistency score
-        double shuffledScore(calculateConsistencyScore(shuffledSpectrum));
+        double shuffledScore(calculate_consistency_score(shuffledSpectrum));
         // lower tail probability
         if(shuffledScore <= score) {
             ++k;
@@ -274,9 +274,9 @@ Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations,
 //' C++ implementation of Motif Enrichment calculation
 //'
 //' @param absoluteHits number of putative binding sites per sequence
-//' (returned by \code{\link{scoreTranscripts}})
+//' (returned by \code{\link{score_transcripts}})
 //' @param totalSites number of potential binding sites per sequence
-//' (returned by \code{\link{scoreTranscripts}})
+//' (returned by \code{\link{score_transcripts}})
 //' @param relHitsForeground relative number of hits in foreground set
 //' @param n number of sequences in the foreground set
 //' @param maxPermutations maximum number of foreground permutations
@@ -301,19 +301,19 @@ Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations,
 //'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
 //'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
 //'                      "AUAGAC", "AGUUC")
-//' motif_db <- getMotifById("M178_0.6")
-//' fg <- scoreTranscripts(foreground_seqs, cache = FALSE,
+//' motif_db <- get_motif_by_id("M178_0.6")
+//' fg <- score_transcripts(foreground_seqs, cache = FALSE,
 //'   motifs = motif_db)
-//' bg <- scoreTranscripts(background_seqs, cache = FALSE,
+//' bg <- score_transcripts(background_seqs, cache = FALSE,
 //'   motifs = motif_db)
 //'
-//' mc_result <- calculateTranscriptMC(unlist(bg$absolute_hits),
+//' mc_result <- calculate_transcript_mc(unlist(bg$absolute_hits),
 //'  unlist(bg$total_sites),
 //'  fg$df$absolute_hits / fg$df$total_sites,
 //'  length(foreground_seqs), 1000, 500, 5)
 //' @export
 // [[Rcpp::export]]
-Rcpp::List calculateTranscriptMC(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites,
+Rcpp::List calculate_transcript_mc(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites,
                            double relHitsForeground,
                            int n, int maxPermutations, int minPermutations, int e) {
     double relHitsBackground(sum(absoluteHits) / sum(totalSites));
@@ -362,4 +362,3 @@ Rcpp::List calculateTranscriptMC(Rcpp::NumericVector absoluteHits, Rcpp::Numeric
     return Rcpp::List::create(Rcpp::Named("p_value") = pValue,
                               Rcpp::Named("n") = i);
 }
-

@@ -11,7 +11,7 @@
 #'
 #' @return list of PWM scores for each sequence
 #' @examples
-#' motif <- getMotifById("M178_0.6")[[1]]
+#' motif <- get_motif_by_id("M178_0.6")[[1]]
 #' sequences <- c("CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU",
 #'                "UCAUUUUAUUAAA", "AAUUGGUGUCUGGAUACUUCCCUGUACAU",
 #'                "AUCAAAUUA", "UGUGGGG", "GACACUUAAAGAUCCU",
@@ -20,11 +20,11 @@
 #' seq_char_vectors <- lapply(sequences, function(seq) {
 #'   unlist(strsplit(seq, ""))
 #' })
-#' scoreSequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
+#' score_sequences(seq_char_vectors, as.matrix(motifMatrix(motif)))
 #'
 #' @export
-scoreSequences <- function(sequences, pwm) {
-    .Call('_transite_scoreSequences', PACKAGE = 'transite', sequences, pwm)
+score_sequences <- function(sequences, pwm) {
+    .Call('_transite_score_sequences', PACKAGE = 'transite', sequences, pwm)
 }
 
 #' @title \emph{k}-mer Score Calculation
@@ -38,13 +38,13 @@ scoreSequences <- function(sequences, pwm) {
 #' @return list of PWM scores for the specified \emph{k}-mers
 #'
 #' @examples
-#' motif <- getMotifById("M178_0.6")[[1]]
+#' motif <- get_motif_by_id("M178_0.6")[[1]]
 #' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-#' calculateKmerScores(kmers, as.matrix(motifMatrix(motif)))
+#' calculate_kmer_scores(kmers, as.matrix(motifMatrix(motif)))
 #'
 #' @export
-calculateKmerScores <- function(kmers, pwm) {
-    .Call('_transite_calculateKmerScores', PACKAGE = 'transite', kmers, pwm)
+calculate_kmer_scores <- function(kmers, pwm) {
+    .Call('_transite_calculate_kmer_scores', PACKAGE = 'transite', kmers, pwm)
 }
 
 #' @title \emph{k}-mer Score Lookup Table Access Function
@@ -56,8 +56,8 @@ calculateKmerScores <- function(kmers, pwm) {
 #' @param kmerScores position weight matrix
 #'
 #' @return numeric vector of \emph{k}-mer scores
-lookupKmerScores <- function(kmers, kmerScores) {
-    .Call('_transite_lookupKmerScores', PACKAGE = 'transite', kmers, kmerScores)
+lookup_kmer_scores <- function(kmers, kmerScores) {
+    .Call('_transite_lookup_kmer_scores', PACKAGE = 'transite', kmers, kmerScores)
 }
 
 #' @title Motif Score Algorithm
@@ -68,8 +68,8 @@ lookupKmerScores <- function(kmers, kmerScores) {
 #' @param kmers list of \emph{k}-mers
 #' @return data frame with columns \code{score}, \code{top_kmer},
 #' and \code{top_kmer_enrichment}
-computeMotifScore <- function(kmers) {
-    .Call('_transite_computeMotifScore', PACKAGE = 'transite', kmers)
+compute_motif_score <- function(kmers) {
+    .Call('_transite_compute_motif_score', PACKAGE = 'transite', kmers)
 }
 
 #' @title Local Consistency Score
@@ -98,16 +98,16 @@ computeMotifScore <- function(kmers) {
 #' @examples
 #' poor_enrichment_spectrum <- c(0.1, 0.5, 0.6, 0.4,
 #'   0.7, 0.6, 1.2, 1.1, 1.8, 1.6)
-#' local_consistency <- calculateLocalConsistency(poor_enrichment_spectrum,
+#' local_consistency <- calculate_local_consistency(poor_enrichment_spectrum,
 #'   1000000, 1000, 5)
 #'
 #' enrichment_spectrum <- c(0.1, 0.3, 0.6, 0.7, 0.8,
 #'   0.9, 1.2, 1.4, 1.6, 1.4)
-#' local_consistency <- calculateLocalConsistency(enrichment_spectrum,
+#' local_consistency <- calculate_local_consistency(enrichment_spectrum,
 #'   1000000, 1000, 5)
 #' @export
-calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
-    .Call('_transite_calculateLocalConsistency', PACKAGE = 'transite', x, numPermutations, minPermutations, e)
+calculate_local_consistency <- function(x, numPermutations, minPermutations, e) {
+    .Call('_transite_calculate_local_consistency', PACKAGE = 'transite', x, numPermutations, minPermutations, e)
 }
 
 #' @title Motif Enrichment calculation
@@ -116,9 +116,9 @@ calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
 #' C++ implementation of Motif Enrichment calculation
 #'
 #' @param absoluteHits number of putative binding sites per sequence
-#' (returned by \code{\link{scoreTranscripts}})
+#' (returned by \code{\link{score_transcripts}})
 #' @param totalSites number of potential binding sites per sequence
-#' (returned by \code{\link{scoreTranscripts}})
+#' (returned by \code{\link{score_transcripts}})
 #' @param relHitsForeground relative number of hits in foreground set
 #' @param n number of sequences in the foreground set
 #' @param maxPermutations maximum number of foreground permutations
@@ -143,18 +143,18 @@ calculateLocalConsistency <- function(x, numPermutations, minPermutations, e) {
 #'                      "UCAUUUUAUUAAA", "AUCAAAUUA", "GACACUUAAAGAUCCU",
 #'                      "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA",
 #'                      "AUAGAC", "AGUUC")
-#' motif_db <- getMotifById("M178_0.6")
-#' fg <- scoreTranscripts(foreground_seqs, cache = FALSE,
+#' motif_db <- get_motif_by_id("M178_0.6")
+#' fg <- score_transcripts(foreground_seqs, cache = FALSE,
 #'   motifs = motif_db)
-#' bg <- scoreTranscripts(background_seqs, cache = FALSE,
+#' bg <- score_transcripts(background_seqs, cache = FALSE,
 #'   motifs = motif_db)
 #'
-#' mc_result <- calculateTranscriptMC(unlist(bg$absolute_hits),
+#' mc_result <- calculate_transcript_mc(unlist(bg$absolute_hits),
 #'  unlist(bg$total_sites),
 #'  fg$df$absolute_hits / fg$df$total_sites,
 #'  length(foreground_seqs), 1000, 500, 5)
 #' @export
-calculateTranscriptMC <- function(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e) {
-    .Call('_transite_calculateTranscriptMC', PACKAGE = 'transite', absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e)
+calculate_transcript_mc <- function(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e) {
+    .Call('_transite_calculate_transcript_mc', PACKAGE = 'transite', absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e)
 }
 

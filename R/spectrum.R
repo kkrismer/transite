@@ -249,7 +249,7 @@ setMethod("plot", signature(x = "SpectrumScore"), function(x) {
 #'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 #' )
 #'
-#' foreground_sets <- subdivideData(toy_background_set, n_bins = 7)
+#' foreground_sets <- subdivide_data(toy_background_set, n_bins = 7)
 #'
 #' # example data set
 #' background_df <- transite:::ge$background_df
@@ -260,10 +260,10 @@ setMethod("plot", signature(x = "SpectrumScore"), function(x) {
 #' names(background_set) <- paste0(background_df$refseq, "|",
 #'   background_df$seq_type)
 #'
-#' foreground_sets <- subdivideData(background_set)
+#' foreground_sets <- subdivide_data(background_set)
 #' @family SPMA functions
 #' @export
-subdivideData <- function(background_set, n_bins = 40) {
+subdivide_data <- function(background_set, n_bins = 40) {
     if (n_bins < 7 || n_bins > 100) {
         stop("value of bin_num is invalid, valid values are integers between 7 and 100")
     }
@@ -453,18 +453,18 @@ subdivideData <- function(background_set, n_bins = 40) {
 #' }
 #' @examples
 #' # random spectrum
-#' scoreSpectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
+#' score_spectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
 #'
 #' # non-random linear spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-#' scoreSpectrum(signal + noise, max_model_degree = 1,
+#' score_spectrum(signal + noise, max_model_degree = 1,
 #'   max_cs_permutations = 100000)
 #'
 #' # non-random quadratic spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-#' scoreSpectrum(signal + noise, max_model_degree = 2,
+#' score_spectrum(signal + noise, max_model_degree = 2,
 #'   max_cs_permutations = 100000)
 #' @family SPMA functions
 #' @importFrom ggplot2 ggplot
@@ -495,7 +495,7 @@ subdivideData <- function(background_set, n_bins = 40) {
 #' @importFrom stats pf
 #' @importFrom methods new
 #' @export
-scoreSpectrum <- function(x, p_value = array(1, length(x)),
+score_spectrum <- function(x, p_value = array(1, length(x)),
                           x_label = "log enrichment",
                           midpoint = 0,
                           max_model_degree = 3,
@@ -607,8 +607,8 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
     meta_info <- summary(selected_model)
 
     # calculate local consistency score
-    local_consistency <- calculateLocalConsistency(x, max_cs_permutations,
-                                                   min_cs_permutations, e)
+    local_consistency <- calculate_local_consistency(x, max_cs_permutations,
+                                                     min_cs_permutations, e)
 
     if (degree > 0) {
         slope <- meta_info$coefficients[2, 1]
@@ -651,14 +651,14 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' If \code{sum(score) == 3} spectrum considered non-random, random otherwise.
 #'
 #' @param adj_r_squared adjusted \eqn{R^2} of polynomial model, returned by
-#' \link{scoreSpectrum}
-#' @param degree degree of polynomial, returned by \link{scoreSpectrum}
+#' \link{score_spectrum}
+#' @param degree degree of polynomial, returned by \link{score_spectrum}
 #' @param slope coefficient of the linear term of the polynomial model
 #' (spectrum "direction"),
-#' returned by \link{scoreSpectrum}
+#' returned by \link{score_spectrum}
 #' @param consistency_score_n number of performed permutations before
 #' early stopping,
-#' returned by \link{scoreSpectrum}
+#' returned by \link{score_spectrum}
 #' @param n_significant number of bins with statistically significant
 #' enrichment
 #' @param n_bins number of bins
@@ -672,9 +672,9 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' n_bins <- 40
 #'
 #' # random spectrum
-#' random_sp <- scoreSpectrum(runif(n = n_bins, min = -1, max = 1),
+#' random_sp <- score_spectrum(runif(n = n_bins, min = -1, max = 1),
 #'   max_model_degree = 1)
-#' score <- spectrumClassifier(
+#' score <- spectrum_classifier(
 #'   spectrumAdjRSquared(random_sp), spectrumDegree(random_sp),
 #'   spectrumSlope(random_sp), spectrumConsistencyScoreN(random_sp), 0, n_bins
 #' )
@@ -683,9 +683,9 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' # non-random linear spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
-#' linear_sp <- scoreSpectrum(signal + noise, max_model_degree = 1,
+#' linear_sp <- score_spectrum(signal + noise, max_model_degree = 1,
 #'   max_cs_permutations = 100000)
-#' score <- spectrumClassifier(
+#' score <- spectrum_classifier(
 #'   spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
 #'   spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
 #' )
@@ -694,9 +694,9 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' # non-random linear spectrum with weak noise component
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-#' linear_sp <- scoreSpectrum(signal + noise, max_model_degree = 1,
+#' linear_sp <- score_spectrum(signal + noise, max_model_degree = 1,
 #'   max_cs_permutations = 100000)
-#' score <- spectrumClassifier(
+#' score <- spectrum_classifier(
 #'   spectrumAdjRSquared(linear_sp), spectrumDegree(linear_sp),
 #'   spectrumSlope(linear_sp), spectrumConsistencyScoreN(linear_sp), 10, n_bins
 #' )
@@ -706,9 +706,9 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' # non-random quadratic spectrum with strong noise component
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
-#' quadratic_sp <- scoreSpectrum(signal + noise, max_model_degree = 2,
+#' quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2,
 #'   max_cs_permutations = 100000)
-#' score <- spectrumClassifier(
+#' score <- spectrum_classifier(
 #'   spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
 #'   spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
 #' )
@@ -717,8 +717,8 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' # non-random quadratic spectrum with weak noise component
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.1)
-#' quadratic_sp <- scoreSpectrum(signal + noise, max_model_degree = 2)
-#' score <- spectrumClassifier(
+#' quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2)
+#' score <- spectrum_classifier(
 #'   spectrumAdjRSquared(quadratic_sp), spectrumDegree(quadratic_sp),
 #'   spectrumSlope(quadratic_sp), spectrumConsistencyScoreN(quadratic_sp), 10, n_bins
 #' )
@@ -726,7 +726,7 @@ scoreSpectrum <- function(x, p_value = array(1, length(x)),
 #' }
 #' @family SPMA functions
 #' @export
-spectrumClassifier <- function(adj_r_squared, degree, slope,
+spectrum_classifier <- function(adj_r_squared, degree, slope,
                                consistency_score_n,
                                n_significant, n_bins) {
     return(c(

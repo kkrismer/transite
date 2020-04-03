@@ -5,56 +5,56 @@
 
 using namespace Rcpp;
 
-// scoreSequences
-SEXP scoreSequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm);
-RcppExport SEXP _transite_scoreSequences(SEXP sequencesSEXP, SEXP pwmSEXP) {
+// score_sequences
+SEXP score_sequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm);
+RcppExport SEXP _transite_score_sequences(SEXP sequencesSEXP, SEXP pwmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type sequences(sequencesSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type pwm(pwmSEXP);
-    rcpp_result_gen = Rcpp::wrap(scoreSequences(sequences, pwm));
+    rcpp_result_gen = Rcpp::wrap(score_sequences(sequences, pwm));
     return rcpp_result_gen;
 END_RCPP
 }
-// calculateKmerScores
-Rcpp::NumericVector calculateKmerScores(Rcpp::List kmers, Rcpp::NumericMatrix pwm);
-RcppExport SEXP _transite_calculateKmerScores(SEXP kmersSEXP, SEXP pwmSEXP) {
+// calculate_kmer_scores
+Rcpp::NumericVector calculate_kmer_scores(Rcpp::List kmers, Rcpp::NumericMatrix pwm);
+RcppExport SEXP _transite_calculate_kmer_scores(SEXP kmersSEXP, SEXP pwmSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
     Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type pwm(pwmSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculateKmerScores(kmers, pwm));
+    rcpp_result_gen = Rcpp::wrap(calculate_kmer_scores(kmers, pwm));
     return rcpp_result_gen;
 END_RCPP
 }
-// lookupKmerScores
-Rcpp::NumericVector lookupKmerScores(Rcpp::List kmers, Rcpp::Environment kmerScores);
-RcppExport SEXP _transite_lookupKmerScores(SEXP kmersSEXP, SEXP kmerScoresSEXP) {
+// lookup_kmer_scores
+Rcpp::NumericVector lookup_kmer_scores(Rcpp::List kmers, Rcpp::Environment kmerScores);
+RcppExport SEXP _transite_lookup_kmer_scores(SEXP kmersSEXP, SEXP kmerScoresSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
     Rcpp::traits::input_parameter< Rcpp::Environment >::type kmerScores(kmerScoresSEXP);
-    rcpp_result_gen = Rcpp::wrap(lookupKmerScores(kmers, kmerScores));
+    rcpp_result_gen = Rcpp::wrap(lookup_kmer_scores(kmers, kmerScores));
     return rcpp_result_gen;
 END_RCPP
 }
-// computeMotifScore
-Rcpp::DataFrame computeMotifScore(Rcpp::List kmers);
-RcppExport SEXP _transite_computeMotifScore(SEXP kmersSEXP) {
+// compute_motif_score
+Rcpp::DataFrame compute_motif_score(Rcpp::List kmers);
+RcppExport SEXP _transite_compute_motif_score(SEXP kmersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
-    rcpp_result_gen = Rcpp::wrap(computeMotifScore(kmers));
+    rcpp_result_gen = Rcpp::wrap(compute_motif_score(kmers));
     return rcpp_result_gen;
 END_RCPP
 }
-// calculateLocalConsistency
-Rcpp::List calculateLocalConsistency(Rcpp::NumericVector x, int numPermutations, int minPermutations, int e);
-RcppExport SEXP _transite_calculateLocalConsistency(SEXP xSEXP, SEXP numPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
+// calculate_local_consistency
+Rcpp::List calculate_local_consistency(Rcpp::NumericVector x, int numPermutations, int minPermutations, int e);
+RcppExport SEXP _transite_calculate_local_consistency(SEXP xSEXP, SEXP numPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -62,13 +62,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type numPermutations(numPermutationsSEXP);
     Rcpp::traits::input_parameter< int >::type minPermutations(minPermutationsSEXP);
     Rcpp::traits::input_parameter< int >::type e(eSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculateLocalConsistency(x, numPermutations, minPermutations, e));
+    rcpp_result_gen = Rcpp::wrap(calculate_local_consistency(x, numPermutations, minPermutations, e));
     return rcpp_result_gen;
 END_RCPP
 }
-// calculateTranscriptMC
-Rcpp::List calculateTranscriptMC(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites, double relHitsForeground, int n, int maxPermutations, int minPermutations, int e);
-RcppExport SEXP _transite_calculateTranscriptMC(SEXP absoluteHitsSEXP, SEXP totalSitesSEXP, SEXP relHitsForegroundSEXP, SEXP nSEXP, SEXP maxPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
+// calculate_transcript_mc
+Rcpp::List calculate_transcript_mc(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites, double relHitsForeground, int n, int maxPermutations, int minPermutations, int e);
+RcppExport SEXP _transite_calculate_transcript_mc(SEXP absoluteHitsSEXP, SEXP totalSitesSEXP, SEXP relHitsForegroundSEXP, SEXP nSEXP, SEXP maxPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -79,18 +79,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type maxPermutations(maxPermutationsSEXP);
     Rcpp::traits::input_parameter< int >::type minPermutations(minPermutationsSEXP);
     Rcpp::traits::input_parameter< int >::type e(eSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculateTranscriptMC(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e));
+    rcpp_result_gen = Rcpp::wrap(calculate_transcript_mc(absoluteHits, totalSites, relHitsForeground, n, maxPermutations, minPermutations, e));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_transite_scoreSequences", (DL_FUNC) &_transite_scoreSequences, 2},
-    {"_transite_calculateKmerScores", (DL_FUNC) &_transite_calculateKmerScores, 2},
-    {"_transite_lookupKmerScores", (DL_FUNC) &_transite_lookupKmerScores, 2},
-    {"_transite_computeMotifScore", (DL_FUNC) &_transite_computeMotifScore, 1},
-    {"_transite_calculateLocalConsistency", (DL_FUNC) &_transite_calculateLocalConsistency, 4},
-    {"_transite_calculateTranscriptMC", (DL_FUNC) &_transite_calculateTranscriptMC, 7},
+    {"_transite_score_sequences", (DL_FUNC) &_transite_score_sequences, 2},
+    {"_transite_calculate_kmer_scores", (DL_FUNC) &_transite_calculate_kmer_scores, 2},
+    {"_transite_lookup_kmer_scores", (DL_FUNC) &_transite_lookup_kmer_scores, 2},
+    {"_transite_compute_motif_score", (DL_FUNC) &_transite_compute_motif_score, 1},
+    {"_transite_calculate_local_consistency", (DL_FUNC) &_transite_calculate_local_consistency, 4},
+    {"_transite_calculate_transcript_mc", (DL_FUNC) &_transite_calculate_transcript_mc, 7},
     {NULL, NULL, 0}
 };
 

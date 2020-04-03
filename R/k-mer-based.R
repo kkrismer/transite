@@ -21,7 +21,7 @@
 #' @importFrom GenomicRanges gaps
 #' @importFrom Biostrings BString
 #' @family \emph{k}-mer functions
-homopolymerCorrection <-
+homopolymer_correction <-
     function(sequences, k, kmers, is_rna = FALSE) {
         seq <- Biostrings::BString(toString(sequences))
 
@@ -81,7 +81,7 @@ homopolymerCorrection <-
 #' @title \emph{k}-mer Enrichment between Foreground and Background Sets
 #'
 #' @description
-#' Calls \code{\link{computeKmerEnrichment}} to compute \emph{k}-mer
+#' Calls \code{\link{compute_kmer_enrichment}} to compute \emph{k}-mer
 #' enrichment values
 #' for multiple foregrounds. Calculates enrichment for foreground sets in
 #' parallel.
@@ -94,13 +94,13 @@ homopolymerCorrection <-
 #' constitute the
 #' background set
 #' @param n_cores number of computing cores to use
-#' @inheritParams generateKmers
-#' @inheritParams computeKmerEnrichment
+#' @inheritParams generate_kmers
+#' @inheritParams compute_kmer_enrichment
 #'
 #' @return A list with two entries:
 #'
 #' (1) dfs: a list of data frames with results from
-#' \code{\link{computeKmerEnrichment}} for each of the foreground sets
+#' \code{\link{compute_kmer_enrichment}} for each of the foreground sets
 #' (2) kmers: a character vector of all k-mers
 #'
 #' @examples
@@ -118,18 +118,18 @@ homopolymerCorrection <-
 #'                     "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA")
 #'
 #' # single-threaded
-#' kmer_enrichment_values_st <- calculateKmerEnrichment(foreground_sets,
+#' kmer_enrichment_values_st <- calculate_kmer_enrichment(foreground_sets,
 #'   background_set, 6, n_cores = 1)
 #' \dontrun{
 #' # multi-threaded
-#' kmer_enrichment_values_mt <- calculateKmerEnrichment(foreground_sets,
+#' kmer_enrichment_values_mt <- calculate_kmer_enrichment(foreground_sets,
 #'   background_set, 6)}
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply
 #' @family \emph{k}-mer functions
 #' @export
-calculateKmerEnrichment <-
+calculate_kmer_enrichment <-
     function(foreground_sets,
              background_set,
              k,
@@ -138,15 +138,15 @@ calculateKmerEnrichment <-
              p_adjust_method = "BH",
              n_cores = 4) {
         if (length(foreground_sets) > 0) {
-            background_kmers <- generateKmers(background_set, k)
+            background_kmers <- generate_kmers(background_set, k)
 
             n_cores <- min(n_cores, length(foreground_sets))
             if (n_cores == 1) {
                 enrichment_dfs <- lapply(foreground_sets,
                                          function(foreground_set) {
-                    foreground_kmers <- generateKmers(foreground_set, k)
+                    foreground_kmers <- generate_kmers(foreground_set, k)
                     return(
-                        computeKmerEnrichment(
+                        compute_kmer_enrichment(
                             foreground_kmers,
                             background_kmers,
                             permutation = permutation,
@@ -167,9 +167,9 @@ calculateKmerEnrichment <-
                         "permutation",
                         "chisq_p_value_threshold",
                         "p_adjust_method",
-                        "computeKmerEnrichment",
-                        "generateKmers",
-                        "homopolymerCorrection"
+                        "compute_kmer_enrichment",
+                        "generate_kmers",
+                        "homopolymer_correction"
                     ),
                     envir = environment()
                 )
@@ -177,9 +177,9 @@ calculateKmerEnrichment <-
                     parallel::parLapply(
                         cl = cluster, foreground_sets,
                         function(foreground_set) {
-                            foreground_kmers <- generateKmers(foreground_set, k)
+                            foreground_kmers <- generate_kmers(foreground_set, k)
                             return(
-                                computeKmerEnrichment(
+                                compute_kmer_enrichment(
                                     foreground_kmers,
                                     background_kmers,
                                     permutation = permutation,
@@ -207,7 +207,7 @@ calculateKmerEnrichment <-
 #' Counts occurrences of \emph{k}-mers of length \code{k} in the given set of
 #' sequences. Corrects for homopolymeric stretches.
 #'
-#' @inheritParams homopolymerCorrection
+#' @inheritParams homopolymer_correction
 #'
 #' @return Returns a named numeric vector, where the elements are
 #' \emph{k}-mer counts and the
@@ -224,7 +224,7 @@ calculateKmerEnrichment <-
 #'   "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
 #'   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 #' )
-#' hexamer_counts <- generateKmers(rna_sequences, 6)
+#' hexamer_counts <- generate_kmers(rna_sequences, 6)
 #'
 #'
 #' # count heptamers in set of DNA sequences
@@ -237,9 +237,9 @@ calculateKmerEnrichment <-
 #'   "TTATTTA", "ATCCTTTACA", "TTTTTTT", "TTTCATCATT",
 #'   "CCACACAC", "CTCATTGGAG", "ACTTTGGGACA", "CAGGTCAGCA"
 #' )
-#' hexamer_counts <- generateKmers(dna_sequences, 7)
+#' hexamer_counts <- generate_kmers(dna_sequences, 7)
 #' @section Warning:
-#' \code{generateKmers} always returns DNA \emph{k}-mers, even if
+#' \code{generate_kmers} always returns DNA \emph{k}-mers, even if
 #' \code{sequences} contains RNA sequences.
 #' RNA sequences are internally converted to DNA sequences. It is not
 #' allowed to mix DNA and
@@ -250,16 +250,16 @@ calculateKmerEnrichment <-
 #' @importFrom Biostrings RNAStringSet
 #' @family \emph{k}-mer functions
 #' @export
-generateKmers <- function(sequences, k) {
+generate_kmers <- function(sequences, k) {
     kmers <- tryCatch({
         kmer_counts <-
             Biostrings::oligonucleotideFrequency(Biostrings::DNAStringSet(sequences), k)
-        homopolymerCorrection(sequences, k, colSums(kmer_counts))
+        homopolymer_correction(sequences, k, colSums(kmer_counts))
     }, error = function(e) {
         kmer_counts <-
             Biostrings::oligonucleotideFrequency(Biostrings::RNAStringSet(sequences), k)
         rna_kmers <-
-            homopolymerCorrection(sequences, k, colSums(kmer_counts), is_rna = TRUE)
+            homopolymer_correction(sequences, k, colSums(kmer_counts), is_rna = TRUE)
         names(rna_kmers) <- gsub("U", "T", names(rna_kmers))
         return(rna_kmers)
     })
@@ -275,9 +275,9 @@ generateKmers <- function(sequences, k) {
 #' for each possible \emph{k}-mer.
 #'
 #' @param foreground_kmers \emph{k}-mer counts of the foreground set
-#' (generated by \code{\link{generateKmers}})
+#' (generated by \code{\link{generate_kmers}})
 #' @param background_kmers \emph{k}-mer counts of the background set
-#' (generated by \code{\link{generateKmers}})
+#' (generated by \code{\link{generate_kmers}})
 #' @param permutation if \code{TRUE}, only the enrichment value is returned
 #' (efficiency mode
 #' used for permutation testing)
@@ -325,18 +325,18 @@ generateKmers <- function(sequences, k) {
 #'   "UUAUUUA", "AUCCUUUACA", "UUUUUUU", "UUUCAUCAUU",
 #'   "CCACACAC", "CUCAUUGGAG", "ACUUUGGGACA", "CAGGUCAGCA"
 #' )
-#' foreground_kmers <- generateKmers(foreground_set, 6)
-#' background_kmers <- generateKmers(background_set, 6)
+#' foreground_kmers <- generate_kmers(foreground_set, 6)
+#' background_kmers <- generate_kmers(background_set, 6)
 #'
 #'
-#' kmer_enrichment_values <- computeKmerEnrichment(foreground_kmers,
+#' kmer_enrichment_values <- compute_kmer_enrichment(foreground_kmers,
 #'   background_kmers)
 #' @importFrom stats chisq.test
 #' @importFrom stats p.adjust
 #' @importFrom stats fisher.test
 #' @family \emph{k}-mer functions
 #' @export
-computeKmerEnrichment <-
+compute_kmer_enrichment <-
     function(foreground_kmers,
              background_kmers,
              permutation = FALSE,
@@ -428,7 +428,7 @@ computeKmerEnrichment <-
 #' @title Significance of Observed Mean
 #'
 #' @description
-#' \code{empiricalEnrichmentMeanCDF} returns an estimate of the significance
+#' \code{empirical_enrichment_mean_cdf} returns an estimate of the significance
 #' of the observed
 #' mean, given a vector of means based on random permutations of the data.
 #'
@@ -451,11 +451,11 @@ computeKmerEnrichment <-
 #' test_sd <- 1.0
 #' test_null_distribution <- rnorm(n = 10000, mean = 1.0, sd = test_sd)
 #'
-#' empiricalEnrichmentMeanCDF(test_null_distribution, test_sd * 2, "greater")
+#' empirical_enrichment_mean_cdf(test_null_distribution, test_sd * 2, "greater")
 #' @importFrom stats binom.test
 #' @family \emph{k}-mer functions
 #' @export
-empiricalEnrichmentMeanCDF <- function(random_means,
+empirical_enrichment_mean_cdf <- function(random_means,
                                        actual_mean,
                                        alternative = c("two_sided",
                                                        "less", "greater"),
@@ -494,9 +494,9 @@ empiricalEnrichmentMeanCDF <- function(random_means,
 #' @return Geometric mean of \code{x} or \code{1} if length of \code{x} is 0
 #'
 #' @examples
-#' geometricMean(c(0.123, 0.441, 0.83))
+#' geometric_mean(c(0.123, 0.441, 0.83))
 #' @export
-geometricMean <- function(x, na_rm = TRUE) {
+geometric_mean <- function(x, na_rm = TRUE) {
     if (length(x) > 0) {
         return(exp(sum(log(x), na.rm = na_rm) / length(x)))
     } else {
@@ -512,14 +512,14 @@ geometricMean <- function(x, na_rm = TRUE) {
 #' @param n_transcripts_foreground number of transcripts in the original
 #' foreground set
 #' @param n_permutations number of permutations to perform
-#' @inheritParams calculateKmerEnrichment
+#' @inheritParams calculate_kmer_enrichment
 #'
-#' @return The result of \code{\link{calculateKmerEnrichment}} for the
+#' @return The result of \code{\link{calculate_kmer_enrichment}} for the
 #' random foreground sets.
 #'
 #' @family \emph{k}-mer functions
 #' @export
-generatePermutedEnrichments <-
+generate_permuted_enrichments <-
     function(n_transcripts_foreground,
              background_set,
              k,
@@ -532,7 +532,7 @@ generatePermutedEnrichments <-
                                                  n_transcripts_foreground)])
             })
         return(
-            calculateKmerEnrichment(
+            calculate_kmer_enrichment(
                 random_foreground_sets,
                 background_set,
                 k,
@@ -545,7 +545,7 @@ generatePermutedEnrichments <-
 #' @title Permutation Test Based Significance of Observed Mean
 #'
 #' @description
-#' \code{permTestGeometricMean} returns an estimate of the significance
+#' \code{perm_test_geometric_mean} returns an estimate of the significance
 #' of the observed
 #' mean, given a set of random permutations of the data.
 #'
@@ -557,7 +557,7 @@ generatePermutedEnrichments <-
 #' to generate an empirical null distribution.
 #' @param produce_plot if distribution plot should be part of the
 #' returned list
-#' @inheritParams empiricalEnrichmentMeanCDF
+#' @inheritParams empirical_enrichment_mean_cdf
 #'
 #' @return A list with the following components:
 #' \tabular{rl}{
@@ -582,7 +582,7 @@ generatePermutedEnrichments <-
 #' @importFrom ggplot2 ggtitle
 #' @family \emph{k}-mer functions
 #' @export
-permTestGeometricMean <-
+perm_test_geometric_mean <-
     function(actual_mean,
              motif_kmers,
              random_permutations,
@@ -595,7 +595,7 @@ permTestGeometricMean <-
         idx <- which(random_permutations$kmers %in% motif_kmers)
         random_means <-
             unlist(lapply(random_permutations$dfs, function(enrichment_values) {
-                return(geometricMean(enrichment_values[idx]))
+                return(geometric_mean(enrichment_values[idx]))
             }))
 
         if (produce_plot) {
@@ -639,7 +639,7 @@ permTestGeometricMean <-
         }
 
         empirical_p_value <-
-            empiricalEnrichmentMeanCDF(random_means, actual_mean,
+            empirical_enrichment_mean_cdf(random_means, actual_mean,
                                        alternative = alternative, conf_level
             )
         return(
@@ -676,8 +676,8 @@ permTestGeometricMean <-
 #' @return volcano plot
 #'
 #' @examples
-#' motif <- getMotifById("951_12324455")
-#' drawVolcanoPlot(transite:::kmers_enrichment, motifHexamers(motif[[1]]),
+#' motif <- get_motif_by_id("951_12324455")
+#' draw_volcano_plot(transite:::kmers_enrichment, motifHexamers(motif[[1]]),
 #'   motifRbps(motif[[1]]))
 #'
 #' \dontrun{
@@ -692,10 +692,10 @@ permTestGeometricMean <-
 #'   "CCACACCAG", "CCACACAUCAGU", "CACACACUCC", "CAGCCCCCCACAGGCA"
 #' )))
 #'
-#' motif <- getMotifById("M178_0.6")
-#' results <- runKmerTSMA(list(foreground_set), background_set,
+#' motif <- get_motif_by_id("M178_0.6")
+#' results <- run_kmer_tsma(list(foreground_set), background_set,
 #'                        motifs = motif)
-#' drawVolcanoPlot(results[[1]]$motif_kmers_dfs[[1]],
+#' draw_volcano_plot(results[[1]]$motif_kmers_dfs[[1]],
 #'     motifHexamers(motif[[1]]), "test RBP")}
 #'
 #' @importFrom ggplot2 ggplot
@@ -715,7 +715,7 @@ permTestGeometricMean <-
 #' @family TSMA functions
 #' @family \emph{k}-mer functions
 #' @export
-drawVolcanoPlot <-
+draw_volcano_plot <-
     function(kmers,
              motif_kmers,
              motif_rbps,
@@ -817,13 +817,13 @@ drawVolcanoPlot <-
 #'
 #' @examples
 #' # valid set
-#' checkKmers(c("ACGCUC", "AAACCC", "UUUACA"))
+#' check_kmers(c("ACGCUC", "AAACCC", "UUUACA"))
 #'
 #' # invalid set (contains hexamers and heptamers)
-#' checkKmers(c("ACGCUC", "AAACCC", "UUUACAA"))
+#' check_kmers(c("ACGCUC", "AAACCC", "UUUACAA"))
 #' @family \emph{k}-mer functions
 #' @export
-checkKmers <- function(kmers) {
+check_kmers <- function(kmers) {
     if (length(kmers) == 0) {
         return(FALSE)
     }

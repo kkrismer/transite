@@ -40,7 +40,7 @@ The DNA sequences in the data frame are converted to RNA sequences. Motifs in th
 background_set <- gsub("T", "U", background_df$seq)
 ```
 
-Prepare named character vector of presorted sequences for `runMatrixSPMA`. The function expects a character vector containing sequences, sorted in a meaningful way, named according to the following format: `[REFSEQ]|[SEQ_TYPE]`
+Prepare named character vector of presorted sequences for `run_matrix_spma`. The function expects a character vector containing sequences, sorted in a meaningful way, named according to the following format: `[REFSEQ]|[SEQ_TYPE]`
 
 The name is only important if results are cached. It is used as the key in a dictionary that stores the number of putative binding sites for each RefSeq identifier and sequence type.
 
@@ -51,16 +51,16 @@ names(background_set) <- paste0(background_df$refseq, "|", background_df$seq_typ
 In this example we limit our analysis to an arbitrarily selected motif in the motif database in order to reduce run-time.
 
 ```{r, message=FALSE}
-motif_db <- getMotifById("M178_0.6")
+motif_db <- get_motif_by_id("M178_0.6")
 ```
 
 Matrix-based SPMA is executed:
 
 ```{r, message=FALSE}
-results <- runMatrixSPMA(background_set, motifs = motif_db, cache = FALSE)
+results <- run_matrix_spma(background_set, motifs = motif_db, cache = FALSE)
 
 # Usually, all motifs are included in the analysis and results are cached to make subsequent analyses more efficient.
-# results <- runMatrixSPMA(background_set)
+# results <- run_matrix_spma(background_set)
 ```
 
 # Results

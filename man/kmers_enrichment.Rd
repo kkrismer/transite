@@ -23,7 +23,7 @@ kmers_enrichment
 }
 \description{
 This data frame with \emph{k}-mer enrichment data (as produced by
-\code{\link{runKmerTSMA}}) is used in a code example for k-mer volcano plot
-function \code{\link{drawVolcanoPlot}}.
+\code{\link{run_kmer_tsma}}) is used in a code example for k-mer volcano plot
+function \code{\link{draw_volcano_plot}}.
 }
 \keyword{datasets}

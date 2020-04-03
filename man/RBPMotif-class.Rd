@@ -123,7 +123,7 @@ where cell (i, j) contains weight of nucleotide j on position i}
 \item{\code{length}}{length of the motif (i.e., \code{nrow(matrix)})}
 
 \item{\code{iupac}}{IUPAC code for motif matrix
-(see \code{\link{generateIUPACByMatrix}})}
+(see \code{\link{generate_iupac_by_matrix}})}
 
 \item{\code{type}}{type of motif (e.g., \code{'HITS-CLIP'}, \code{'EMSA'},
 \code{'SELEX'}, etc.)}
@@ -136,10 +136,10 @@ where cell (i, j) contains weight of nucleotide j on position i}
 
 \examples{
 kmers <- c("AAAAAAA", "CAAAAAA")
-iupac <- generateIUPACByKmers(kmers,
-  code = initIUPAClookupTable())
-hexamers <- generateKmersFromIUPAC(iupac, 6)
-heptamers <- generateKmersFromIUPAC(iupac, 7)
+iupac <- generate_iupac_by_kmers(kmers,
+  code = init_iupac_lookup_table())
+hexamers <- generate_kmers_from_iupac(iupac, 6)
+heptamers <- generate_kmers_from_iupac(iupac, 7)
 new("RBPMotif", id = "custom_motif", rbps = "RBP1",
   matrix = NULL, hexamers = hexamers, heptamers = heptamers, length = 7L,
   iupac = iupac, type = "HITS-CLIP", species = "Homo sapiens", src = "user"

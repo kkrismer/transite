@@ -296,7 +296,7 @@ generate_iupac_by_matrix <- function(matrix, threshold = 0.215, code = NULL) {
 #' @export
 generate_iupac_by_kmers <- function(kmers, code = NULL) {
     if (is.null(code)) {
-        # code <- init_iupac_lookup_table()
+        code <- init_iupac_lookup_table()
     }
 
     codes <- lapply(seq_len(nchar(kmers[1])), function(i) {

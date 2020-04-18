@@ -1,6 +1,6 @@
 # Transite
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.4.0-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.10/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives) [![Coverage Status](https://coveralls.io/repos/github/kkrismer/transite/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/kkrismer/transite?branch=master&kill_cache=1)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1101%2F416743-blue.svg)](https://doi.org/10.1101/416743) [![BioC](https://img.shields.io/badge/BioC-1.4.0-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.10/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives) [![Coverage Status](https://coveralls.io/repos/github/kkrismer/transite/badge.svg?branch=master)](https://coveralls.io/github/kkrismer/transite?branch=master)
 
 RNA-binding protein motif analysis
 

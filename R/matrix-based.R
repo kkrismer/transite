@@ -86,14 +86,17 @@
 #' @importFrom parallel parLapply
 #' @export
 score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
-                             threshold_method = "p_value",
-                             threshold_value = 0.25^6,
-                             n_cores = 1, cache = paste0(tempdir(), "/sc/")) {
+                              threshold_method = c("p_value", "relative"),
+                              threshold_value = 0.25^6,
+                              n_cores = 1, cache = paste0(tempdir(), "/sc/")) {
     # if threshold_method == "p_value": default threshold_value == 0.25^6
     # (0.25^6: lowest p-value that can be achieved by hexamer motifs, the
     #shortest supported motifs)
     # if threshold_method == "relative": default threshold_value == 0.9
     # (0.9: 90% of the maximum PWM score)
+    threshold_method <- match.arg(threshold_method,
+                                  choices = c("p_value", "relative"))
+
     if (max_hits < 1) {
         stop("max_hits must not be smaller than 1")
     }
@@ -143,13 +146,13 @@ score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
             ),
             envir = environment()
         )
-        motif_scores <- parallel::parLapply(cl = cluster, motifs,
-                                            function(motif) {
-            return(score_transcripts_single_motif(
-                motif, sequences, max_hits, threshold_method,
-                threshold_value, cache_path
-            ))
-        })
+        motif_scores <- parallel::parLapply(
+            cl = cluster, motifs, function(motif) {
+                return(score_transcripts_single_motif(motif, sequences,
+                                                      max_hits,
+                                                      threshold_method,
+                                                      threshold_value,
+                                                      cache_path))})
     }
 
     motif_scores_proto_df <- lapply(motif_scores, function(motif_score) {
@@ -261,14 +264,18 @@ score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
 #' @importFrom TFMPvalue TFMpv2sc
 #' @importFrom Biostrings maxScore
 score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
-                                        threshold_method = "p_value",
-                                        threshold_value = 0.25^6,
-                                        cache_path = paste0(tempdir(), "/sc/")) {
+                                           threshold_method = c("p_value",
+                                                                "relative"),
+                                           threshold_value = 0.25^6,
+                                           cache_path = paste0(tempdir(),
+                                                               "/sc/")) {
     # if threshold_method == "p_value": default threshold_value == 0.25^6
     # (0.25^6: lowest p-value that can be achieved by hexamer motifs,
     # the shortest supported motifs)
     # if threshold_method == "relative": default threshold_value == 0.9
     # (0.9: 90% of the maximum PWM score)
+    threshold_method <- match.arg(threshold_method,
+                                  choices = c("p_value", "relative"))
 
     pwm <- t(get_motif_matrix(motif))
     rownames(pwm)[4] <- "T"
@@ -279,8 +286,6 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
         )
     } else if (threshold_method == "relative") {
         threshold_score <- Biostrings::maxScore(pwm) * threshold_value
-    } else {
-        stop("invalid value threshold method")
     }
 
     if (threshold_score < 0) {
@@ -313,10 +318,12 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
 
             cached_ids <- names(sequences)[cached]
             if (length(cached_ids) > 0) {
-                absolute_hits[cached] <- unlist(lapply(cached_ids,
-                                                      function(seq_id) {
-                    return(get(seq_id, envir = motif_cache, inherits = FALSE))
-                }))
+                absolute_hits[cached] <- unlist(lapply(
+                    cached_ids,
+                    function(seq_id) {
+                        return(get(seq_id, envir = motif_cache,
+                                   inherits = FALSE))
+                    }))
             }
 
             uncached_ids <- names(sequences)[!cached]
@@ -522,10 +529,10 @@ score_sequences_helper <- function(sequences, motif_matrix, threshold_score) {
 }
 
 cached_score_sequences_helper <- function(sequences, seq_ids, motif_matrix,
-                                       threshold_score,
-                                       motif_cache, cache_path, motif_id_file) {
+                                          threshold_score, motif_cache,
+                                          cache_path, motif_id_file) {
     absolute_hits <- score_sequences_helper(sequences, motif_matrix,
-                                          threshold_score)
+                                            threshold_score)
 
     for (i in seq_len(length(absolute_hits))) {
         assign(seq_ids[i], absolute_hits[i], envir = motif_cache)
@@ -560,7 +567,8 @@ cached_score_sequences_helper <- function(sequences, seq_ids, motif_matrix,
 #' @param min_fg_permutations minimum number of foreground permutations
 #' performed in
 #' Monte Carlo test for enrichment score
-#' @param e integer-valued stop criterion for enrichment score Monte Carlo test: aborting
+#' @param e integer-valued stop criterion for enrichment score Monte Carlo
+#' test: aborting
 #' permutation process after
 #' observing \code{e} random enrichment values with more extreme values than
 #' the actual
@@ -600,13 +608,13 @@ cached_score_sequences_helper <- function(sequences, seq_ids, motif_matrix,
 #' @importFrom stats p.adjust
 #' @export
 calculate_motif_enrichment <- function(foreground_scores_df,
-                                     background_scores_df,
-                                     background_total_sites,
-                                     background_absolute_hits,
-                                     n_transcripts_foreground,
-                                     max_fg_permutations = 1000000,
-                                     min_fg_permutations = 1000,
-                                     e = 5, p_adjust_method = "BH") {
+                                       background_scores_df,
+                                       background_total_sites,
+                                       background_absolute_hits,
+                                       n_transcripts_foreground,
+                                       max_fg_permutations = 1000000,
+                                       min_fg_permutations = 1000,
+                                       e = 5, p_adjust_method = "BH") {
     # avoid CRAN note
     motif_id <- NULL
 

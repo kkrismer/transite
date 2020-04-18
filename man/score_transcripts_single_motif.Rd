@@ -8,7 +8,7 @@ score_transcripts_single_motif(
   motif,
   sequences,
   max_hits = 5,
-  threshold_method = "p_value",
+  threshold_method = c("p_value", "relative"),
   threshold_value = 0.25^6,
   cache_path = paste0(tempdir(), "/sc/")
 )

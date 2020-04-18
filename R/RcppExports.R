@@ -27,51 +27,6 @@ score_sequences <- function(sequences, pwm) {
     .Call('_transite_score_sequences', PACKAGE = 'transite', sequences, pwm)
 }
 
-#' @title \emph{k}-mer Score Calculation
-#'
-#' @description
-#' C++ implementation of \emph{k}-mer score calculation
-#'
-#' @param kmers list of \emph{k}-mers
-#' @param pwm position weight matrix
-#'
-#' @return list of PWM scores for the specified \emph{k}-mers
-#'
-#' @examples
-#' motif <- get_motif_by_id("M178_0.6")[[1]]
-#' kmers <- c("AAAAAA", "CAAAAA", "GAAAAA")
-#' calculate_kmer_scores(kmers, as.matrix(get_motif_matrix(motif)))
-#'
-#' @export
-calculate_kmer_scores <- function(kmers, pwm) {
-    .Call('_transite_calculate_kmer_scores', PACKAGE = 'transite', kmers, pwm)
-}
-
-#' @title \emph{k}-mer Score Lookup Table Access Function
-#'
-#' @description
-#' C++ implementation of \emph{k}-mer score hash table lookup.
-#'
-#' @param kmers list of \emph{k}-mers
-#' @param kmerScores position weight matrix
-#'
-#' @return numeric vector of \emph{k}-mer scores
-lookup_kmer_scores <- function(kmers, kmerScores) {
-    .Call('_transite_lookup_kmer_scores', PACKAGE = 'transite', kmers, kmerScores)
-}
-
-#' @title Motif Score Algorithm
-#'
-#' @description
-#' C++ implementation of motif score algorithm.
-#'
-#' @param kmers list of \emph{k}-mers
-#' @return data frame with columns \code{score}, \code{top_kmer},
-#' and \code{top_kmer_enrichment}
-compute_motif_score <- function(kmers) {
-    .Call('_transite_compute_motif_score', PACKAGE = 'transite', kmers)
-}
-
 #' @title Local Consistency Score
 #'
 #' @description

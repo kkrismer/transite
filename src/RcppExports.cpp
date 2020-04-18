@@ -17,41 +17,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// calculate_kmer_scores
-Rcpp::NumericVector calculate_kmer_scores(Rcpp::List kmers, Rcpp::NumericMatrix pwm);
-RcppExport SEXP _transite_calculate_kmer_scores(SEXP kmersSEXP, SEXP pwmSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
-    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type pwm(pwmSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_kmer_scores(kmers, pwm));
-    return rcpp_result_gen;
-END_RCPP
-}
-// lookup_kmer_scores
-Rcpp::NumericVector lookup_kmer_scores(Rcpp::List kmers, Rcpp::Environment kmerScores);
-RcppExport SEXP _transite_lookup_kmer_scores(SEXP kmersSEXP, SEXP kmerScoresSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
-    Rcpp::traits::input_parameter< Rcpp::Environment >::type kmerScores(kmerScoresSEXP);
-    rcpp_result_gen = Rcpp::wrap(lookup_kmer_scores(kmers, kmerScores));
-    return rcpp_result_gen;
-END_RCPP
-}
-// compute_motif_score
-Rcpp::DataFrame compute_motif_score(Rcpp::List kmers);
-RcppExport SEXP _transite_compute_motif_score(SEXP kmersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type kmers(kmersSEXP);
-    rcpp_result_gen = Rcpp::wrap(compute_motif_score(kmers));
-    return rcpp_result_gen;
-END_RCPP
-}
 // calculate_local_consistency
 Rcpp::List calculate_local_consistency(Rcpp::NumericVector x, int numPermutations, int minPermutations, int e);
 RcppExport SEXP _transite_calculate_local_consistency(SEXP xSEXP, SEXP numPermutationsSEXP, SEXP minPermutationsSEXP, SEXP eSEXP) {
@@ -86,9 +51,6 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_transite_score_sequences", (DL_FUNC) &_transite_score_sequences, 2},
-    {"_transite_calculate_kmer_scores", (DL_FUNC) &_transite_calculate_kmer_scores, 2},
-    {"_transite_lookup_kmer_scores", (DL_FUNC) &_transite_lookup_kmer_scores, 2},
-    {"_transite_compute_motif_score", (DL_FUNC) &_transite_compute_motif_score, 1},
     {"_transite_calculate_local_consistency", (DL_FUNC) &_transite_calculate_local_consistency, 4},
     {"_transite_calculate_transcript_mc", (DL_FUNC) &_transite_calculate_transcript_mc, 7},
     {NULL, NULL, 0}

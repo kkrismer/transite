@@ -122,8 +122,6 @@ p_combine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) 
                 method = "Tippett (1931)",
                 statistic_name = "p_min"
             ))
-        } else {
-            stop("method not supported")
         }
     } else {
         if (method == "fisher") {
@@ -165,8 +163,6 @@ p_combine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) 
                 method = "Tippett (1931)",
                 statistic_name = "p_min"
             ))
-        } else {
-            stop("method not supported")
         }
     }
 }

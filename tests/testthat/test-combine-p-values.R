@@ -25,4 +25,6 @@ test_that("p_combine", {
     expect_warning(p_combine(c(), method = "SL"))
     expect_warning(p_combine(c(), method = "MG"))
     expect_warning(p_combine(c(), method = "tippett"))
+
+    expect_error(p_combine(c(0.01, 0.23), method = "SL", w = c(0.2)))
 })

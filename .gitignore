@@ -4,7 +4,6 @@
 .Rhistory
 data-raw
 sc
-tests
 transite.Rproj
 src/*.o
 src/*.dll

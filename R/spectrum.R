@@ -278,16 +278,15 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #' @importFrom stats predict
 #' @importFrom stats pf
 #' @importFrom methods new
+#' @importFrom R.devices suppressGraphics
 #' @export
 score_spectrum <- function(x, p_value = array(1, length(x)),
-                          x_label = "log enrichment",
-                          midpoint = 0,
-                          max_model_degree = 3,
-                          max_cs_permutations = 10000000,
-                          min_cs_permutations = 5000, e = 5) {
+                           x_label = "log enrichment",
+                           midpoint = 0,
+                           max_model_degree = 3,
+                           max_cs_permutations = 10000000,
+                           min_cs_permutations = 5000, e = 5) {
     if (length(x) < 7) {
-        print(x)
-        message(x)
         stop("too few bins")
     }
     if (max_model_degree > 5 || max_model_degree < 1) {
@@ -409,8 +408,10 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
     }
 
     # combine figure
-    gp1 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(enrichment_plot))
-    gp2 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(scatterplot))
+    R.devices::suppressGraphics(
+        gp1 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(enrichment_plot)))
+    R.devices::suppressGraphics(
+        gp2 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(scatterplot)))
 
     gp2$widths <- gp1$widths
 
@@ -511,8 +512,8 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
 #' @family SPMA functions
 #' @export
 classify_spectrum <- function(adj_r_squared, degree, slope,
-                               consistency_score_n,
-                               n_significant, n_bins) {
+                              consistency_score_n,
+                              n_significant, n_bins) {
     return(c(
         as.integer(adj_r_squared >= 0.4),
         as.integer(consistency_score_n > 1000000),

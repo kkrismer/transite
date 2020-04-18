@@ -43,6 +43,7 @@ Imports:
     methods,
     parallel,
     Rcpp (>= 0.12.18),
+    R.devices (>= 2.16.1),
     scales (>= 1.0.0),
     stats,
     TFMPvalue (>= 0.0.8),

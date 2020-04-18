@@ -30,4 +30,23 @@ test_that("score_transcripts", {
                                                 threshold_value = 0.9,
                                                 n_cores = 1)
     expect_equal(scores_single_threaded, scores_multi_threaded)
+
+    max_hits_3 <- score_transcripts(foreground_set, max_hits = 3)
+    expect_equal(ncol(max_hits_3$df), 9)
+    max_hits_4 <- score_transcripts(foreground_set, max_hits = 4)
+    expect_equal(ncol(max_hits_4$df), 10)
+    max_hits_5 <- score_transcripts(foreground_set, max_hits = 5)
+    expect_equal(ncol(max_hits_5$df), 11)
+    max_hits_7 <- score_transcripts(foreground_set, max_hits = 7)
+    expect_equal(ncol(max_hits_7$df), 13)
+    max_hits_8 <- score_transcripts(foreground_set, max_hits = 8)
+    expect_equal(ncol(max_hits_8$df), 14)
+    max_hits_9 <- score_transcripts(foreground_set, max_hits = 9)
+    expect_equal(ncol(max_hits_9$df), 15)
+
+    expect_warning(score_transcripts(foreground_set,
+                                     max_hits = 2,
+                                     threshold_method = "relative",
+                                     threshold_value = -0.1),
+                   "threshold score below zero")
 })

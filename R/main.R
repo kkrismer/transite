@@ -527,27 +527,7 @@ run_matrix_spma <- function(background_set,
             lapply(spectrum_info, function(x)
                 x$classifier_score)
     } else {
-        spectrum_info_df <- data.frame(
-            motif_id = character(0),
-            motif_rbps = character(0),
-            adj_r_squared = numeric(0),
-            degree = integer(0),
-            residuals = numeric(0),
-            slope = numeric(0),
-            f_statistic = numeric(0),
-            f_statistic_p_value = numeric(0),
-            f_statistic_adj_p_value = numeric(0),
-            consistency_score = numeric(0),
-            consistency_score_p_value = numeric(0),
-            consistency_score_adj_p_value = numeric(0),
-            consistency_score_n = integer(0),
-            n_significant = integer(0),
-            n_very_significant = integer(0),
-            n_extremely_significant = integer(0),
-            aggregate_classifier_score = integer(0)
-        )
-        spectrum_plots <- NULL
-        warning("no sequences in any condition")
+        stop("empty foreground sets")
     }
 
     return(
@@ -1147,27 +1127,7 @@ run_kmer_spma <- function(background_set,
             lapply(spectrum_info, function(x)
                 x$classifier_score)
     } else {
-        spectrum_info_df <- data.frame(
-            motif_id = character(0),
-            motif_rbps = character(0),
-            adj_r_squared = numeric(0),
-            degree = integer(0),
-            residuals = numeric(0),
-            slope = numeric(0),
-            f_statistic = numeric(0),
-            f_statistic_p_value = numeric(0),
-            f_statistic_adj_p_value = numeric(0),
-            consistency_score = numeric(0),
-            consistency_score_p_value = numeric(0),
-            consistency_score_adj_p_value = numeric(0),
-            consistency_score_n = integer(0),
-            n_significant = integer(0),
-            n_very_significant = integer(0),
-            n_extremely_significant = integer(0),
-            aggregate_classifier_score = integer(0)
-        )
-        spectrum_plots <- NULL
-        warning("no sequences in any condition")
+        stop("empty foreground sets")
     }
 
     return(

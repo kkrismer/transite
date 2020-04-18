@@ -304,6 +304,7 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
         motif_id_file <- gsub("[^[:alnum:]]", "_", get_id(motif))
         motif_cache_file <- paste0(cache_path, motif_id_file, ".rds")
         if (file.exists(motif_cache_file)) {
+            absolute_hits <- rep(0, length(sequences))
             motif_cache <- read_motif_cache(cache_path, motif_id_file)
 
             cached <- vapply(names(sequences), function(seq_id) {
@@ -312,28 +313,22 @@ score_transcripts_single_motif <- function(motif, sequences, max_hits = 5,
 
             cached_ids <- names(sequences)[cached]
             if (length(cached_ids) > 0) {
-                cached_absolute_hits <- unlist(lapply(cached_ids,
+                absolute_hits[cached] <- unlist(lapply(cached_ids,
                                                       function(seq_id) {
                     return(get(seq_id, envir = motif_cache, inherits = FALSE))
                 }))
-            } else {
-                cached_absolute_hits <- 0
             }
 
             uncached_ids <- names(sequences)[!cached]
             if (length(uncached_ids) > 0) {
                 uncached_sequences <- sequences[!cached]
-                uncached_absolute_hits <- cached_score_sequences_helper(
+                absolute_hits[!cached] <- cached_score_sequences_helper(
                     uncached_sequences, uncached_ids,
                     as.matrix(get_motif_matrix(motif)),
                     threshold_score, motif_cache,
                     cache_path, motif_id_file
                 )
-            } else {
-                uncached_absolute_hits <- 0
             }
-
-            absolute_hits <- c(cached_absolute_hits, uncached_absolute_hits)
         } else {
             motif_cache <- new.env(hash = TRUE, parent = emptyenv(),
                                    size = length(sequences))

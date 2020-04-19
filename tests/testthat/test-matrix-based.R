@@ -19,18 +19,6 @@ test_that("score_transcripts", {
     )
     expect_error(score_transcripts(foreground_set, max_hits = 0))
 
-    scores_multi_threaded <- score_transcripts(foreground_set,
-                                               max_hits = 10,
-                                               threshold_method = "relative",
-                                               threshold_value = 0.9,
-                                               n_cores = 2)
-    scores_single_threaded <- score_transcripts(foreground_set,
-                                                max_hits = 10,
-                                                threshold_method = "relative",
-                                                threshold_value = 0.9,
-                                                n_cores = 1)
-    expect_equal(scores_single_threaded, scores_multi_threaded)
-
     max_hits_3 <- score_transcripts(foreground_set, max_hits = 3)
     expect_equal(ncol(max_hits_3$df), 9)
     max_hits_4 <- score_transcripts(foreground_set, max_hits = 4)
@@ -49,4 +37,17 @@ test_that("score_transcripts", {
                                      threshold_method = "relative",
                                      threshold_value = -0.1),
                    "threshold score below zero")
+
+    skip_if(Sys.getenv("R_ARCH") == "/i386", "multi-core not available on i386")
+    scores_multi_threaded <- score_transcripts(foreground_set,
+                                               max_hits = 10,
+                                               threshold_method = "relative",
+                                               threshold_value = 0.9,
+                                               n_cores = 2)
+    scores_single_threaded <- score_transcripts(foreground_set,
+                                                max_hits = 10,
+                                                threshold_method = "relative",
+                                                threshold_value = 0.9,
+                                                n_cores = 1)
+    expect_equal(scores_single_threaded, scores_multi_threaded)
 })

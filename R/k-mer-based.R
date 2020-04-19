@@ -127,6 +127,7 @@ count_homopolymer_corrected_kmers <-
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply
+#' @importFrom parallel stopCluster
 #' @family \emph{k}-mer functions
 #' @export
 calculate_kmer_enrichment <-
@@ -189,6 +190,7 @@ calculate_kmer_enrichment <-
                             )
                         }
                     )
+                parallel::stopCluster(cl = cluster)
             }
             return(list(
                 dfs = enrichment_dfs,

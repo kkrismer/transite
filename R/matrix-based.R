@@ -84,6 +84,7 @@
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterExport
 #' @importFrom parallel parLapply
+#' @importFrom parallel stopCluster
 #' @export
 score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
                               threshold_method = c("p_value", "relative"),
@@ -153,6 +154,7 @@ score_transcripts <- function(sequences, motifs = NULL, max_hits = 5,
                                                       threshold_method,
                                                       threshold_value,
                                                       cache_path))})
+        parallel::stopCluster(cl = cluster)
     }
 
     motif_scores_proto_df <- lapply(motif_scores, function(motif_score) {

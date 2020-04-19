@@ -278,7 +278,8 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #' @importFrom stats predict
 #' @importFrom stats pf
 #' @importFrom methods new
-#' @importFrom R.devices suppressGraphics
+#' @importFrom grDevices pdf
+#' @importFrom grDevices dev.off
 #' @export
 score_spectrum <- function(x, p_value = array(1, length(x)),
                            x_label = "log enrichment",
@@ -407,11 +408,10 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
         f_statistic_p_value <- 1
     }
 
-    # combine figure
-    R.devices::suppressGraphics(
-        gp1 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(enrichment_plot)))
-    R.devices::suppressGraphics(
-        gp2 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(scatterplot)))
+    grDevices::pdf(NULL)
+    gp1 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(enrichment_plot))
+    gp2 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(scatterplot))
+    invisible(grDevices::dev.off())
 
     gp2$widths <- gp1$widths
 

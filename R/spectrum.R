@@ -196,9 +196,17 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #'
 #' @param x vector of values (e.g., enrichment values, normalized RBP
 #' scores) per bin
-#' @param p_value vector of p-values (e.g., significance of enrichment
+#' @param p_values vector of p-values (e.g., significance of enrichment
 #' values) per bin
 #' @param x_label label of values (e.g., \code{"enrichment value"})
+#' @param sorted_transcript_values vector of sorted transcript values, i.e.,
+#' the fold change or signal-to-noise ratio or any other quantity that was used
+#' to sort the transcripts that were passed to \code{run_matrix_spma} or
+#' \code{run_kmer_spma} (default value is \code{NULL}). These values are
+#' displayed as a semi-transparent area over the enrichment value heatmap.
+#' @param transcript_values_label label of transcript values
+#' (e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
+#' only shown if \code{!is.null(sorted_transcript_values)}
 #' @param midpoint for enrichment values the midpoint should be \code{1},
 #' for log enrichment
 #' values \code{0})
@@ -239,6 +247,18 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #' # random spectrum
 #' score_spectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
 #'
+#' # random spectrum with p-values
+#' score_spectrum(runif(n = 40, min = -1, max = 1),
+#'                p_values = runif(n = 40, min = 0, max = 1),
+#'                max_model_degree = 1)
+#'
+#' # random spectrum with sorted transcript values
+#' log_fold_change <- log(runif(n = 1000, min = 0, max = 1) /
+#'                            runif(n = 1000, min = 0, max = 1))
+#' score_spectrum(runif(n = 40, min = -1, max = 1),
+#'                sorted_transcript_values = sort(log_fold_change),
+#'                max_model_degree = 1)
+#'
 #' # non-random linear spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
@@ -251,83 +271,123 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #' score_spectrum(signal + noise, max_model_degree = 2,
 #'   max_cs_permutations = 100000)
 #' @family SPMA functions
+#' @importFrom dplyr arrange
 #' @importFrom ggplot2 ggplot
-#' @importFrom ggplot2 aes_string
-#' @importFrom ggplot2 geom_tile
+#' @importFrom ggplot2 geom_rect
+#' @importFrom ggplot2 aes
+#' @importFrom ggplot2 geom_area
+#' @importFrom ggplot2 scale_x_continuous
+#' @importFrom ggplot2 scale_y_continuous
+#' @importFrom scales pretty_breaks
 #' @importFrom ggplot2 scale_fill_gradient2
-#' @importFrom ggplot2 scale_x_discrete
-#' @importFrom ggplot2 ggtitle
+#' @importFrom ggplot2 geom_text
 #' @importFrom ggplot2 theme
 #' @importFrom ggplot2 element_text
 #' @importFrom ggplot2 element_blank
 #' @importFrom ggplot2 labs
-#' @importFrom ggplot2 xlab
-#' @importFrom ggplot2 scale_fill_gradient
-#' @importFrom scales squish
-#' @importFrom ggplot2 geom_text
-#' @importFrom ggplot2 aes
-#' @importFrom ggplot2 ggplot_gtable
-#' @importFrom ggplot2 ggplot_build
-#' @importFrom gridExtra arrangeGrob
 #' @importFrom stats lm
-#' @importFrom stats sd
-#' @importFrom ggplot2 geom_point
-#' @importFrom ggplot2 geom_smooth
 #' @importFrom stats poly
+#' @importFrom stats sd
+#' @importFrom ggplot2 aes_string
+#' @importFrom ggplot2 geom_point
 #' @importFrom ggplot2 ylab
+#' @importFrom ggplot2 geom_smooth
 #' @importFrom stats predict
 #' @importFrom stats pf
-#' @importFrom methods new
 #' @importFrom grDevices pdf
+#' @importFrom ggplot2 ggplot_gtable
+#' @importFrom ggplot2 ggplot_build
 #' @importFrom grDevices dev.off
+#' @importFrom gridExtra arrangeGrob
 #' @export
-score_spectrum <- function(x, p_value = array(1, length(x)),
+score_spectrum <- function(x, p_values = array(1, length(x)),
                            x_label = "log enrichment",
+                           sorted_transcript_values = NULL,
+                           transcript_values_label = "transcript value",
                            midpoint = 0,
                            max_model_degree = 3,
                            max_cs_permutations = 10000000,
                            min_cs_permutations = 5000, e = 5) {
-    if (length(x) < 7) {
+    transcript_value <- position <- bin <- bin_xmin <- bin_xmax <-
+        value <- p_value <- NULL
+
+    num_bins <- length(x)
+
+    if (num_bins < 7) {
         stop("too few bins")
     }
     if (max_model_degree > 5 || max_model_degree < 1) {
         stop("supported values for max_model_degree: 1, 2, 3, 4, 5")
     }
-    bin <- seq_len(length(x))
 
-    df <- data.frame(
-        bin = bin, value = x, p_value = p_value, RBP = rep("", length(bin)),
-        stringsAsFactors = FALSE
-    )
+    bins <- seq_len(num_bins)
 
-    enrichment_plot <- ggplot2::ggplot(df, ggplot2::aes_string(
-        x = as.character("bin"),
-        y = "RBP", fill = "value"
-    )) +
-        ggplot2::geom_tile(colour = "white") +
+    if (is.null(sorted_transcript_values)) {
+        sorted_transcript_values <- 1
+    }
+    enrichment_values_df <- data.frame(bin = bins,
+                                       value = x,
+                                       p_value = p_values,
+                                       bin_xmin = bins - 0.5,
+                                       bin_xmax = bins + 0.5,
+                                       stringsAsFactors = FALSE)
+    transcript_values_df <- data.frame(transcript_value = sorted_transcript_values,
+                                       stringsAsFactors = FALSE)
+    num_transcripts <- nrow(transcript_values_df)
+    transcript_values_df$position <- seq_len(num_transcripts) / (num_transcripts / num_bins) + 0.5
+
+    if (num_transcripts > 1) {
+        value_range <- range(sorted_transcript_values)
+        asterisk_y_pos <- (value_range[2] - value_range[1]) * 0.9 - abs(value_range[1])
+    } else {
+        asterisk_y_pos <- 0.9
+    }
+
+    enrichment_plot <- ggplot2::ggplot() +
+        ggplot2::geom_rect(data = enrichment_values_df,
+                           ggplot2::aes(xmin = bin_xmin, xmax = bin_xmax,
+                                        ymin = -Inf, ymax = Inf,
+                                        fill = value)) +
+        ggplot2::geom_area(data = transcript_values_df,
+                           ggplot2::aes(x = position,
+                                        y = transcript_value),
+                           fill = "black", alpha = 0.2) +
+        ggplot2::scale_x_continuous(limits = c(0.5, num_bins + 0.5),
+                                    breaks = bins,
+                                    expand = c(0, 0)) +
+        ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
         ggplot2::scale_fill_gradient2(
             low = "#004F91FF", mid = "white", high = "#832424FF",
             midpoint = midpoint
-        ) +
-        ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
-        ggplot2::geom_text(ggplot2::aes(label = ifelse(p_value <= 0.001, "***",
+        )  +
+        ggplot2::geom_text(data = enrichment_values_df,
+                           ggplot2::aes(x = bin,
+                                        label = ifelse(p_value <= 0.001, "***",
                                                        ifelse(p_value <= 0.01, "**",
-                                                              ifelse(p_value <= 0.05, "*", "")
-                                                       )
-        )),
-        size = 4
+                                                              ifelse(p_value <= 0.05, "*", "")))),
+                           size = 4, y = asterisk_y_pos
         ) +
         ggplot2::theme(
             axis.text.x = ggplot2::element_text(size = 8),
             axis.title.x = ggplot2::element_blank(),
+            axis.title.y = ggplot2::element_text(face = "bold"),
             panel.background = ggplot2::element_blank(),
-            legend.position = "top"
+            legend.position = "top",
+            legend.title = ggplot2::element_text(face = "bold")
         ) +
-        ggplot2::labs(fill = x_label, y = x_label)
+        ggplot2::labs(fill = x_label,
+                      y = ifelse(num_transcripts == 1,
+                                 "", transcript_values_label))
 
+    if (num_transcripts == 1) {
+        enrichment_plot <- enrichment_plot + ggplot2::theme(
+            axis.ticks.y = ggplot2::element_blank(),
+            axis.text.y = ggplot2::element_blank()
+        )
+    }
 
     # determine polynomial degree of gradient
-    model <- stats::lm(x ~ stats::poly(bin, degree = max_model_degree))
+    model <- stats::lm(x ~ stats::poly(bins, degree = max_model_degree))
     coeffs <- summary(model)$coefficients
 
     if (stats::sd(x) <= 1e-10) {
@@ -348,45 +408,35 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
         }
     }
 
-    df <- data.frame(y = x, bin = bin)
-    # calculate residuals of selected model
+    df <- data.frame(y = x, bin = bins)
+    scatterplot <- ggplot2::ggplot(df,
+                                   ggplot2::aes_string(x = "bin", y = "y")) +
+        ggplot2::geom_point() +
+        ggplot2::ylab(x_label) +
+        ggplot2::scale_x_continuous(limits = c(0.5, num_bins + 0.5),
+                                    breaks = bins,
+                                    expand = c(0, 0)) +
+        ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) +
+        ggplot2::theme(
+            axis.text.x = ggplot2::element_text(size = 8),
+            axis.title.x = ggplot2::element_blank(),
+            axis.title.y = ggplot2::element_text(face = "bold"),
+            panel.background = ggplot2::element_blank(),
+            strip.background = ggplot2::element_blank()
+        )
     if (degree > 0) {
-        selected_model <- stats::lm(x ~ stats::poly(bin, degree = degree))
-        scatterplot <- ggplot2::ggplot(df, ggplot2::aes_string(x = "bin",
-                                                               y = "y")) +
-            ggplot2::geom_tile(colour = "transparent", width = 0, height = 0) +
-            ggplot2::geom_point() +
+        selected_model <- stats::lm(x ~ stats::poly(bins, degree = degree))
+        scatterplot <- scatterplot +
             ggplot2::geom_smooth(method = "lm",
-                                 formula = y ~ stats::poly(x, degree = degree)) +
-            ggplot2::ylab(x_label) +
-            ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
-            ggplot2::theme(
-                axis.text.x = ggplot2::element_text(size = 8),
-                axis.title.x = ggplot2::element_blank(),
-                axis.title.y = ggplot2::element_blank(),
-                panel.background = ggplot2::element_blank(),
-                strip.background = ggplot2::element_blank()
-            )
+                                 formula = y ~ stats::poly(x, degree = degree))
     } else {
         selected_model <- stats::lm(x ~ 1)
-        scatterplot <- ggplot2::ggplot(df,
-                                       ggplot2::aes_string(x = "bin",
-                                                           y = "y")) +
-            ggplot2::geom_tile(colour = "transparent", width = 0, height = 0) +
-            ggplot2::geom_point() +
-            ggplot2::geom_smooth(method = "lm", formula = y ~ 1) +
-            ggplot2::ylab(x_label) +
-            ggplot2::scale_x_discrete(limits = as.character(df$bin)) +
-            ggplot2::theme(
-                axis.text.x = ggplot2::element_text(size = 8),
-                axis.title.x = ggplot2::element_blank(),
-                axis.title.y = ggplot2::element_blank(),
-                panel.background = ggplot2::element_blank(),
-                strip.background = ggplot2::element_blank()
-            )
+        scatterplot <- scatterplot +
+            ggplot2::geom_smooth(method = "lm", formula = y ~ 1)
     }
 
-    predicted <- stats::predict(selected_model, data.frame(bin))
+    # calculate residuals of selected model
+    predicted <- stats::predict(selected_model, data.frame(bins))
     residuals <- sum((predicted - x)^2)
     meta_info <- summary(selected_model)
 
@@ -413,7 +463,7 @@ score_spectrum <- function(x, p_value = array(1, length(x)),
     gp2 <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(scatterplot))
     invisible(grDevices::dev.off())
 
-    gp2$widths <- gp1$widths
+    gp1$widths <- gp2$widths
 
     return(.SpectrumScore(
         adj_r_squared = meta_info$adj.r.squared,

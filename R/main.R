@@ -413,7 +413,7 @@ run_matrix_spma <- function(background_set,
             score <-
                 score_spectrum(
                     log(values),
-                    motif_data_df$adj_p_value,
+                    p_values = motif_data_df$adj_p_value,
                     max_model_degree = max_model_degree,
                     max_cs_permutations = max_cs_permutations,
                     min_cs_permutations = min_cs_permutations
@@ -1013,7 +1013,7 @@ run_kmer_spma <- function(background_set,
             score <-
                 score_spectrum(
                     log(values),
-                    motif_data_df$adj_p_value_estimate,
+                    p_values = motif_data_df$adj_p_value_estimate,
                     max_model_degree = max_model_degree,
                     max_cs_permutations = max_cs_permutations,
                     min_cs_permutations = min_cs_permutations

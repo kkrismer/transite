@@ -6,8 +6,10 @@
 \usage{
 score_spectrum(
   x,
-  p_value = array(1, length(x)),
+  p_values = array(1, length(x)),
   x_label = "log enrichment",
+  sorted_transcript_values = NULL,
+  transcript_values_label = "transcript value",
   midpoint = 0,
   max_model_degree = 3,
   max_cs_permutations = 1e+07,
@@ -19,10 +21,20 @@ score_spectrum(
 \item{x}{vector of values (e.g., enrichment values, normalized RBP
 scores) per bin}
 
-\item{p_value}{vector of p-values (e.g., significance of enrichment
+\item{p_values}{vector of p-values (e.g., significance of enrichment
 values) per bin}
 
 \item{x_label}{label of values (e.g., \code{"enrichment value"})}
+
+\item{sorted_transcript_values}{vector of sorted transcript values, i.e.,
+the fold change or signal-to-noise ratio or any other quantity that was used
+to sort the transcripts that were passed to \code{run_matrix_spma} or
+\code{run_kmer_spma} (default value is \code{NULL}). These values are
+displayed as a semi-transparent area over the enrichment value heatmap.}
+
+\item{transcript_values_label}{label of transcript values
+(e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
+only shown if \code{!is.null(sorted_transcript_values)}}
 
 \item{midpoint}{for enrichment values the midpoint should be \code{1},
 for log enrichment
@@ -198,6 +210,18 @@ with \eqn{df_1 = p_2 - p_1} and \eqn{df_2 = n - p_2}.
 \examples{
 # random spectrum
 score_spectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
+
+# random spectrum with p-values
+score_spectrum(runif(n = 40, min = -1, max = 1),
+               p_values = runif(n = 40, min = 0, max = 1),
+               max_model_degree = 1)
+
+# random spectrum with sorted transcript values
+log_fold_change <- log(runif(n = 1000, min = 0, max = 1) /
+                           runif(n = 1000, min = 0, max = 1))
+score_spectrum(runif(n = 40, min = -1, max = 1),
+               sorted_transcript_values = sort(log_fold_change),
+               max_model_degree = 1)
 
 # non-random linear spectrum
 signal <- seq(-1, 0.99, 2 / 40)

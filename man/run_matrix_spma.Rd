@@ -5,7 +5,9 @@
 \title{Matrix-based Spectrum Motif Analysis}
 \usage{
 run_matrix_spma(
-  background_set,
+  sorted_transcript_sequences,
+  sorted_transcript_values = NULL,
+  transcript_values_label = "transcript value",
   motifs = NULL,
   n_bins = 40,
   max_model_degree = 1,
@@ -23,17 +25,28 @@ run_matrix_spma(
 )
 }
 \arguments{
-\item{background_set}{named character vector of ranked sequences
+\item{sorted_transcript_sequences}{named character vector of ranked sequences
 (only containing upper case characters A, C, G, T), where the
-names are RefSeq identifiers
-and sequence
+names are RefSeq identifiers and sequence
 type qualifiers (\code{"3UTR"}, \code{"5UTR"} or \code{"mRNA"}), separated by
 \code{"|"}, e.g.
 \code{"NM_010356|3UTR"}. Names are only used to cache results.
-The sequences in \code{background_set} must be ranked (i.e., sorted).
+The sequences in \code{sorted_transcript_sequences} must be ranked
+(i.e., sorted).
 Commonly used sorting criteria are measures of differential expression, such
 as fold change or signal-to-noise ratio (e.g., between treatment and control
 samples in gene expression profiling experiments).}
+
+\item{sorted_transcript_values}{vector of sorted transcript values, i.e.,
+the fold change or signal-to-noise ratio or any other quantity that was used
+to sort the transcripts that were passed to \code{run_matrix_spma} or
+\code{run_kmer_spma} (default value is \code{NULL}). These values are
+displayed as a semi-transparent area over the enrichment value heatmaps
+of spectrum plots.}
+
+\item{transcript_values_label}{label of transcript sorting criterion
+(e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
+only shown if \code{!is.null(sorted_transcript_values)}}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
@@ -45,12 +58,10 @@ valid values are between 7 and 100}
 \item{max_model_degree}{maximum degree of polynomial}
 
 \item{max_cs_permutations}{maximum number of permutations performed in
-Monte Carlo test
-for consistency score}
+Monte Carlo test for consistency score}
 
 \item{min_cs_permutations}{minimum number of permutations performed in
-Monte Carlo test
-for consistency score}
+Monte Carlo test for consistency score}
 
 \item{max_hits}{maximum number of putative binding sites per mRNA
 that are counted}
@@ -164,17 +175,21 @@ background_df <- transite:::ge$background_df
 # sort sequences by signal-to-noise ratio
 background_df <- dplyr::arrange(background_df, value)
 # character vector of named and ranked (by signal-to-noise ratio) sequences
-background_set <- gsub("T", "U", background_df$seq)
-names(background_set) <- paste0(background_df$refseq, "|",
+background_seqs <- gsub("T", "U", background_df$seq)
+names(background_seqs) <- paste0(background_df$refseq, "|",
   background_df$seq_type)
 
-results <- run_matrix_spma(background_set,
-                         motifs = get_motif_by_id("M178_0.6"),
-                         n_bins = 20,
-                         max_fg_permutations = 10000)
+results <- run_matrix_spma(background_seqs,
+                           sorted_transcript_values = background_df$value,
+                           transcript_values_label = "signal-to-noise ratio",
+                           motifs = get_motif_by_id("M178_0.6"),
+                           n_bins = 20,
+                           max_fg_permutations = 10000)
 
 \dontrun{
-results <- run_matrix_spma(background_set) }
+results <- run_matrix_spma(background_seqs,
+                           sorted_transcript_values = background_df$value,
+                           transcript_values_label = "SNR") }
 
 }
 \seealso{

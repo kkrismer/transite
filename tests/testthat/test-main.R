@@ -93,32 +93,44 @@ test_that("run_matrix_tsma", {
 test_that("run_matrix_spma", {
     background_df <- transite:::ge$background_df
     background_df <- dplyr::arrange(background_df, value)
-    background_set <- gsub("T", "U", background_df$seq)
-    names(background_set) <- paste0(background_df$refseq, "|",
-                                    background_df$seq_type)
+    background_seqs <- gsub("T", "U", background_df$seq)
+    names(background_seqs) <- paste0(background_df$refseq, "|",
+                                     background_df$seq_type)
 
     n_bins <- 10
-    results <- run_matrix_spma(background_set,
+    results <- run_matrix_spma(background_seqs,
                                motifs = get_motif_by_id("M178_0.6"),
                                n_bins = n_bins,
                                max_fg_permutations = 10000, cache = FALSE)
 
     expect_equal(length(results$foreground_scores), n_bins)
     expect_equal(length(results$background_scores$total_sites[[1]]),
-                 length(background_set))
+                 length(background_seqs))
     expect_equal(length(results$background_scores$absolute_hits[[1]]),
-                 length(background_set))
+                 length(background_seqs))
 
-    results <- run_matrix_spma(background_set,
+    results <- run_matrix_spma(background_seqs,
+                               sorted_transcript_values = background_df$value,
+                               motifs = get_motif_by_id("M043_0.6"),
+                               n_bins = n_bins,
+                               max_fg_permutations = 10000, cache = FALSE)
+
+    expect_equal(length(results$foreground_scores), n_bins)
+    expect_equal(length(results$background_scores$total_sites[[1]]),
+                 length(background_seqs))
+    expect_equal(length(results$background_scores$absolute_hits[[1]]),
+                 length(background_seqs))
+
+    results <- run_matrix_spma(background_seqs,
                                motifs = get_motif_by_id("M178_0.6"),
                                n_bins = n_bins,
                                max_fg_permutations = 10000, cache = TRUE)
 
     expect_equal(length(results$foreground_scores), n_bins)
     expect_equal(length(results$background_scores$total_sites[[1]]),
-                 length(background_set))
+                 length(background_seqs))
     expect_equal(length(results$background_scores$absolute_hits[[1]]),
-                 length(background_set))
+                 length(background_seqs))
 })
 
 test_that("run_kmer_tsma", {
@@ -151,12 +163,12 @@ test_that("run_kmer_tsma", {
 test_that("run_kmer_spma", {
     background_df <- transite:::ge$background_df
     background_df <- dplyr::arrange(background_df, value)
-    background_set <- gsub("T", "U", background_df$seq)
-    names(background_set) <- paste0(background_df$refseq, "|",
-                                    background_df$seq_type)
+    background_seqs <- gsub("T", "U", background_df$seq)
+    names(background_seqs) <- paste0(background_df$refseq, "|",
+                                     background_df$seq_type)
 
     n_bins <- 10
-    expect_warning(results <- run_kmer_spma(background_set,
+    expect_warning(results <- run_kmer_spma(background_seqs,
                                             motifs = get_motif_by_id("M178_0.6"),
                                             n_bins = n_bins,
                                             fg_permutations = 10))

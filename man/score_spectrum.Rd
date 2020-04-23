@@ -30,32 +30,28 @@ values) per bin}
 the fold change or signal-to-noise ratio or any other quantity that was used
 to sort the transcripts that were passed to \code{run_matrix_spma} or
 \code{run_kmer_spma} (default value is \code{NULL}). These values are
-displayed as a semi-transparent area over the enrichment value heatmap.}
+displayed as a semi-transparent area over the enrichment value heatmaps
+of spectrum plots.}
 
-\item{transcript_values_label}{label of transcript values
+\item{transcript_values_label}{label of transcript sorting criterion
 (e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
 only shown if \code{!is.null(sorted_transcript_values)}}
 
 \item{midpoint}{for enrichment values the midpoint should be \code{1},
-for log enrichment
-values \code{0})}
+for log enrichment values \code{0})}
 
 \item{max_model_degree}{maximum degree of polynomial}
 
 \item{max_cs_permutations}{maximum number of permutations performed in
-Monte Carlo test
-for consistency score}
+Monte Carlo test for consistency score}
 
 \item{min_cs_permutations}{minimum number of permutations performed in
-Monte Carlo test
-for consistency score}
+Monte Carlo test for consistency score}
 
-\item{e}{integer-valued stop criterion for consistency score Monte Carlo test: aborting
-permutation
-process after
+\item{e}{integer-valued stop criterion for consistency score Monte
+Carlo test: aborting permutation process after
 observing \code{e} random consistency values with more extreme values than
-the actual
-consistency value}
+the actual consistency value}
 }
 \value{
 A list object of class \code{SpectrumScore} with the following
@@ -177,25 +173,19 @@ intercept \eqn{\hat{\beta}_0}) of the model \eqn{M} is defined by
 \deqn{\hat{\beta} = argmin_{\beta}{(\sum_{i = 1}^n{(y_i - \beta_0 - \sum_{j = 1}^m{\beta_j x_i^j})^2})}.}
 
 After polynomial models of various degrees have been fitted to the
-data, the F-test
-is used to select
+data, the F-test is used to select
 the model that best fits the data. Since the SSR
 monotonically decreases with
 increasing model degree (model complexity), the relative decrease
-of the SSR
-between the
+of the SSR between the
 simpler model and the more complex model must outweigh the increase
-in model complexity
-between the two
+in model complexity between the two
 models. The F-test gives the probability that a relative decrease of
-the SSR
-between the simpler
+the SSR between the simpler
 and the more complex model given their respective degrees of freedom is due
-to chance.
-A low p-value
+to chance. A low p-value
 indicates that the additional degrees of freedom of the more complex model
-lead to a
-better fit of
+lead to a better fit of
 the data than would be expected after a mere increase of degrees of freedom.
 
 The F-statistic is calculated as follows

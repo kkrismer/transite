@@ -4,7 +4,7 @@
 #' Preprocessing function for SPMA, divides transcript sequences
 #' into \emph{n} bins.
 #'
-#' @param background_set character vector of named sequences (names are
+#' @param sorted_transcript_sequences character vector of named sequences (names are
 #' usually RefSeq
 #' identifiers and sequence region labels,
 #'  e.g., "NM_1_DUMMY|3UTR"). It is important that the sequences are
@@ -16,7 +16,7 @@
 #' @return An array of \code{n_bins} length, containing the binned sequences
 #' @examples
 #' # toy example
-#' toy_background_set <- c(
+#' toy_seqs <- c(
 #'   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU", "UCAUUUUAUUAAA",
 #'   "AAUUGGUGUCUGGAUACUUCCCUGUACAU", "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
 #'   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC", "AGUUC", "CCAGUAA"
@@ -24,7 +24,7 @@
 #' # names are used as keys in the hash table (cached version only)
 #' # ideally sequence identifiers (e.g., RefSeq ids) and
 #' # sequence region labels (e.g., 3UTR for 3'-UTR)
-#' names(toy_background_set) <- c(
+#' names(toy_seqs) <- c(
 #'   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
 #'   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
 #'   "NM_7_DUMMY|3UTR",
@@ -33,33 +33,33 @@
 #'   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 #' )
 #'
-#' foreground_sets <- subdivide_data(toy_background_set, n_bins = 7)
+#' foreground_sets <- subdivide_data(toy_seqs, n_bins = 7)
 #'
 #' # example data set
 #' background_df <- transite:::ge$background_df
 #' # sort sequences by signal-to-noise ratio
 #' background_df <- dplyr::arrange(background_df, value)
 #' # character vector of named sequences
-#' background_set <- background_df$seq
-#' names(background_set) <- paste0(background_df$refseq, "|",
+#' background_seqs <- background_df$seq
+#' names(background_seqs) <- paste0(background_df$refseq, "|",
 #'   background_df$seq_type)
 #'
-#' foreground_sets <- subdivide_data(background_set)
+#' foreground_sets <- subdivide_data(background_seqs)
 #' @family SPMA functions
 #' @export
-subdivide_data <- function(background_set, n_bins = 40) {
+subdivide_data <- function(sorted_transcript_sequences, n_bins = 40) {
     if (n_bins < 7 || n_bins > 100) {
         stop("value of bin_num is invalid, valid values are integers between 7 and 100")
     }
-    if (n_bins > length(background_set)) {
+    if (n_bins > length(sorted_transcript_sequences)) {
         stop("more bins than transcripts")
     }
 
-    bin_size <- floor(length(background_set) / n_bins)
+    bin_size <- floor(length(sorted_transcript_sequences) / n_bins)
     cuts <- seq_len(n_bins - 1) * bin_size
-    cuts <- c(0, cuts, length(background_set))
-    foreground_sets <- tapply(background_set,
-                              cut(seq_len(length(background_set)),
+    cuts <- c(0, cuts, length(sorted_transcript_sequences))
+    foreground_sets <- tapply(sorted_transcript_sequences,
+                              cut(seq_len(length(sorted_transcript_sequences)),
                                   breaks = cuts), identity)
     return(foreground_sets)
 }
@@ -164,25 +164,19 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #' \deqn{\hat{\beta} = argmin_{\beta}{(\sum_{i = 1}^n{(y_i - \beta_0 - \sum_{j = 1}^m{\beta_j x_i^j})^2})}.}
 #'
 #' After polynomial models of various degrees have been fitted to the
-#' data, the F-test
-#' is used to select
+#' data, the F-test is used to select
 #' the model that best fits the data. Since the SSR
 #' monotonically decreases with
 #' increasing model degree (model complexity), the relative decrease
-#' of the SSR
-#' between the
+#' of the SSR between the
 #' simpler model and the more complex model must outweigh the increase
-#' in model complexity
-#' between the two
+#' in model complexity between the two
 #' models. The F-test gives the probability that a relative decrease of
-#' the SSR
-#' between the simpler
+#' the SSR between the simpler
 #' and the more complex model given their respective degrees of freedom is due
-#' to chance.
-#' A low p-value
+#' to chance. A low p-value
 #' indicates that the additional degrees of freedom of the more complex model
-#' lead to a
-#' better fit of
+#' lead to a better fit of
 #' the data than would be expected after a mere increase of degrees of freedom.
 #'
 #' The F-statistic is calculated as follows
@@ -203,26 +197,22 @@ subdivide_data <- function(background_set, n_bins = 40) {
 #' the fold change or signal-to-noise ratio or any other quantity that was used
 #' to sort the transcripts that were passed to \code{run_matrix_spma} or
 #' \code{run_kmer_spma} (default value is \code{NULL}). These values are
-#' displayed as a semi-transparent area over the enrichment value heatmap.
-#' @param transcript_values_label label of transcript values
+#' displayed as a semi-transparent area over the enrichment value heatmaps
+#' of spectrum plots.
+#' @param transcript_values_label label of transcript sorting criterion
 #' (e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
 #' only shown if \code{!is.null(sorted_transcript_values)}
 #' @param midpoint for enrichment values the midpoint should be \code{1},
-#' for log enrichment
-#' values \code{0})
+#' for log enrichment values \code{0})
 #' @param max_model_degree maximum degree of polynomial
 #' @param max_cs_permutations maximum number of permutations performed in
-#' Monte Carlo test
-#' for consistency score
+#' Monte Carlo test for consistency score
 #' @param min_cs_permutations minimum number of permutations performed in
-#' Monte Carlo test
-#' for consistency score
-#' @param e integer-valued stop criterion for consistency score Monte Carlo test: aborting
-#' permutation
-#' process after
+#' Monte Carlo test for consistency score
+#' @param e integer-valued stop criterion for consistency score Monte
+#' Carlo test: aborting permutation process after
 #' observing \code{e} random consistency values with more extreme values than
-#' the actual
-#' consistency value
+#' the actual consistency value
 #' @return A list object of class \code{SpectrumScore} with the following
 #' components:
 #' \tabular{rl}{
@@ -545,7 +535,8 @@ score_spectrum <- function(x, p_values = array(1, length(x)),
 #'   max_cs_permutations = 100000)
 #' score <- classify_spectrum(
 #'   get_adj_r_squared(quadratic_sp), get_model_degree(quadratic_sp),
-#'   get_model_slope(quadratic_sp), get_consistency_score_n(quadratic_sp), 10, n_bins
+#'   get_model_slope(quadratic_sp),
+#'   get_consistency_score_n(quadratic_sp), 10, n_bins
 #' )
 #' sum(score)
 #' \dontrun{
@@ -555,7 +546,8 @@ score_spectrum <- function(x, p_values = array(1, length(x)),
 #' quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2)
 #' score <- classify_spectrum(
 #'   get_adj_r_squared(quadratic_sp), get_model_degree(quadratic_sp),
-#'   get_model_slope(quadratic_sp), get_consistency_score_n(quadratic_sp), 10, n_bins
+#'   get_model_slope(quadratic_sp),
+#'   get_consistency_score_n(quadratic_sp), 10, n_bins
 #' )
 #' sum(score)
 #' }

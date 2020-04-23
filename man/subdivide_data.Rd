@@ -4,10 +4,10 @@
 \alias{subdivide_data}
 \title{Subdivides Sequences into \emph{n} Bins}
 \usage{
-subdivide_data(background_set, n_bins = 40)
+subdivide_data(sorted_transcript_sequences, n_bins = 40)
 }
 \arguments{
-\item{background_set}{character vector of named sequences (names are
+\item{sorted_transcript_sequences}{character vector of named sequences (names are
 usually RefSeq
 identifiers and sequence region labels,
  e.g., "NM_1_DUMMY|3UTR"). It is important that the sequences are
@@ -27,7 +27,7 @@ into \emph{n} bins.
 }
 \examples{
 # toy example
-toy_background_set <- c(
+toy_seqs <- c(
   "CAACAGCCUUAAUU", "CAGUCAAGACUCC", "CUUUGGGGAAU", "UCAUUUUAUUAAA",
   "AAUUGGUGUCUGGAUACUUCCCUGUACAU", "AUCAAAUUA", "AGAU", "GACACUUAAAGAUCCU",
   "UAGCAUUAACUUAAUG", "AUGGA", "GAAGAGUGCUCA", "AUAGAC", "AGUUC", "CCAGUAA"
@@ -35,7 +35,7 @@ toy_background_set <- c(
 # names are used as keys in the hash table (cached version only)
 # ideally sequence identifiers (e.g., RefSeq ids) and
 # sequence region labels (e.g., 3UTR for 3'-UTR)
-names(toy_background_set) <- c(
+names(toy_seqs) <- c(
   "NM_1_DUMMY|3UTR", "NM_2_DUMMY|3UTR", "NM_3_DUMMY|3UTR",
   "NM_4_DUMMY|3UTR", "NM_5_DUMMY|3UTR", "NM_6_DUMMY|3UTR",
   "NM_7_DUMMY|3UTR",
@@ -44,18 +44,18 @@ names(toy_background_set) <- c(
   "NM_12_DUMMY|3UTR", "NM_13_DUMMY|3UTR", "NM_14_DUMMY|3UTR"
 )
 
-foreground_sets <- subdivide_data(toy_background_set, n_bins = 7)
+foreground_sets <- subdivide_data(toy_seqs, n_bins = 7)
 
 # example data set
 background_df <- transite:::ge$background_df
 # sort sequences by signal-to-noise ratio
 background_df <- dplyr::arrange(background_df, value)
 # character vector of named sequences
-background_set <- background_df$seq
-names(background_set) <- paste0(background_df$refseq, "|",
+background_seqs <- background_df$seq
+names(background_seqs) <- paste0(background_df$refseq, "|",
   background_df$seq_type)
 
-foreground_sets <- subdivide_data(background_set)
+foreground_sets <- subdivide_data(background_seqs)
 }
 \seealso{
 Other SPMA functions: 

@@ -259,14 +259,14 @@ run_matrix_tsma <- function(foreground_sets,
 #' evidence and the transcript
 #' sorting criterion, e.g., fold change between treatment and control samples.
 #'
-#' @param background_set named character vector of ranked sequences
+#' @param sorted_transcript_sequences named character vector of ranked sequences
 #' (only containing upper case characters A, C, G, T), where the
-#' names are RefSeq identifiers
-#' and sequence
+#' names are RefSeq identifiers and sequence
 #' type qualifiers (\code{"3UTR"}, \code{"5UTR"} or \code{"mRNA"}), separated by
 #' \code{"|"}, e.g.
 #' \code{"NM_010356|3UTR"}. Names are only used to cache results.
-#' The sequences in \code{background_set} must be ranked (i.e., sorted).
+#' The sequences in \code{sorted_transcript_sequences} must be ranked
+#' (i.e., sorted).
 #' Commonly used sorting criteria are measures of differential expression, such
 #' as fold change or signal-to-noise ratio (e.g., between treatment and control
 #' samples in gene expression profiling experiments).
@@ -334,24 +334,30 @@ run_matrix_tsma <- function(foreground_sets,
 #' # sort sequences by signal-to-noise ratio
 #' background_df <- dplyr::arrange(background_df, value)
 #' # character vector of named and ranked (by signal-to-noise ratio) sequences
-#' background_set <- gsub("T", "U", background_df$seq)
-#' names(background_set) <- paste0(background_df$refseq, "|",
+#' background_seqs <- gsub("T", "U", background_df$seq)
+#' names(background_seqs) <- paste0(background_df$refseq, "|",
 #'   background_df$seq_type)
 #'
-#' results <- run_matrix_spma(background_set,
-#'                          motifs = get_motif_by_id("M178_0.6"),
-#'                          n_bins = 20,
-#'                          max_fg_permutations = 10000)
+#' results <- run_matrix_spma(background_seqs,
+#'                            sorted_transcript_values = background_df$value,
+#'                            transcript_values_label = "signal-to-noise ratio",
+#'                            motifs = get_motif_by_id("M178_0.6"),
+#'                            n_bins = 20,
+#'                            max_fg_permutations = 10000)
 #'
 #' \dontrun{
-#' results <- run_matrix_spma(background_set) }
+#' results <- run_matrix_spma(background_seqs,
+#'                            sorted_transcript_values = background_df$value,
+#'                            transcript_values_label = "SNR") }
 #'
 #' @family SPMA functions
 #' @family matrix functions
 #' @importFrom stats p.adjust
 #' @importFrom dplyr filter
 #' @export
-run_matrix_spma <- function(background_set,
+run_matrix_spma <- function(sorted_transcript_sequences,
+                            sorted_transcript_values = NULL,
+                            transcript_values_label = "transcript value",
                             motifs = NULL,
                             n_bins = 40,
                             max_model_degree = 1,
@@ -379,11 +385,11 @@ run_matrix_spma <- function(background_set,
         n_extremely_significant <-
         aggregate_classifier_score <- NULL
 
-    foreground_sets <- subdivide_data(background_set, n_bins)
+    foreground_sets <- subdivide_data(sorted_transcript_sequences, n_bins)
 
     results <- run_matrix_tsma(
         foreground_sets,
-        background_set,
+        sorted_transcript_sequences,
         motifs = motifs,
         max_hits = max_hits,
         threshold_method = threshold_method,
@@ -414,6 +420,8 @@ run_matrix_spma <- function(background_set,
                 score_spectrum(
                     log(values),
                     p_values = motif_data_df$adj_p_value,
+                    sorted_transcript_values = sorted_transcript_values,
+                    transcript_values_label = transcript_values_label,
                     max_model_degree = max_model_degree,
                     max_cs_permutations = max_cs_permutations,
                     min_cs_permutations = min_cs_permutations
@@ -889,9 +897,11 @@ run_kmer_tsma <- function(foreground_sets,
 #' and the transcript
 #' sorting criterion, e.g., fold change between treatment and control samples.
 #'
-#' @param background_set character vector of ranked sequences, either DNA
+#' @param sorted_transcript_sequences character vector of ranked sequences,
+#' either DNA
 #' (only containing upper case characters A, C, G, T) or RNA (A, C, G, U).
-#' The sequences in \code{background.set} must be ranked (i.e., sorted).
+#' The sequences in \code{sorted_transcript_sequences} must be
+#' ranked (i.e., sorted).
 #' Commonly used sorting criteria are measures of differential expression, such
 #' as fold change or signal-to-noise ratio (e.g., between treatment and control
 #' samples in gene expression profiling experiments).
@@ -934,17 +944,21 @@ run_kmer_tsma <- function(foreground_sets,
 #' # sort sequences by signal-to-noise ratio
 #' background_df <- dplyr::arrange(background_df, value)
 #' # character vector of named and ranked (by signal-to-noise ratio) sequences
-#' background_set <- gsub("T", "U", background_df$seq)
-#' names(background_set) <- paste0(background_df$refseq, "|",
+#' background_seqs <- gsub("T", "U", background_df$seq)
+#' names(background_seqs) <- paste0(background_df$refseq, "|",
 #'   background_df$seq_type)
 #'
-#' results <- run_kmer_spma(background_set,
-#'                        motifs = get_motif_by_id("M178_0.6"),
-#'                        n_bins = 20,
-#'                        fg_permutations = 10)
+#' results <- run_kmer_spma(background_seqs,
+#'                          sorted_transcript_values = background_df$value,
+#'                          transcript_values_label = "signal-to-noise ratio",
+#'                          motifs = get_motif_by_id("M178_0.6"),
+#'                          n_bins = 20,
+#'                          fg_permutations = 10)
 #'
 #' \dontrun{
-#' results <- run_kmer_spma(background_set)}
+#' results <- run_kmer_spma(background_seqs,
+#'                          sorted_transcript_values = background_df$value,
+#'                          transcript_values_label = "signal-to-noise ratio")}
 #'
 #' @family SPMA functions
 #' @family \emph{k}-mer functions
@@ -952,7 +966,9 @@ run_kmer_tsma <- function(foreground_sets,
 #' @importFrom dplyr select
 #' @importFrom dplyr filter
 #' @export
-run_kmer_spma <- function(background_set,
+run_kmer_spma <- function(sorted_transcript_sequences,
+                          sorted_transcript_values = NULL,
+                          transcript_values_label = "transcript value",
                           motifs = NULL,
                           k = 6,
                           n_bins = 40,
@@ -976,11 +992,11 @@ run_kmer_spma <- function(background_set,
     n_significant <-
         n_very_significant <- n_extremely_significant <- NULL
 
-    foreground_sets <- subdivide_data(background_set, n_bins)
+    foreground_sets <- subdivide_data(sorted_transcript_sequences, n_bins)
 
     results <- run_kmer_tsma(
         foreground_sets,
-        background_set,
+        sorted_transcript_sequences,
         motifs = motifs,
         k = k,
         fg_permutations = fg_permutations,
@@ -1014,6 +1030,8 @@ run_kmer_spma <- function(background_set,
                 score_spectrum(
                     log(values),
                     p_values = motif_data_df$adj_p_value_estimate,
+                    sorted_transcript_values = sorted_transcript_values,
+                    transcript_values_label = transcript_values_label,
                     max_model_degree = max_model_degree,
                     max_cs_permutations = max_cs_permutations,
                     min_cs_permutations = min_cs_permutations

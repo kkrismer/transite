@@ -5,7 +5,9 @@
 \title{\emph{k}-mer-based Spectrum Motif Analysis}
 \usage{
 run_kmer_spma(
-  background_set,
+  sorted_transcript_sequences,
+  sorted_transcript_values = NULL,
+  transcript_values_label = "transcript value",
   motifs = NULL,
   k = 6,
   n_bins = 40,
@@ -19,12 +21,25 @@ run_kmer_spma(
 )
 }
 \arguments{
-\item{background_set}{character vector of ranked sequences, either DNA
+\item{sorted_transcript_sequences}{character vector of ranked sequences,
+either DNA
 (only containing upper case characters A, C, G, T) or RNA (A, C, G, U).
-The sequences in \code{background.set} must be ranked (i.e., sorted).
+The sequences in \code{sorted_transcript_sequences} must be
+ranked (i.e., sorted).
 Commonly used sorting criteria are measures of differential expression, such
 as fold change or signal-to-noise ratio (e.g., between treatment and control
 samples in gene expression profiling experiments).}
+
+\item{sorted_transcript_values}{vector of sorted transcript values, i.e.,
+the fold change or signal-to-noise ratio or any other quantity that was used
+to sort the transcripts that were passed to \code{run_matrix_spma} or
+\code{run_kmer_spma} (default value is \code{NULL}). These values are
+displayed as a semi-transparent area over the enrichment value heatmaps
+of spectrum plots.}
+
+\item{transcript_values_label}{label of transcript sorting criterion
+(e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
+only shown if \code{!is.null(sorted_transcript_values)}}
 
 \item{motifs}{a list of motifs that is used to score the specified sequences.
 If \code{is.null(motifs)} then all Transite motifs are used.}
@@ -39,12 +54,10 @@ valid values are between 7 and 100}
 \item{max_model_degree}{maximum degree of polynomial}
 
 \item{max_cs_permutations}{maximum number of permutations performed in
-Monte Carlo test
-for consistency score}
+Monte Carlo test for consistency score}
 
 \item{min_cs_permutations}{minimum number of permutations performed in
-Monte Carlo test
-for consistency score}
+Monte Carlo test for consistency score}
 
 \item{fg_permutations}{numer of foreground permutations}
 
@@ -98,17 +111,21 @@ background_df <- transite:::ge$background_df
 # sort sequences by signal-to-noise ratio
 background_df <- dplyr::arrange(background_df, value)
 # character vector of named and ranked (by signal-to-noise ratio) sequences
-background_set <- gsub("T", "U", background_df$seq)
-names(background_set) <- paste0(background_df$refseq, "|",
+background_seqs <- gsub("T", "U", background_df$seq)
+names(background_seqs) <- paste0(background_df$refseq, "|",
   background_df$seq_type)
 
-results <- run_kmer_spma(background_set,
-                       motifs = get_motif_by_id("M178_0.6"),
-                       n_bins = 20,
-                       fg_permutations = 10)
+results <- run_kmer_spma(background_seqs,
+                         sorted_transcript_values = background_df$value,
+                         transcript_values_label = "signal-to-noise ratio",
+                         motifs = get_motif_by_id("M178_0.6"),
+                         n_bins = 20,
+                         fg_permutations = 10)
 
 \dontrun{
-results <- run_kmer_spma(background_set)}
+results <- run_kmer_spma(background_seqs,
+                         sorted_transcript_values = background_df$value,
+                         transcript_values_label = "signal-to-noise ratio")}
 
 }
 \seealso{

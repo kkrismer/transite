@@ -86,7 +86,8 @@ quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2,
   max_cs_permutations = 100000)
 score <- classify_spectrum(
   get_adj_r_squared(quadratic_sp), get_model_degree(quadratic_sp),
-  get_model_slope(quadratic_sp), get_consistency_score_n(quadratic_sp), 10, n_bins
+  get_model_slope(quadratic_sp),
+  get_consistency_score_n(quadratic_sp), 10, n_bins
 )
 sum(score)
 \dontrun{
@@ -96,7 +97,8 @@ noise <- rnorm(n = 40, mean = 0, sd = 0.1)
 quadratic_sp <- score_spectrum(signal + noise, max_model_degree = 2)
 score <- classify_spectrum(
   get_adj_r_squared(quadratic_sp), get_model_degree(quadratic_sp),
-  get_model_slope(quadratic_sp), get_consistency_score_n(quadratic_sp), 10, n_bins
+  get_model_slope(quadratic_sp),
+  get_consistency_score_n(quadratic_sp), 10, n_bins
 )
 sum(score)
 }

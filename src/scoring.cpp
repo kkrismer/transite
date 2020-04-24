@@ -2,8 +2,6 @@
 #include <Rcpp.h>
 #include <random>
 #include <algorithm>
-#include <chrono>
-#include <unordered_set>
 
 //' @title Score Sequences with PWM
 //'
@@ -72,6 +70,11 @@ double calculate_consistency_score(Rcpp::NumericVector x) {
     return score / ((double)x.size());
 }
 
+// wrapper around R's RNG such that we get a uniform distribution over
+// [0,n) as required by the STL algorithm
+inline int randWrapper(const int n) {
+    return floor(unif_rand() * n);
+}
 
 //' @title Local Consistency Score
 //'
@@ -108,17 +111,18 @@ double calculate_consistency_score(Rcpp::NumericVector x) {
 //'   1000000, 1000, 5)
 //' @export
 // [[Rcpp::export]]
-Rcpp::List calculate_local_consistency(Rcpp::NumericVector x, int numPermutations,
-                               int minPermutations, int e) {
+Rcpp::List calculate_local_consistency(Rcpp::NumericVector x,
+                                       int numPermutations,
+                                       int minPermutations, int e) {
     double score(calculate_consistency_score(x));
     int k(0);
     int i(1);
-    std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
     while(i <= numPermutations && (i < minPermutations || k < e)) {
         // shuffle spectrum
         Rcpp::NumericVector shuffledSpectrum = clone(x);
-        std::shuffle(shuffledSpectrum.begin(), shuffledSpectrum.end(), gen);
+        std::random_shuffle(shuffledSpectrum.begin(), shuffledSpectrum.end(),
+                            randWrapper);
 
         // calculate consistency score
         double shuffledScore(calculate_consistency_score(shuffledSpectrum));
@@ -182,38 +186,24 @@ Rcpp::List calculate_local_consistency(Rcpp::NumericVector x, int numPermutation
 //'  length(foreground_seqs), 1000, 500, 5)
 //' @export
 // [[Rcpp::export]]
-Rcpp::List calculate_transcript_mc(Rcpp::NumericVector absoluteHits, Rcpp::NumericVector totalSites,
-                           double relHitsForeground,
-                           int n, int maxPermutations, int minPermutations, int e) {
+Rcpp::List calculate_transcript_mc(Rcpp::NumericVector absoluteHits,
+                                   Rcpp::NumericVector totalSites,
+                                   double relHitsForeground,
+                                   int n, int maxPermutations,
+                                   int minPermutations, int e) {
     double relHitsBackground(sum(absoluteHits) / sum(totalSites));
     double actualScore(std::abs(relHitsForeground - relHitsBackground));
     int k(0);
-
-    // random-number engine used (Mersenne-Twister) and init seed
-    std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-    std::uniform_int_distribution<unsigned int> dist(0, absoluteHits.length() - 1);
-
     int i(1);
-    unsigned int idx(0);
     while(i <= maxPermutations && (i < minPermutations || k < e)) {
         // select n transcripts randomly
         int randomAbsoluteHits(0);
         int randomTotalSites(0);
-        std::unordered_set<unsigned int> indices;
+        Rcpp::IntegerVector indices(Rcpp::sample(absoluteHits.length(), n));
 
         for(int j(0); j < n; ++j) {
-            // sampling with replacement, i.e., bootstrap
-            // idx = dist(gen);
-
-            // sampling without replacement, i.e., permutation test
-            // keep sampling until new sample not already in set
-            do {
-                idx = dist(gen);
-            } while (indices.find(idx) != indices.end());
-            indices.insert(idx);
-
-            randomAbsoluteHits += absoluteHits[idx];
-            randomTotalSites += totalSites[idx];
+            randomAbsoluteHits += absoluteHits[indices[j] - 1];
+            randomTotalSites += totalSites[indices[j] - 1];
         }
 
         // calculate random score

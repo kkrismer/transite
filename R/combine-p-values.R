@@ -95,7 +95,7 @@ p_combine <- function(p, method = c("fisher", "SL", "MG", "tippett"), w = NULL) 
     method <- match.arg(method, choices = c("fisher", "SL", "MG", "tippett"))
     p <- p[!is.na(p)]
     n <- length(p)
-    if (max(p) > 1) {
+    if (max(p) - .Machine$double.ep > 1) {
         stop("invalid input, p > 1")
     }
 

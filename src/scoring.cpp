@@ -1,5 +1,8 @@
+// [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::plugins(cpp11)]]
-#include <Rcpp.h>
+
+#include <RcppArmadillo.h>
+#include <RcppArmadilloExtensions/sample.h>
 #include <random>
 #include <algorithm>
 
@@ -186,24 +189,27 @@ Rcpp::List calculate_local_consistency(Rcpp::NumericVector x,
 //'  length(foreground_seqs), 1000, 500, 5)
 //' @export
 // [[Rcpp::export]]
-Rcpp::List calculate_transcript_mc(Rcpp::NumericVector absoluteHits,
-                                   Rcpp::NumericVector totalSites,
+Rcpp::List calculate_transcript_mc(Rcpp::IntegerVector absoluteHits,
+                                   Rcpp::IntegerVector totalSites,
                                    double relHitsForeground,
                                    int n, int maxPermutations,
                                    int minPermutations, int e) {
-    double relHitsBackground(sum(absoluteHits) / sum(totalSites));
+    double relHitsBackground(((double)sum(absoluteHits)) / ((double)sum(totalSites)));
     double actualScore(std::abs(relHitsForeground - relHitsBackground));
     int k(0);
     int i(1);
+    Rcpp::IntegerVector indices(Rcpp::seq_len(absoluteHits.length()));
     while(i <= maxPermutations && (i < minPermutations || k < e)) {
         // select n transcripts randomly
         int randomAbsoluteHits(0);
         int randomTotalSites(0);
-        Rcpp::IntegerVector indices(Rcpp::sample(absoluteHits.length(), n));
+        Rcpp::IntegerVector sampledIndices(Rcpp::RcppArmadillo::sample(indices,
+                                                                       n,
+                                                                       false));
 
         for(int j(0); j < n; ++j) {
-            randomAbsoluteHits += absoluteHits[indices[j] - 1];
-            randomTotalSites += totalSites[indices[j] - 1];
+            randomAbsoluteHits += absoluteHits[sampledIndices[j] - 1];
+            randomTotalSites += totalSites[sampledIndices[j] - 1];
         }
 
         // calculate random score

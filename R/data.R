@@ -24,6 +24,7 @@
 #'   \code{species} \tab usually human\cr
 #'   \code{src} \tab source of motif, e.g., RNA Zoo
 #' }
+#' @usage data(motifs)
 "motifs"
 
 #' Toy Gene Expression Data Set
@@ -44,6 +45,7 @@
 #'   genes after treatment\cr
 #'   \code{background_df} \tab data frame that contains all genes measured
 #' }
+#' @usage data(ge)
 "ge"
 
 #' Toy Motif Matrix
@@ -52,6 +54,7 @@
 #'
 #' @format A data frame with four columns (A, C, G, U) and seven
 #' rows (position 1 - 7)
+#' @usage data(toy_motif_matrix)
 "toy_motif_matrix"
 
 #' Example \emph{k}-mer Enrichment Data
@@ -72,4 +75,5 @@
 #'   \code{p_value} \tab associated p-value of enrichment\cr
 #'   \code{adj_p_value} \tab multiple testing corrected p-value\cr
 #' }
+#' @usage data(kmers_enrichment)
 "kmers_enrichment"

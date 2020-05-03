@@ -9,7 +9,7 @@ A data frame with four columns (A, C, G, U) and seven
 rows (position 1 - 7)
 }
 \usage{
-toy_motif_matrix
+data(toy_motif_matrix)
 }
 \description{
 This toy motif matrix is used in code examples for various functions.

@@ -19,7 +19,7 @@ A data frame with the following columns:
 }
 }
 \usage{
-kmers_enrichment
+data(kmers_enrichment)
 }
 \description{
 This data frame with \emph{k}-mer enrichment data (as produced by

@@ -22,7 +22,7 @@ A list of lists with the following components:
 }
 }
 \usage{
-motifs
+data(motifs)
 }
 \description{
 The Transite motif database contains sequence motifs and associated

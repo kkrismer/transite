@@ -15,7 +15,7 @@ A list with the following components:
 }
 }
 \usage{
-ge
+data(ge)
 }
 \description{
 This object contains a toy data set based on gene expression measurements

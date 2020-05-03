@@ -1,9 +1,11 @@
 CHANGES IN VERSION 1.6.0
 -------------------------
     o Bioconductor 3.10 release
-    o changed function names to adhere to tidyverse style guide (breaking change)
+    o changed function names to adhere to tidyverse style guide
+    (breaking change)
     o change method names to adhere to tidyverse style guide (breaking change)
-    o changed parameter names to adhere to tidyverse style guide (breaking change)
+    o changed parameter names to adhere to tidyverse style guide
+    (breaking change)
     o changed internal variable names to adhere to tidyverse style guide
     o fixed issue with mixed cached and uncached sequences
     o added unit tests
@@ -13,7 +15,8 @@ CHANGES IN VERSION 1.6.0
     o added transcript values overlay to spectrum plots
     o fixed issue due to floating point machine precision
     o improved efficiency of transcript set shuffling
-    o replaced Rcpp::sample() with Rcpp::RcppArmadillo::sample() to avoid memory leak
+    o replaced Rcpp::sample() with Rcpp::RcppArmadillo::sample() to avoid
+    memory leak
     o fix roxygen annotation for package data
 
 CHANGES IN VERSION 1.4.0

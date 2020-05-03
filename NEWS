@@ -1,6 +1,6 @@
 CHANGES IN VERSION 1.6.0
 -------------------------
-    o Bioconductor 3.10 release
+    o Bioconductor 3.11 release
     o changed function names to adhere to tidyverse style guide
     (breaking change)
     o change method names to adhere to tidyverse style guide (breaking change)

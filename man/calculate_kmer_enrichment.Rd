@@ -40,10 +40,11 @@ is used instead of Pearson's chi-squared test}
 }
 \value{
 A list with two entries:
-
-(1) dfs: a list of data frames with results from
-\code{\link{compute_kmer_enrichment}} for each of the foreground sets
-(2) kmers: a character vector of all k-mers
+\tabular{rl}{
+  \code{dfs} \tab a list of data frames with results from
+  \code{\link{compute_kmer_enrichment}} for each of the foreground sets\cr
+  \code{kmers} \tab a character vector of all k-mers
+}
 }
 \description{
 Calls \code{\link{compute_kmer_enrichment}} to compute \emph{k}-mer

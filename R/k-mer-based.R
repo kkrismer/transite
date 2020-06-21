@@ -98,10 +98,11 @@ count_homopolymer_corrected_kmers <-
 #' @inheritParams compute_kmer_enrichment
 #'
 #' @return A list with two entries:
-#'
-#' (1) dfs: a list of data frames with results from
-#' \code{\link{compute_kmer_enrichment}} for each of the foreground sets
-#' (2) kmers: a character vector of all k-mers
+#' \tabular{rl}{
+#'   \code{dfs} \tab a list of data frames with results from
+#'   \code{\link{compute_kmer_enrichment}} for each of the foreground sets\cr
+#'   \code{kmers} \tab a character vector of all k-mers
+#' }
 #'
 #' @examples
 #' # define simple sequence sets for foreground and background

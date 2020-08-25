@@ -1,34 +1,35 @@
 citHeader("Please cite the following if utilizing Transite: ")
 citEntry(entry="article",
   author =  personList(as.person("Konstantin Krismer"),
-                       as.person("Shohreh Varmeh"),
                        as.person("Molly A. Bird"),
-                       as.person("Anna Gattinger"),
-                       as.person("Yi Wen Kong"),
+                       as.person("Shohreh Varmeh"),
                        as.person("Erika D. Handly"),
+                       as.person("Anna Gattinger"),
                        as.person("Thomas Bernwinkler"),
                        as.person("Daniel A. Anderson"),
                        as.person("Andreas Heinzel"),
                        as.person("Brian A. Joughin"),
+                       as.person("Yi Wen Kong"),
                        as.person("Ian G. Cannell"),
                        as.person("Michael B. Yaffe")),
   title = "Transite: A computational motif-based analysis platform that
            identifies RNA-binding proteins modulating changes in
            gene expression",
-  year = 2018,
-	doi = "10.1101/416743",
-	publisher = "Cold Spring Harbor Laboratory",
-	URL = "https://doi.org/10.1101/416743",
-	journal = "bioRxiv",
+  year = 2020,
+  volume = 32,
+  doi = "10.1016/j.celrep.2020.108064",
+  publisher = "Elsevier",
+  URL = "https://doi.org/10.1016/j.celrep.2020.108064",
+  journal = "Cell Reports",
   textVersion =
-    paste("Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger,
-           Yi Wen Kong, Erika D. Handly, Thomas Bernwinkler, Daniel A. Anderson,
-           Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and
+    paste("Konstantin Krismer, Molly A. Bird, Shohreh Varmeh, Erika D. Handly,
+           Anna Gattinger,Thomas Bernwinkler, Daniel A. Anderson,
+           Andreas Heinzel, Brian A. Joughin, Yi Wen Kong, Ian G. Cannell, and
            Michael B. Yaffe",
           "Transite: A computational motif-based analysis platform that
           identifies RNA-binding proteins modulating changes in
           gene expression",
-          "bioRxiv 416743, 2018, doi: https://doi.org/10.1101/416743",
+          "Cell Reports, Volume 32, Issue 8, 108064, DOI: https://doi.org/10.1016/j.celrep.2020.108064",
           sep = "\n")
 )
 citFooter("This free open-source software implements academic

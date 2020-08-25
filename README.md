@@ -65,8 +65,8 @@ Note: For most use cases it is not necessary to install the `transite` package l
 If you use Transite in your research (R package or website), please cite:
 
 **Transite: A computational motif-based analysis platform that identifies RNA-binding proteins modulating changes in gene expression**  
-Konstantin Krismer, Shohreh Varmeh, Molly A. Bird, Anna Gattinger, Yi Wen Kong, Erika D. Handly, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Ian G. Cannell, and Michael B. Yaffe  
-bioRxiv 416743; doi: https://doi.org/10.1101/416743
+Konstantin Krismer, Molly A. Bird, Shohreh Varmeh, Erika D. Handly, Anna Gattinger, Thomas Bernwinkler, Daniel A. Anderson, Andreas Heinzel, Brian A. Joughin, Yi Wen Kong, Ian G. Cannell, and Michael B. Yaffe  
+Cell Reports, Volume 32, Issue 8, 108064; DOI: https://doi.org/10.1016/j.celrep.2020.108064
 
 ## Funding
 

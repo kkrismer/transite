@@ -1,3 +1,9 @@
+CHANGES IN VERSION 1.6.2
+-------------------------
+    o updated paper references
+    o fixed minor formatting issues
+    o incremented Roxygen2 version
+
 CHANGES IN VERSION 1.6.0
 -------------------------
     o Bioconductor 3.11 release

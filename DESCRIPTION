@@ -54,8 +54,7 @@ Suggests:
     roxygen2 (>= 6.1.0),
     testthat (>= 2.1.0)
 LinkingTo: 
-    Rcpp (>= 0.12.18),
-    RcppArmadillo
+    Rcpp (>= 0.12.18)
 VignetteBuilder: 
     knitr
 biocViews: GeneExpression, Transcription,

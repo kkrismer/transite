@@ -1,8 +1,6 @@
-// [[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::plugins(cpp11)]]
 
-#include <RcppArmadillo.h>
-#include <RcppArmadilloExtensions/sample.h>
+#include <Rcpp.h>
 #include <random>
 #include <algorithm>
 
@@ -198,14 +196,12 @@ Rcpp::List calculate_transcript_mc(Rcpp::IntegerVector absoluteHits,
     double actualScore(std::abs(relHitsForeground - relHitsBackground));
     int k(0);
     int i(1);
-    Rcpp::IntegerVector indices(Rcpp::seq_len(absoluteHits.length()));
     while(i <= maxPermutations && (i < minPermutations || k < e)) {
         // select n transcripts randomly
         int randomAbsoluteHits(0);
         int randomTotalSites(0);
-        Rcpp::IntegerVector sampledIndices(Rcpp::RcppArmadillo::sample(indices,
-                                                                       n,
-                                                                       false));
+        Rcpp::IntegerVector sampledIndices(Rcpp::sample(absoluteHits.length(),
+                                                        n));
 
         for(int j(0); j < n; ++j) {
             randomAbsoluteHits += absoluteHits[sampledIndices[j] - 1];

@@ -1,3 +1,9 @@
+CHANGES IN VERSION 1.6.3
+-------------------------
+    o added limits argument for spectrum plot x-values to harmonize color scale
+    of multiple spectrum plots
+    o replaced Rcpp::RcppArmadillo::sample() with now fixed Rcpp::sample()
+
 CHANGES IN VERSION 1.6.2
 -------------------------
     o updated paper references

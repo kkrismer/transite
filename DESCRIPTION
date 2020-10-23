@@ -43,7 +43,7 @@ Imports:
     gridExtra (>= 2.3),
     methods,
     parallel,
-    Rcpp (>= 0.12.18),
+    Rcpp (>= 1.0.4.8),
     scales (>= 1.0.0),
     stats,
     TFMPvalue (>= 0.0.8),
@@ -54,7 +54,7 @@ Suggests:
     roxygen2 (>= 6.1.0),
     testthat (>= 2.1.0)
 LinkingTo: 
-    Rcpp (>= 0.12.18)
+    Rcpp (>= 1.0.4.8)
 VignetteBuilder: 
     knitr
 biocViews: GeneExpression, Transcription,

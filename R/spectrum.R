@@ -203,7 +203,11 @@ subdivide_data <- function(sorted_transcript_sequences, n_bins = 40) {
 #' (e.g., \code{"log fold change"}, default value is \code{"transcript value"}),
 #' only shown if \code{!is.null(sorted_transcript_values)}
 #' @param midpoint for enrichment values the midpoint should be \code{1},
-#' for log enrichment values \code{0})
+#' for log enrichment values \code{0} (defaults to \code{0})
+#' @param x_value_limits sets limits of the x-value color scale (used to
+#' harmonize color scales of different spectrum plots), see \code{limits}
+#' argument of \code{\link[ggplot2]{continuous_scale}} (defaults to
+#' \code{NULL}, i.e., the data-dependent default scale range)
 #' @param max_model_degree maximum degree of polynomial
 #' @param max_cs_permutations maximum number of permutations performed in
 #' Monte Carlo test for consistency score
@@ -237,6 +241,12 @@ subdivide_data <- function(sorted_transcript_sequences, n_bins = 40) {
 #' # random spectrum
 #' score_spectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1)
 #'
+#' # two random spectrums with harmonized color scales
+#' plot(score_spectrum(runif(n = 40, min = -1, max = 1), max_model_degree = 1,
+#'      x_value_limits = c(-2.0, 2.0)))
+#' plot(score_spectrum(runif(n = 40, min = -2, max = 2), max_model_degree = 1,
+#'      x_value_limits = c(-2.0, 2.0)))
+#'
 #' # random spectrum with p-values
 #' score_spectrum(runif(n = 40, min = -1, max = 1),
 #'                p_values = runif(n = 40, min = 0, max = 1),
@@ -253,13 +263,13 @@ subdivide_data <- function(sorted_transcript_sequences, n_bins = 40) {
 #' signal <- seq(-1, 0.99, 2 / 40)
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.5)
 #' score_spectrum(signal + noise, max_model_degree = 1,
-#'   max_cs_permutations = 100000)
+#'                max_cs_permutations = 100000)
 #'
 #' # non-random quadratic spectrum
 #' signal <- seq(-1, 0.99, 2 / 40)^2 - 0.5
 #' noise <- rnorm(n = 40, mean = 0, sd = 0.2)
 #' score_spectrum(signal + noise, max_model_degree = 2,
-#'   max_cs_permutations = 100000)
+#'                max_cs_permutations = 100000)
 #' @family SPMA functions
 #' @importFrom dplyr arrange
 #' @importFrom ggplot2 ggplot
@@ -295,6 +305,7 @@ score_spectrum <- function(x, p_values = array(1, length(x)),
                            sorted_transcript_values = NULL,
                            transcript_values_label = "transcript value",
                            midpoint = 0,
+                           x_value_limits = NULL,
                            max_model_degree = 3,
                            max_cs_permutations = 10000000,
                            min_cs_permutations = 5000, e = 5) {
@@ -348,7 +359,7 @@ score_spectrum <- function(x, p_values = array(1, length(x)),
         ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
         ggplot2::scale_fill_gradient2(
             low = "#004F91FF", mid = "white", high = "#832424FF",
-            midpoint = midpoint
+            midpoint = midpoint, limits = x_value_limits
         )  +
         ggplot2::geom_text(data = enrichment_values_df,
                            ggplot2::aes(x = bin,

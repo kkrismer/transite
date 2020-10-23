@@ -11,6 +11,8 @@ run_kmer_spma(
   motifs = NULL,
   k = 6,
   n_bins = 40,
+  midpoint = 0,
+  x_value_limits = NULL,
   max_model_degree = 1,
   max_cs_permutations = 1e+07,
   min_cs_permutations = 5000,
@@ -50,6 +52,14 @@ If \code{is.null(motifs)} then all Transite motifs are used.}
 \item{n_bins}{specifies the number of bins in which the sequences
 will be divided,
 valid values are between 7 and 100}
+
+\item{midpoint}{for enrichment values the midpoint should be \code{1},
+for log enrichment values \code{0} (defaults to \code{0})}
+
+\item{x_value_limits}{sets limits of the x-value color scale (used to
+harmonize color scales of different spectrum plots), see \code{limits}
+argument of \code{\link[ggplot2]{continuous_scale}} (defaults to
+\code{NULL}, i.e., the data-dependent default scale range)}
 
 \item{max_model_degree}{maximum degree of polynomial}
 

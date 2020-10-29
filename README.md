@@ -1,6 +1,6 @@
 # Transite
 
-[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.celrep.2020.108064-blue.svg)](https://doi.org/10.1016/j.celrep.2020.108064) [![BioC](https://img.shields.io/badge/BioC-1.6.3-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.11/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives) [![Coverage Status](https://coveralls.io/repos/github/kkrismer/transite/badge.svg?branch=master)](https://coveralls.io/github/kkrismer/transite?branch=master)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)  [![DOI](https://img.shields.io/badge/DOI-10.1016%2Fj.celrep.2020.108064-blue.svg)](https://doi.org/10.1016/j.celrep.2020.108064) [![BioC](https://img.shields.io/badge/BioC-1.8.0-brightgreen.svg)](https://doi.org/doi:10.18129/B9.bioc.transite) [![platforms](https://bioconductor.org/shields/availability/3.12/transite.svg)](https://bioconductor.org/packages/release/bioc/html/transite.html#archives) [![Coverage Status](https://coveralls.io/repos/github/kkrismer/transite/badge.svg?branch=master)](https://coveralls.io/github/kkrismer/transite?branch=master)
 
 RNA-binding protein motif analysis
 
@@ -57,8 +57,8 @@ Note: For most use cases it is not necessary to install the `transite` package l
 | Platform | Status |
 |------|------|
 | Travis CI | [![Travis build status](https://travis-ci.org/kkrismer/transite.svg?branch=master)](https://travis-ci.org/kkrismer/transite) |
-| Bioconductor 3.11 (release) | [![BioC release](https://bioconductor.org/shields/build/release/bioc/transite.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/transite/) |
-| Bioconductor 3.12 (devel) | [![BioC devel](https://bioconductor.org/shields/build/devel/bioc/transite.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/transite/) |
+| Bioconductor 3.12 (release) | [![BioC release](https://bioconductor.org/shields/build/release/bioc/transite.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/transite/) |
+| Bioconductor 3.13 (devel) | [![BioC devel](https://bioconductor.org/shields/build/devel/bioc/transite.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/transite/) |
 
 ## Citation
 

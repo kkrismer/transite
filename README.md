@@ -56,7 +56,7 @@ Note: For most use cases it is not necessary to install the `transite` package l
 
 | Platform | Status |
 |------|------|
-| Travis CI | [![Travis build status](https://travis-ci.org/kkrismer/transite.svg?branch=master)](https://travis-ci.org/kkrismer/transite) |
+| Travis CI | [![Travis build status](https://travis-ci.com/kkrismer/transite.svg?branch=master)](https://travis-ci.com/kkrismer/transite) |
 | Bioconductor 3.12 (release) | [![BioC release](https://bioconductor.org/shields/build/release/bioc/transite.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/transite/) |
 | Bioconductor 3.13 (devel) | [![BioC devel](https://bioconductor.org/shields/build/devel/bioc/transite.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/transite/) |
 

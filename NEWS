@@ -1,5 +1,6 @@
-CHANGES IN VERSION 1.6.3
+CHANGES IN VERSION 1.8.0
 -------------------------
+    o Bioconductor 3.12 release
     o added limits argument for spectrum plot x-values to harmonize color scale
     of multiple spectrum plots
     o replaced Rcpp::RcppArmadillo::sample() with now fixed Rcpp::sample()

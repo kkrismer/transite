@@ -47,7 +47,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
 
-BiocManager::install(version = "devel"")
+BiocManager::install(version = "devel")
 BiocManager::install("transite")
 ```
 Note: For most use cases it is not necessary to install the `transite` package locally, as a substantial part of its functionality is offered as an online service at https://transite.mit.edu.

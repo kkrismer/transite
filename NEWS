@@ -1,3 +1,15 @@
+CHANGES IN VERSION 1.12.1
+-------------------------
+    o Fix typos
+
+CHANGES IN VERSION 1.12.0
+-------------------------
+    o Bioconductor 3.14 release
+
+CHANGES IN VERSION 1.10.0
+-------------------------
+    o Bioconductor 3.13 release
+
 CHANGES IN VERSION 1.8.0
 -------------------------
     o Bioconductor 3.12 release

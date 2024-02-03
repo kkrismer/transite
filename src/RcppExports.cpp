@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // score_sequences
 SEXP score_sequences(Rcpp::List sequences, Rcpp::NumericMatrix pwm);
 RcppExport SEXP _transite_score_sequences(SEXP sequencesSEXP, SEXP pwmSEXP) {

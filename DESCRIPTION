@@ -38,7 +38,6 @@ Imports:
     dplyr (>= 0.7.6),
     GenomicRanges (>= 1.32.6),
     ggplot2 (>= 3.0.0),
-    ggseqlogo (>= 0.1),
     grDevices,
     gridExtra (>= 2.3),
     methods,
@@ -61,5 +60,5 @@ biocViews: GeneExpression, Transcription,
     DifferentialExpression, Microarray, mRNAMicroarray, Genetics,
     GeneSetEnrichment
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.1
 SystemRequirements: C++11

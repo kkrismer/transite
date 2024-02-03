@@ -47,8 +47,8 @@ Other motif functions:
 \code{\link{generate_kmers_from_iupac}()},
 \code{\link{get_motif_by_id}()},
 \code{\link{get_motif_by_rbp}()},
-\code{\link{get_motifs_meta_info}()},
 \code{\link{get_motifs}()},
+\code{\link{get_motifs_meta_info}()},
 \code{\link{get_ppm}()},
 \code{\link{set_motifs}()}
 }

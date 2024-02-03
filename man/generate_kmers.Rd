@@ -63,8 +63,8 @@ Other \emph{k}-mer functions:
 \code{\link{compute_kmer_enrichment}()},
 \code{\link{count_homopolymer_corrected_kmers}()},
 \code{\link{draw_volcano_plot}()},
-\code{\link{estimate_significance_core}()},
 \code{\link{estimate_significance}()},
+\code{\link{estimate_significance_core}()},
 \code{\link{generate_permuted_enrichments}()},
 \code{\link{run_kmer_spma}()},
 \code{\link{run_kmer_tsma}()}

@@ -25,8 +25,6 @@
 \alias{get_source,RBPMotif-method}
 \alias{get_source}
 \alias{show,RBPMotif-method}
-\alias{plot,RBPMotif,ANY-method}
-\alias{plot,RBPMotif-method}
 \title{An S4 class to represent a RBPMotif}
 \usage{
 get_id(object)
@@ -70,13 +68,9 @@ get_source(object)
 \S4method{get_source}{RBPMotif}(object)
 
 \S4method{show}{RBPMotif}(object)
-
-\S4method{plot}{RBPMotif,ANY}(x)
 }
 \arguments{
 \item{object}{RBPMotif object}
-
-\item{x}{RBPMotif object}
 }
 \value{
 Object of type RBPMotif

@@ -251,8 +251,8 @@ Other TSMA functions:
 Other matrix functions: 
 \code{\link{calculate_motif_enrichment}()},
 \code{\link{run_matrix_spma}()},
-\code{\link{score_transcripts_single_motif}()},
-\code{\link{score_transcripts}()}
+\code{\link{score_transcripts}()},
+\code{\link{score_transcripts_single_motif}()}
 }
 \concept{TSMA functions}
 \concept{matrix functions}

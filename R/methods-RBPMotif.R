@@ -168,15 +168,3 @@ setMethod("show", signature(object = "RBPMotif"), function(object) {
         sep = ""
     )
 })
-
-#' @param x RBPMotif object
-#' @importFrom methods setMethod
-#' @importFrom methods signature
-#' @importFrom ggseqlogo ggseqlogo
-#' @rdname RBPMotif-class
-#' @aliases plot,RBPMotif-method
-#' @exportMethod plot
-setMethod("plot", signature(x = "RBPMotif"), function(x) {
-    ppm <- t(get_ppm(x))
-    return(ggseqlogo::ggseqlogo(ppm))
-})

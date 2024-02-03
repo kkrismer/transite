@@ -92,7 +92,7 @@ enrichments_df <- calculate_motif_enrichment(foreground_scores$df,
 Other matrix functions: 
 \code{\link{run_matrix_spma}()},
 \code{\link{run_matrix_tsma}()},
-\code{\link{score_transcripts_single_motif}()},
-\code{\link{score_transcripts}()}
+\code{\link{score_transcripts}()},
+\code{\link{score_transcripts_single_motif}()}
 }
 \concept{matrix functions}

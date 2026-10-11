@@ -77,6 +77,17 @@ inline int randWrapper(const int n) {
     return floor(unif_rand() * n);
 }
 
+// std::random_shuffle was removed in C++17 and is not available in libc++ (clang).
+// Same algorithm as libstdc++, so results are unchanged.
+template <class RandomIt, class RandomFunc>
+static void random_shuffle_compat(RandomIt first, RandomIt last, RandomFunc&& r) {
+  if (first == last) return;
+  for (RandomIt i = first + 1; i != last; ++i) {
+    RandomIt j = first + r((i - first) + 1);
+    if (i != j) std::iter_swap(i, j);
+  }
+}
+
 //' @title Local Consistency Score
 //'
 //' @description
@@ -122,7 +133,7 @@ Rcpp::List calculate_local_consistency(Rcpp::NumericVector x,
     while(i <= numPermutations && (i < minPermutations || k < e)) {
         // shuffle spectrum
         Rcpp::NumericVector shuffledSpectrum = clone(x);
-        std::random_shuffle(shuffledSpectrum.begin(), shuffledSpectrum.end(),
+        random_shuffle_compat(shuffledSpectrum.begin(), shuffledSpectrum.end(),
                             randWrapper);
 
         // calculate consistency score
